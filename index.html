@@ -81,14 +81,98 @@
     <p>Integer tincidunt, lacus id congue luctus, velit dui venenatis nisl, vitae bibendum nulla nunc et ipsum. Pellentesque consectetur sapien ut augue fringilla convallis. Integer fringilla tincidunt quam, vel ullamcorper purus cursus vitae.</p>
 </section>
 
-<div class="card">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+  Open fullscreen modal
+</button>
+
+<div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="fullscreenModalLabel">Webgig</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <ul class="nav nav-tabs" id="modalTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                      <a class="nav-link active" id="page-1-tab" data-bs-toggle="tab" href="#page-1" role="tab" aria-controls="page-1" aria-selected="true">Form</a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="page-2-tab" data-bs-toggle="tab" href="#page-2" role="tab" aria-controls="page-2" aria-selected="false">Page 2</a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="page-3-tab" data-bs-toggle="tab" href="#page-3" role="tab" aria-controls="page-3" aria-selected="false">Page 3</a>
+                  </li>
+              </ul>
+              <div class="tab-content mt-3" id="modalTabContent">
+                  <div class="tab-pane fade show active" id="page-1" role="tabpanel" aria-labelledby="page-1-tab">
+                      <h3>Form</h3>
+                      <div class="container mt-5">
+                        <h2 class="mb-4">Website Questionnaire</h2>
+                        <form>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="websitePurpose" placeholder="Website Purpose">
+                                <label for="websitePurpose">What is the primary purpose of your website?</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="targetAudience" placeholder="Target Audience">
+                                <label for="targetAudience">Who is your target audience?</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="keyFeatures" placeholder="Key Features">
+                                <label for="keyFeatures">What key features do you want on your website?</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="websiteStyle" placeholder="Website Style">
+                                <label for="websiteStyle">What style or theme do you want for your website?</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="competitorWebsites" placeholder="Competitor Websites">
+                                <label for="competitorWebsites">List some competitor websites that you like:</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="page-2" role="tabpanel" aria-labelledby="page-2-tab">
+                        <h3>Integrations</h3>
+                        <div class="container mt-5">
+                          <h2 class="mb-4">Choose your integrations</h2>
+                          <form>
+                            <div class="form-check mb-3">
+                              <input class="form-check-input" type="checkbox" value="stripe" id="stripeCheckbox">
+                              <label class="form-check-label" for="stripeCheckbox">
+                                Stripe
+                              </label>
+                            </div>
+                            <div class="form-check mb-3">
+                              <input class="form-check-input" type="checkbox" value="calendly" id="calendlyCheckbox">
+                              <label class="form-check-label" for="calendlyCheckbox">
+                                Calendly
+                              </label>
+                            </div>
+                            <div class="form-check mb-3">
+                              <input class="form-check-input" type="checkbox" value="mailchimp" id="mailchimpCheckbox">
+                              <label class="form-check-label" for="mailchimpCheckbox">
+                                Mailchimp
+                              </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </form>
+                        </div>
+                      </div>
+                      
+                  </div>
+                  <div class="tab-pane fade" id="page-3" role="tabpanel" aria-labelledby="page-3-tab">
+                      <h3>Page 3</h3>
+                      <p>Content for Page 3 goes here.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
   </div>
 </div>
 
@@ -115,5 +199,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
