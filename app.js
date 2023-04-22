@@ -5,40 +5,39 @@ const submitButton = document.querySelector('button[type="submit"]');
 submitButton.addEventListener('click', (event) => {
   event.preventDefault();
   
-  // Get form values
-  const websitePurpose = document.querySelector('#websitePurpose').value;
-  const targetAudience = document.querySelector('#targetAudience').value;
-  const keyFeatures = document.querySelector('#keyFeatures').value;
-  const websiteStyle = document.querySelector('#websiteStyle').value;
-  const competitorWebsites = document.querySelector('#competitorWebsites').value;
+    // Form data
+    const websitePurpose = document.getElementById("websitePurpose").value;
+    const targetAudience = document.getElementById("targetAudience").value;
+    const keyFeatures = document.getElementById("keyFeatures").value;
+    const websiteStyle = document.getElementById("websiteStyle").value;
+    const competitorWebsites = document.getElementById("competitorWebsites").value;
   
-  // Get integration choices
-  const integrationValues = [];
-  integrations.forEach(integration => {
-    if (integration.checked) {
-      integrationValues.push(integration.value);
-    }
+    // Integrations data
+    const stripe = document.getElementById("stripeCheckbox").checked;
+    const calendly = document.getElementById("calendlyCheckbox").checked;
+    const mailchimp = document.getElementById("mailchimpCheckbox").checked;
+  
+    const formData = {
+      websitePurpose,
+      targetAudience,
+      keyFeatures,
+      websiteStyle,
+      competitorWebsites,
+      stripe,
+      calendly,
+      mailchimp
+    };
+  
+    // Save form data to local storage
+    localStorage.setItem("formData", JSON.stringify(formData));
+  
+    // Close the modal
+    const modalElement = document.getElementById("fullscreenModal");
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    modal.hide();
+  
+    // Show the form data in a div on the homepage
+    const outputDiv = document.getElementById("output");
+    outputDiv.innerHTML = JSON.stringify(formData, null, 2);
   });
   
-  // Create array of objects
-  const data = [
-    {
-      section: 'Form',
-      values: {
-        websitePurpose,
-        targetAudience,
-        keyFeatures,
-        websiteStyle,
-        competitorWebsites
-      }
-    },
-    {
-      section: 'Integrations',
-      values: {
-        integrations: integrationValues
-      }
-    }
-  ];
-  
-  console.log(data); // Output the array of objects to console
-});
