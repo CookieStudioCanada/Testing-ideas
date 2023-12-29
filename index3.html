@@ -30,6 +30,14 @@
         <button id="eraser">Eraser</button>
         <input type="color" id="colorPicker">
         <button id="undo">Undo</button>
+        <!-- Inside the #toolbar div -->
+        <input type="number" id="canvasWidth" class="form-control mb-2" placeholder="Canvas Width" value="800">
+        <input type="number" id="canvasHeight" class="form-control mb-2" placeholder="Canvas Height" value="600">
+        <button id="resizeCanvas" class="btn btn-info btn-block mb-2">Resize Canvas</button>
+        <button id="circle" class="btn btn-secondary btn-block mb-2">Circle</button>
+        <button id="triangle" class="btn btn-secondary btn-block mb-2">Triangle</button>
+        <button id="fillShapes" class="btn btn-secondary btn-block mb-2">Toggle Fill</button>
+        <button id="filler" class="btn btn-secondary btn-block mb-2">Filler</button>
     </div>
     <canvas id="imageCanvas" width="800" height="600"></canvas>
 
@@ -143,6 +151,66 @@
                 ctx.putImageData(history[history.length - 1], 0, 0);
             }
         }
+        
+        // ... [previous setup and tool logic]
+
+        // Add global variables
+        let fillShapes = false;
+        
+        // Event listeners for new tools
+        document.getElementById('circle').addEventListener('click', () => setCurrentTool('circle'));
+        document.getElementById('triangle').addEventListener('click', () => setCurrentTool('triangle'));
+        document.getElementById('fillShapes').addEventListener('click', () => fillShapes = !fillShapes);
+        document.getElementById('filler').addEventListener('click', () => setCurrentTool('filler'));
+        
+        // Canvas resizing
+        document.getElementById('resizeCanvas').addEventListener('click', function() {
+            const width = document.getElementById('canvasWidth').value;
+            const height = document.getElementById('canvasHeight').value;
+            canvas.width = width;
+            canvas.height = height;
+        });
+        
+        // Tool Functions
+        function drawCircle(x, y, radius) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            fillShapes ? ctx.fill() : ctx.stroke();
+        }
+        
+        function drawTriangle(x, y) {
+            const height = 50; // Height of the triangle
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + 50, y);
+            ctx.lineTo(x + 25, y - height);
+            ctx.closePath();
+            fillShapes ? ctx.fill() : ctx.stroke();
+        }
+        
+        function fillCanvas() {
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // Modify finishedPosition function
+        function finishedPosition() {
+            isDrawing = false;
+            switch (currentTool) {
+                case 'circle':
+                    drawCircle(startX, startY, Math.sqrt(Math.pow(startX - endX, 2) + Math.pow(startY - endY, 2)));
+                    break;
+                case 'triangle':
+                    drawTriangle(startX, startY);
+                    break;
+                case 'filler':
+                    fillCanvas();
+                    break;
+                // ... other cases
+            }
+            saveCanvasState();
+        }
+
     </script>
 </body>
 </html>
