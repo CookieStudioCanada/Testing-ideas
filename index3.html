@@ -105,23 +105,32 @@
                 textInput = prompt('Enter text:');
                 ctx.fillText(textInput, startX, startY);
                 saveCanvasState();
-            } else {
+            } else if (currentTool === 'pencil') {
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
             }
         }
 
         function draw(e) {
-            if (!isDrawing || currentTool === 'text') return;
+            if (!isDrawing) return;
             endX = e.clientX - canvas.offsetLeft;
             endY = e.clientY - canvas.offsetTop;
-            ctx.putImageData(shapePreview, 0, 0);
-            drawShape(true); // Draw shape preview
+            if (currentTool === 'pencil') {
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+                startX = endX;
+                startY = endY;
+            } else if (currentTool !== 'text') {
+                ctx.putImageData(shapePreview, 0, 0);
+                drawShape(true); // Draw shape preview
+            }
         }
 
         function finishedPosition() {
             if (isDrawing && currentTool !== 'text') {
-                drawShape(); // Draw the final shape
+                if (currentTool !== 'pencil') {
+                    drawShape(); // Draw the final shape
+                }
                 saveCanvasState();
             }
             isDrawing = false;
