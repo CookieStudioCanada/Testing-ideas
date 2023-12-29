@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Draw on Photo App</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        #toolbar {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+        #toolbar button, #toolbar input {
+            margin-bottom: 5px;
+        }
+        #imageCanvas {
+            margin-left: 20px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <button id="pencil">Pencil</button>
+        <button id="shape">Shape</button>
+        <button id="eraser">Eraser</button>
+        <input type="color" id="colorPicker">
+        <button id="undo">Undo</button>
+    </div>
+    <canvas id="imageCanvas" width="800" height="600"></canvas>
+
+    <script>
+        // Initial setup
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let startX, startY, endX, endY;
+        let history = [];
+
+        // Tool state
+        let currentTool = 'pencil';
+        let currentColor = '#000000';
+        let currentLineWidth = 5;
+
+        // Saving the initial state
+        saveCanvasState();
+
+        // Tool event listeners
+        document.getElementById('pencil').addEventListener('click', () => setCurrentTool('pencil'));
+        document.getElementById('shape').addEventListener('click', () => setCurrentTool('shape'));
+        document.getElementById('eraser').addEventListener('click', () => setCurrentTool('eraser'));
+        document.getElementById('colorPicker').addEventListener('input', (e) => currentColor = e.target.value);
+        document.getElementById('undo').addEventListener('click', undoLastAction);
+
+        function setCurrentTool(tool) {
+            currentTool = tool;
+        }
+
+        function startPosition(e) {
+            isDrawing = true;
+            startX = e.clientX - canvas.offsetLeft;
+            startY = e.clientY - canvas.offsetTop;
+            if (currentTool !== 'shape') {
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+            }
+        }
+
+        function finishedPosition() {
+            isDrawing = false;
+            if (currentTool === 'shape') {
+                drawShape(startX, startY, endX, endY);
+            }
+            saveCanvasState();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            if (currentTool === 'pencil' || currentTool === 'eraser') {
+                ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+                ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
+                ctx.lineWidth = currentLineWidth;
+                ctx.stroke();
+            }
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', finishedPosition);
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing && currentTool === 'shape') {
+                endX = e.clientX - canvas.offsetLeft;
+                endY = e.clientY - canvas.offsetTop;
+            } else {
+                draw(e);
+            }
+        });
+
+        function drawShape(x1, y1, x2, y2) {
+            ctx.fillStyle = currentColor;
+            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        }
+
+        function saveCanvasState() {
+            history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            if (history.length > 10) history.shift();
+        }
+
+        function undoLastAction() {
+            if (history.length > 1) {
+                history.pop();
+                ctx.putImageData(history[history.length - 1], 0, 0);
+            }
+        }
+    </script>
+</body>
+</html>
