@@ -20,7 +20,7 @@
         #toolbar button:hover {
             background-color: #f0f0f0;
         }
-        #toolbar button, #toolbar input {
+        #toolbar button, #toolbar input, #toolbar label {
             margin-bottom: 5px;
         }
         #imageCanvas {
@@ -38,8 +38,13 @@
         <button id="shape" class="btn btn-light">Rectangle</button>
         <button id="circle" class="btn btn-light">Circle</button>
         <button id="triangle" class="btn btn-light">Triangle</button>
+        <button id="text" class="btn btn-light">Text</button>
         <button id="eraser" class="btn btn-light">Eraser</button>
         <input type="color" id="colorPicker" class="form-control mb-2" value="#000000">
+        <label>
+            <input type="checkbox" id="fillToggle">
+            Fill Shapes
+        </label>
         <button id="undo" class="btn btn-light">Undo</button>
         <button id="save" class="btn btn-light">Save</button>
         <input type="number" id="canvasWidth" class="form-control mb-2" placeholder="Canvas Width" value="800">
@@ -62,6 +67,8 @@
         let currentColor = document.getElementById('colorPicker').value;
         let currentLineWidth = 5;
         let shapePreview;
+        let isFillingShape = false;
+        let textInput = '';
 
         // Event listeners for toolbar
         document.querySelectorAll('#toolbar button').forEach(btn => {
@@ -69,19 +76,21 @@
                 document.querySelector('.active').classList.remove('active');
                 this.classList.add('active');
                 currentTool = this.id;
-                ctx.strokeStyle = currentColor;
-                ctx.fillStyle = currentColor;
             });
+        });
+
+        document.getElementById('fillToggle').addEventListener('change', function(e) {
+            isFillingShape = e.target.checked;
         });
 
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             currentColor = e.target.value;
-            ctx.strokeStyle = currentColor;
-            ctx.fillStyle = currentColor;
         });
+
         document.getElementById('undo').addEventListener('click', undoLastAction);
         document.getElementById('save').addEventListener('click', saveImage);
         document.getElementById('resizeCanvas').addEventListener('click', resizeCanvas);
+        document.getElementById('text').addEventListener('click', addText);
 
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mousemove', draw);
@@ -92,28 +101,30 @@
             startX = e.clientX - canvas.offsetLeft;
             startY = e.clientY - canvas.offsetTop;
             shapePreview = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
+            if (currentTool === 'text') {
+                textInput = prompt('Enter text:');
+                ctx.fillText(textInput, startX, startY);
+                saveCanvasState();
+            } else {
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+            }
         }
 
         function draw(e) {
-            if (!isDrawing) return;
+            if (!isDrawing || currentTool === 'text') return;
             endX = e.clientX - canvas.offsetLeft;
             endY = e.clientY - canvas.offsetTop;
-            if (currentTool === 'line' || currentTool === 'circle') {
-                ctx.putImageData(shapePreview, 0, 0);
-                drawShape(true); // Draw shape preview
-            } else if (currentTool === 'pencil' || currentTool === 'eraser') {
-                drawFree(endX, endY);
-            }
+            ctx.putImageData(shapePreview, 0, 0);
+            drawShape(true); // Draw shape preview
         }
 
         function finishedPosition() {
-            if (isDrawing) {
-                isDrawing = false;
+            if (isDrawing && currentTool !== 'text') {
                 drawShape(); // Draw the final shape
                 saveCanvasState();
             }
+            isDrawing = false;
         }
 
         function drawShape(isPreview = false) {
@@ -122,44 +133,45 @@
             ctx.lineWidth = currentLineWidth;
 
             if (isPreview) {
-                ctx.beginPath();
+                ctx.setLineDash([6]);
+            } else {
+                ctx.setLineDash([]);
             }
 
             switch (currentTool) {
                 case 'shape':
-                    ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+                    if (isFillingShape) ctx.fillRect(startX, startY, endX - startX, endY - startY);
+                    else ctx.strokeRect(startX, startY, endX - startX, endY - startY);
                     break;
                 case 'circle':
                     let radius = Math.sqrt(Math.pow((startX - endX), 2) + Math.pow((startY - endY), 2)) / 2;
+                    ctx.beginPath();
                     ctx.arc(startX + (endX - startX) / 2, startY + (endY - startY) / 2, radius, 0, 2 * Math.PI);
-                    ctx.stroke();
+                    if (isFillingShape) ctx.fill();
+                    else ctx.stroke();
+                    ctx.closePath();
                     break;
                 case 'triangle':
+                    ctx.beginPath();
                     ctx.moveTo(startX, startY);
                     ctx.lineTo(endX, startY);
                     ctx.lineTo((startX + endX) / 2, endY);
                     ctx.closePath();
-                    ctx.stroke();
+                    if (isFillingShape) ctx.fill();
+                    else ctx.stroke();
                     break;
                 case 'line':
+                    ctx.beginPath();
                     ctx.moveTo(startX, startY);
                     ctx.lineTo(endX, endY);
                     ctx.stroke();
+                    ctx.closePath();
                     break;
             }
 
             if (!isPreview) {
-                ctx.closePath();
+                ctx.setLineDash([]);
             }
-        }
-
-        function drawFree(x, y) {
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = currentTool === 'eraser' ? '#FFFFFF' : currentColor;
-            ctx.lineWidth = currentLineWidth;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
         }
 
         function saveCanvasState() {
@@ -201,6 +213,10 @@
             img.src = url;
         }
 
+        function addText() {
+            // Leave this function empty if you want to handle text addition elsewhere
+        }
+
         document.getElementById('imageLoader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -216,6 +232,7 @@
         ctx.strokeStyle = currentColor;
         ctx.fillStyle = currentColor;
         ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.font = '16px Arial';
     </script>
 </body>
 </html>
