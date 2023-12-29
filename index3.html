@@ -24,6 +24,7 @@
 </head>
 <body>
     <div id="toolbar">
+        <input type="file" id="imageLoader" class="form-control mb-2">
         <button id="pencil">Pencil</button>
         <button id="shape">Shape</button>
         <button id="eraser">Eraser</button>
@@ -86,6 +87,34 @@
                 ctx.stroke();
             }
         }
+
+        // ... [your existing canvas and ctx definitions]
+        
+        // Function to handle image loading
+        function loadImageIntoCanvas(url) {
+            const img = new Image();
+            img.onload = function() {
+                // Resize canvas to match image size
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+            }
+            img.src = url;
+        }
+        
+        // Event listener for file input
+        document.getElementById('imageLoader').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadImageIntoCanvas(event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }     
+        });
+        
+        // ... [rest of your JavaScript code, including tool event listeners]
 
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', finishedPosition);
