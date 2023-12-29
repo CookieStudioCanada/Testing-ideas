@@ -26,18 +26,17 @@
     <div id="toolbar">
         <input type="file" id="imageLoader" class="form-control mb-2">
         <button id="pencil">Pencil</button>
-        <button id="shape">Shape</button>
+        <button id="line">Line</button>
+        <button id="shape">Rectangle</button>
+        <button id="circle">Circle</button>
+        <button id="triangle">Triangle</button>
+        <button id="filler">Filler</button>
         <button id="eraser">Eraser</button>
         <input type="color" id="colorPicker">
         <button id="undo">Undo</button>
-        <!-- Inside the #toolbar div -->
         <input type="number" id="canvasWidth" class="form-control mb-2" placeholder="Canvas Width" value="800">
         <input type="number" id="canvasHeight" class="form-control mb-2" placeholder="Canvas Height" value="600">
         <button id="resizeCanvas" class="btn btn-info btn-block mb-2">Resize Canvas</button>
-        <button id="circle" class="btn btn-secondary btn-block mb-2">Circle</button>
-        <button id="triangle" class="btn btn-secondary btn-block mb-2">Triangle</button>
-        <button id="fillShapes" class="btn btn-secondary btn-block mb-2">Toggle Fill</button>
-        <button id="filler" class="btn btn-secondary btn-block mb-2">Filler</button>
     </div>
     <canvas id="imageCanvas" width="800" height="600"></canvas>
 
@@ -48,6 +47,7 @@
         let isDrawing = false;
         let startX, startY, endX, endY;
         let history = [];
+        let fillShapes = false; // New variable for fill toggle
 
         // Tool state
         let currentTool = 'pencil';
@@ -59,10 +59,15 @@
 
         // Tool event listeners
         document.getElementById('pencil').addEventListener('click', () => setCurrentTool('pencil'));
+        document.getElementById('line').addEventListener('click', () => setCurrentTool('line'));
         document.getElementById('shape').addEventListener('click', () => setCurrentTool('shape'));
+        document.getElementById('circle').addEventListener('click', () => setCurrentTool('circle'));
+        document.getElementById('triangle').addEventListener('click', () => setCurrentTool('triangle'));
+        document.getElementById('filler').addEventListener('click', () => setCurrentTool('filler'));
         document.getElementById('eraser').addEventListener('click', () => setCurrentTool('eraser'));
         document.getElementById('colorPicker').addEventListener('input', (e) => currentColor = e.target.value);
         document.getElementById('undo').addEventListener('click', undoLastAction);
+        document.getElementById('resizeCanvas').addEventListener('click', resizeCanvas);
 
         function setCurrentTool(tool) {
             currentTool = tool;
@@ -72,72 +77,54 @@
             isDrawing = true;
             startX = e.clientX - canvas.offsetLeft;
             startY = e.clientY - canvas.offsetTop;
-            if (currentTool !== 'shape') {
-                ctx.beginPath();
-                ctx.moveTo(startX, startY);
-            }
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
         }
 
         function finishedPosition() {
             isDrawing = false;
-            if (currentTool === 'shape') {
-                drawShape(startX, startY, endX, endY);
-            }
+            ctx.closePath();
+            endX = e.clientX - canvas.offsetLeft;
+            endY = e.clientY - canvas.offsetTop;
+            drawShape();
             saveCanvasState();
         }
 
         function draw(e) {
             if (!isDrawing) return;
-            if (currentTool === 'pencil' || currentTool === 'eraser') {
-                ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-                ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
-                ctx.lineWidth = currentLineWidth;
-                ctx.stroke();
-            }
+            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
+            ctx.lineWidth = currentLineWidth;
+            ctx.stroke();
         }
 
-        // ... [your existing canvas and ctx definitions]
-        
-        // Function to handle image loading
-        function loadImageIntoCanvas(url) {
-            const img = new Image();
-            img.onload = function() {
-                // Resize canvas to match image size
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0, img.width, img.height);
-            }
-            img.src = url;
-        }
-        
-        // Event listener for file input
-        document.getElementById('imageLoader').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    loadImageIntoCanvas(event.target.result);
-                }
-                reader.readAsDataURL(file);
-            }     
-        });
-        
-        // ... [rest of your JavaScript code, including tool event listeners]
-
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', finishedPosition);
-        canvas.addEventListener('mousemove', (e) => {
-            if (isDrawing && currentTool === 'shape') {
-                endX = e.clientX - canvas.offsetLeft;
-                endY = e.clientY - canvas.offsetTop;
-            } else {
-                draw(e);
-            }
-        });
-
-        function drawShape(x1, y1, x2, y2) {
+        function drawShape() {
+            ctx.strokeStyle = currentColor;
             ctx.fillStyle = currentColor;
-            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+            switch (currentTool) {
+                case 'shape':
+                    ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+                    break;
+                case 'circle':
+                    let radius = Math.sqrt(Math.pow((startX - endX), 2) + Math.pow((startY - endY), 2));
+                    ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+                    fillShapes ? ctx.fill() : ctx.stroke();
+                    break;
+                case 'triangle':
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, startY);
+                    ctx.lineTo((startX + endX) / 2, endY);
+                    ctx.closePath();
+                    fillShapes ? ctx.fill() : ctx.stroke();
+                    break;
+                case 'line':
+                    // Line is drawn in draw function
+                    break;
+                case 'filler':
+                    // Implement filler logic
+                    break;
+            }
         }
 
         function saveCanvasState() {
@@ -151,65 +138,42 @@
                 ctx.putImageData(history[history.length - 1], 0, 0);
             }
         }
-        
-        // ... [previous setup and tool logic]
 
-        // Add global variables
-        let fillShapes = false;
-        
-        // Event listeners for new tools
-        document.getElementById('circle').addEventListener('click', () => setCurrentTool('circle'));
-        document.getElementById('triangle').addEventListener('click', () => setCurrentTool('triangle'));
-        document.getElementById('fillShapes').addEventListener('click', () => fillShapes = !fillShapes);
-        document.getElementById('filler').addEventListener('click', () => setCurrentTool('filler'));
-        
-        // Canvas resizing
-        document.getElementById('resizeCanvas').addEventListener('click', function() {
+        function resizeCanvas() {
             const width = document.getElementById('canvasWidth').value;
             const height = document.getElementById('canvasHeight').value;
             canvas.width = width;
             canvas.height = height;
+        }
+
+        // Event listeners for mouse events
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', finishedPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        // Image loader logic
+        document.getElementById('imageLoader').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadImageIntoCanvas(event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }     
         });
-        
-        // Tool Functions
-        function drawCircle(x, y, radius) {
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, 2 * Math.PI);
-            fillShapes ? ctx.fill() : ctx.stroke();
-        }
-        
-        function drawTriangle(x, y) {
-            const height = 50; // Height of the triangle
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + 50, y);
-            ctx.lineTo(x + 25, y - height);
-            ctx.closePath();
-            fillShapes ? ctx.fill() : ctx.stroke();
-        }
-        
-        function fillCanvas() {
-            ctx.fillStyle = currentColor;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-        
-        // Modify finishedPosition function
-        function finishedPosition() {
-            isDrawing = false;
-            switch (currentTool) {
-                case 'circle':
-                    drawCircle(startX, startY, Math.sqrt(Math.pow(startX - endX, 2) + Math.pow(startY - endY, 2)));
-                    break;
-                case 'triangle':
-                    drawTriangle(startX, startY);
-                    break;
-                case 'filler':
-                    fillCanvas();
-                    break;
-                // ... other cases
+
+        function loadImageIntoCanvas(url) {
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0, img.width, img.height);
             }
-            saveCanvasState();
+            img.src = url;
         }
+
+        // Add filler tool logic here (optional)
 
     </script>
 </body>
