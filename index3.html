@@ -34,6 +34,7 @@
         <button id="eraser">Eraser</button>
         <input type="color" id="colorPicker">
         <button id="undo">Undo</button>
+        <button id="save">Save</button>
         <input type="number" id="canvasWidth" class="form-control mb-2" placeholder="Canvas Width" value="800">
         <input type="number" id="canvasHeight" class="form-control mb-2" placeholder="Canvas Height" value="600">
         <button id="resizeCanvas" class="btn btn-info btn-block mb-2">Resize Canvas</button>
@@ -47,7 +48,6 @@
         let isDrawing = false;
         let startX, startY, endX, endY;
         let history = [];
-        let fillShapes = false; // New variable for fill toggle
 
         // Tool state
         let currentTool = 'pencil';
@@ -67,10 +67,13 @@
         document.getElementById('eraser').addEventListener('click', () => setCurrentTool('eraser'));
         document.getElementById('colorPicker').addEventListener('input', (e) => currentColor = e.target.value);
         document.getElementById('undo').addEventListener('click', undoLastAction);
+        document.getElementById('save').addEventListener('click', saveImage);
         document.getElementById('resizeCanvas').addEventListener('click', resizeCanvas);
 
         function setCurrentTool(tool) {
             currentTool = tool;
+            // Reset to default line width when changing tools
+            currentLineWidth = 5;
         }
 
         function startPosition(e) {
@@ -81,21 +84,35 @@
             ctx.moveTo(startX, startY);
         }
 
-        function finishedPosition() {
+        function finishedPosition(e) {
+            if (!e) e = window.event;
             isDrawing = false;
             ctx.closePath();
-            endX = e.clientX - canvas.offsetLeft;
-            endY = e.clientY - canvas.offsetTop;
+
+            if (e.type === 'mouseup') {
+                endX = e.clientX - canvas.offsetLeft;
+                endY = e.clientY - canvas.offsetTop;
+            } else if (e.type === 'touchend') {
+                if (e.touches.length > 0) {
+                    let touch = e.touches[0];
+                    endX = touch.clientX - canvas.offsetLeft;
+                    endY = touch.clientY - canvas.offsetTop;
+                }
+            }
             drawShape();
             saveCanvasState();
         }
 
         function draw(e) {
             if (!isDrawing) return;
-            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-            ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
-            ctx.lineWidth = currentLineWidth;
-            ctx.stroke();
+            if (currentTool === 'pencil' || currentTool === 'line' || currentTool === 'eraser') {
+                ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+                ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
+                ctx.lineWidth = currentLineWidth;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            }
         }
 
         function drawShape() {
@@ -107,8 +124,10 @@
                     break;
                 case 'circle':
                     let radius = Math.sqrt(Math.pow((startX - endX), 2) + Math.pow((startY - endY), 2));
-                    ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
-                    fillShapes ? ctx.fill() : ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(startX, startY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.closePath();
                     break;
                 case 'triangle':
                     ctx.beginPath();
@@ -116,7 +135,7 @@
                     ctx.lineTo(endX, startY);
                     ctx.lineTo((startX + endX) / 2, endY);
                     ctx.closePath();
-                    fillShapes ? ctx.fill() : ctx.stroke();
+                    ctx.stroke();
                     break;
                 case 'line':
                     // Line is drawn in draw function
@@ -146,6 +165,14 @@
             canvas.height = height;
         }
 
+        function saveImage() {
+            const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+            const link = document.createElement('a');
+            link.download = 'my-canvas.png';
+            link.href = image;
+            link.click();
+        }
+
         // Event listeners for mouse events
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', finishedPosition);
@@ -164,17 +191,18 @@
         });
 
         function loadImageIntoCanvas(url) {
-            const img = new Image();
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0, img.width, img.height);
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                }
+                img.src = url;
             }
-            img.src = url;
-        }
 
-        // Add filler tool logic here (optional)
+    // Add filler tool logic here (optional)
 
-    </script>
+</script>
+
 </body>
 </html>
