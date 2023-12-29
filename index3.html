@@ -33,13 +33,13 @@
 <body>
     <div id="toolbar">
         <input type="file" id="imageLoader" class="form-control mb-2">
-        <button id="pencil" class="btn btn-light">Pencil</button>
+        <button id="pencil" class="btn btn-light active">Pencil</button>
         <button id="line" class="btn btn-light">Line</button>
         <button id="shape" class="btn btn-light">Rectangle</button>
         <button id="circle" class="btn btn-light">Circle</button>
         <button id="triangle" class="btn btn-light">Triangle</button>
         <button id="eraser" class="btn btn-light">Eraser</button>
-        <input type="color" id="colorPicker" class="form-control mb-2">
+        <input type="color" id="colorPicker" class="form-control mb-2" value="#000000">
         <button id="undo" class="btn btn-light">Undo</button>
         <button id="save" class="btn btn-light">Save</button>
         <input type="number" id="canvasWidth" class="form-control mb-2" placeholder="Canvas Width" value="800">
@@ -61,7 +61,7 @@
         let currentTool = 'pencil';
         let currentColor = '#000000';
         let currentLineWidth = 5;
-        let shapePreview;
+        let hasMoved = false;
 
         // Event listeners for toolbar
         document.querySelectorAll('#toolbar button').forEach(btn => {
@@ -69,10 +69,16 @@
                 document.querySelector('.active').classList.remove('active');
                 this.classList.add('active');
                 currentTool = this.id;
+                ctx.strokeStyle = currentColor;
+                ctx.fillStyle = currentColor;
             });
         });
 
-        document.getElementById('colorPicker').addEventListener('input', (e) => currentColor = e.target.value);
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            currentColor = e.target.value;
+            ctx.strokeStyle = currentColor;
+            ctx.fillStyle = currentColor;
+        });
         document.getElementById('undo').addEventListener('click', undoLastAction);
         document.getElementById('save').addEventListener('click', saveImage);
         document.getElementById('resizeCanvas').addEventListener('click', resizeCanvas);
@@ -80,16 +86,19 @@
         // Function definitions
         function startPosition(e) {
             isDrawing = true;
+            hasMoved = false;
             startX = e.clientX - canvas.offsetLeft;
             startY = e.clientY - canvas.offsetTop;
-            if (currentTool !== 'line') {
-                ctx.beginPath();
-                ctx.moveTo(startX, startY);
-            }
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
             shapePreview = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
 
         function finishedPosition(e) {
+            if (!hasMoved && currentTool === 'line') {
+                isDrawing = false;
+                return;
+            }
             isDrawing = false;
             endX = e.clientX - canvas.offsetLeft;
             endY = e.clientY - canvas.offsetTop;
@@ -98,21 +107,25 @@
 
         function draw(e) {
             if (!isDrawing) return;
+            hasMoved = true;
             switch (currentTool) {
                 case 'pencil':
                 case 'eraser':
                     drawFree(e.clientX, e.clientY);
                     break;
                 case 'line':
-                    if (shapePreview) {
+                    if (isDrawing) {
                         ctx.putImageData(shapePreview, 0, 0);
-                        drawLine(e.clientX, e.clientY, true);
+                        drawLine(e.clientX, e.clientY);
                     }
                     break;
             }
         }
 
         function drawShape() {
+            ctx.strokeStyle = currentColor;
+            ctx.fillStyle = currentColor;
+            ctx.lineWidth = currentLineWidth;
             switch (currentTool) {
                 case 'shape':
                     ctx.rect(startX, startY, endX - startX, endY - startY);
@@ -131,7 +144,7 @@
                     ctx.stroke();
                     break;
                 case 'line':
-                    drawLine(endX, endY, false);
+                    drawLine(endX, endY);
                     break;
             }
             ctx.beginPath();
@@ -140,23 +153,17 @@
 
         function drawFree(clientX, clientY) {
             ctx.lineTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
-            ctx.strokeStyle = currentTool === 'eraser' ? 'white' : currentColor;
-            ctx.lineWidth = currentLineWidth;
             ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
         }
 
-        function drawLine(clientX, clientY, preview) {
+        function drawLine(clientX, clientY) {
             ctx.beginPath();
             ctx.moveTo(startX, startY);
             ctx.lineTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
-            ctx.strokeStyle = currentColor;
-            ctx.lineWidth = currentLineWidth;
             ctx.stroke();
-            if (!preview) {
-                ctx.closePath();
-            }
+            ctx.closePath();
         }
 
         function saveCanvasState() {
@@ -214,8 +221,9 @@
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', finishedPosition);
 
-        // Set initial active tool
-        document.getElementById('pencil').classList.add('active');
+        // Set initial tool color
+        ctx.strokeStyle = currentColor;
+        ctx.fillStyle = currentColor;
     </script>
 </body>
 </html>
