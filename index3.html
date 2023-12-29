@@ -59,9 +59,9 @@
         let startX, startY, endX, endY;
         let history = [];
         let currentTool = 'pencil';
-        let currentColor = '#000000';
+        let currentColor = document.getElementById('colorPicker').value;
         let currentLineWidth = 5;
-        let hasMoved = false;
+        let shapePreview;
 
         // Event listeners for toolbar
         document.querySelectorAll('#toolbar button').forEach(btn => {
@@ -83,57 +83,55 @@
         document.getElementById('save').addEventListener('click', saveImage);
         document.getElementById('resizeCanvas').addEventListener('click', resizeCanvas);
 
-        // Function definitions
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', finishedPosition);
+
         function startPosition(e) {
             isDrawing = true;
-            hasMoved = false;
             startX = e.clientX - canvas.offsetLeft;
             startY = e.clientY - canvas.offsetTop;
+            shapePreview = ctx.getImageData(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(startX, startY);
-            shapePreview = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        }
-
-        function finishedPosition(e) {
-            if (!hasMoved && currentTool === 'line') {
-                isDrawing = false;
-                return;
-            }
-            isDrawing = false;
-            endX = e.clientX - canvas.offsetLeft;
-            endY = e.clientY - canvas.offsetTop;
-            drawShape();
         }
 
         function draw(e) {
             if (!isDrawing) return;
-            hasMoved = true;
-            switch (currentTool) {
-                case 'pencil':
-                case 'eraser':
-                    drawFree(e.clientX, e.clientY);
-                    break;
-                case 'line':
-                    if (isDrawing) {
-                        ctx.putImageData(shapePreview, 0, 0);
-                        drawLine(e.clientX, e.clientY);
-                    }
-                    break;
+            endX = e.clientX - canvas.offsetLeft;
+            endY = e.clientY - canvas.offsetTop;
+            if (currentTool === 'line' || currentTool === 'circle') {
+                ctx.putImageData(shapePreview, 0, 0);
+                drawShape(true); // Draw shape preview
+            } else if (currentTool === 'pencil' || currentTool === 'eraser') {
+                drawFree(endX, endY);
             }
         }
 
-        function drawShape() {
+        function finishedPosition() {
+            if (isDrawing) {
+                isDrawing = false;
+                drawShape(); // Draw the final shape
+                saveCanvasState();
+            }
+        }
+
+        function drawShape(isPreview = false) {
             ctx.strokeStyle = currentColor;
             ctx.fillStyle = currentColor;
             ctx.lineWidth = currentLineWidth;
+
+            if (isPreview) {
+                ctx.beginPath();
+            }
+
             switch (currentTool) {
                 case 'shape':
-                    ctx.rect(startX, startY, endX - startX, endY - startY);
-                    ctx.stroke();
+                    ctx.strokeRect(startX, startY, endX - startX, endY - startY);
                     break;
                 case 'circle':
                     let radius = Math.sqrt(Math.pow((startX - endX), 2) + Math.pow((startY - endY), 2)) / 2;
-                    ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+                    ctx.arc(startX + (endX - startX) / 2, startY + (endY - startY) / 2, radius, 0, 2 * Math.PI);
                     ctx.stroke();
                     break;
                 case 'triangle':
@@ -144,26 +142,24 @@
                     ctx.stroke();
                     break;
                 case 'line':
-                    drawLine(endX, endY);
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
                     break;
             }
-            ctx.beginPath();
-            saveCanvasState();
+
+            if (!isPreview) {
+                ctx.closePath();
+            }
         }
 
-        function drawFree(clientX, clientY) {
-            ctx.lineTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
+        function drawFree(x, y) {
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = currentTool === 'eraser' ? '#FFFFFF' : currentColor;
+            ctx.lineWidth = currentLineWidth;
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
-        }
-
-        function drawLine(clientX, clientY) {
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(clientX - canvas.offsetLeft, clientY - canvas.offsetTop);
-            ctx.stroke();
-            ctx.closePath();
+            ctx.moveTo(x, y);
         }
 
         function saveCanvasState() {
@@ -199,7 +195,7 @@
             img.onload = function() {
                 canvas.width = img.width;
                 canvas.height = img.height;
-                ctx.drawImage(img, 0, 0, img.width, img.height);
+                ctx.drawImage(img, 0, 0);
                 saveCanvasState();
             }
             img.src = url;
@@ -216,14 +212,10 @@
             }     
         });
 
-        // Mouse events
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', finishedPosition);
-
-        // Set initial tool color
+        // Initialize the canvas context properties
         ctx.strokeStyle = currentColor;
         ctx.fillStyle = currentColor;
+        ctx.lineJoin = ctx.lineCap = 'round';
     </script>
 </body>
 </html>
