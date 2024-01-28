@@ -2,6 +2,40 @@
 <html>
 <head>
     <title>Calculateur de plafond de cotisation CELI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        p, label {
+            font-size: 18px;
+            color: #666;
+        }
+        #birthYear {
+            font-size: 16px;
+            padding: 10px;
+            width: 50%;
+            max-width: 300px;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
     <script>
         function calculateCELI() {
             var birthYear = document.getElementById("birthYear").value;
@@ -37,8 +71,19 @@
 </head>
 <body>
     <h1>Calculateur de plafond de cotisation CELI</h1>
-    <p>Entrez votre année de naissance :</p>
-    <input type="number" id="birthYear" min="1900" max="2006">
+    <p>Sélectionnez votre année de naissance :</p>
+    <select id="birthYear">
+        <!-- Remplissage dynamique des options dans le menu déroulant -->
+        <script>
+            for (var year = 1900; year <= 2006; year++) {
+                var option = document.createElement("option");
+                option.value = year;
+                option.text = year;
+                document.getElementById("birthYear").appendChild(option);
+            }
+        </script>
+    </select>
+    <br>
     <button onclick="calculateCELI()">Calculer</button>
     <p id="result"></p>
 </body>
