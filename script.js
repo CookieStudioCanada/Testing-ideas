@@ -73,6 +73,7 @@ function calculateCELI() {
     if (withdrawal > 0) {
         resultMessage += " Important: Les retraits de l'année en cours n'augmenteront le plafond qu'à partir de l'année suivante.";
     }
+
     document.getElementById("result").innerHTML = resultMessage;
 }
 
@@ -94,17 +95,20 @@ function updateTotals() {
   revenusInputs.forEach(function(input) {
       totalRevenus += parseFloat(input.value) || 0;
   });
-  document.getElementById('totalRevenus').innerText = totalRevenus;
+  var revenus = formatNumber(totalRevenus);
+  document.getElementById('totalRevenus').innerText = revenus;
 
   var totalDepenses = 0;
   var depensesInputs = document.querySelectorAll('.depense-input');
   depensesInputs.forEach(function(input) {
       totalDepenses += parseFloat(input.value) || 0;
   });
-  document.getElementById('totalDepenses').innerText = totalDepenses;
+  var depenses = formatNumber(totalDepenses);
+  document.getElementById('totalDepenses').innerText = depenses;
 
   var argentDisponible = totalRevenus - totalDepenses;
-  document.getElementById('argentDisponible').innerText = argentDisponible;
+  var argent = formatNumber(argentDisponible);
+  document.getElementById('argentDisponible').innerText = argent;
 }
 
 // Compound interest
@@ -114,8 +118,21 @@ function calculateCompoundInterest() {
   var rate = document.getElementById("rate").value;
   var time = document.getElementById("time").value;
 
+  // Calculate compound interest
   var amount = principal * Math.pow((1 + rate / 100), time);
-  var interest = amount - principal;
+  
+  // Format the result
+  var formattedAmount = formatNumber(amount);
 
-  document.getElementById("resultCI").innerHTML = "Compound Interest: $" + interest.toFixed(2) + "<br>Total Amount: $" + amount.toFixed(2);
+  // Display the result
+  document.getElementById("resultCI").innerText = 'Montant: ' + formattedAmount + "$";
 }
+
+function formatNumber(number) {
+  // Convert to fixed decimal string, then back to number
+  var fixedNumber = Number(number.toFixed(0));
+
+  // Format with spaces as thousand separators
+  return fixedNumber.toLocaleString('fr-FR');
+}
+

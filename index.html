@@ -62,7 +62,7 @@
     <div id="Home" class="tabcontent">
         <div class="container">
             <h3 class="fw-bold text-center mt-3">Accueil</h3>
-            <p class="text-justify px-3">Bienvenue sur F.J.T., votre assistant personnel pour une gestion financière simplifiée. Ici, vous pouvez facilement gérer votre budget, planifier vos économies CELI et préparer votre retraite de manière efficace et intuitive. Commencez dès aujourd'hui à prendre des décisions financières avisées pour un avenir plus sûr et plus prospère!.</p>
+            <p class="text-justify px-3">Bienvenue sur F.J.T., votre assistant personnel pour une gestion financière simplifiée. Ici, vous pouvez facilement gérer votre budget, planifier vos économies CELI et préparer votre retraite de manière efficace et intuitive. Commencez dès aujourd'hui à prendre des décisions financières avisées pour un avenir plus sûr et plus prospère!</p>
         </div>
     </div>
 
@@ -216,24 +216,24 @@
       
     <div id="CI" class="tabcontent">
         <div class="container">
-  <h2>Compound Interest Calculator</h2>
-  <form id="compoundInterestForm">
-    <div class="mb-3">
-      <label for="principal" class="form-label">Capital ($):</label>
-      <input type="number" class="form-control" id="principal" placeholder="Enter principal amount">
-    </div>
-    <div class="mb-3">
-      <label for="rate" class="form-label">Taux annuel (%):</label>
-      <input type="number" class="form-control" id="rate" placeholder="Enter annual interest rate">
-    </div>
-    <div class="mb-3">
-      <label for="time" class="form-label">Année:</label>
-      <input type="number" class="form-control" id="time" placeholder="Enter number of years">
-    </div>
-    <button type="button" class="btn btn-secondary" onclick="calculateCompoundInterest()">Calculer</button>
-  </form>
-  <div id="resultCI" class="mt-3"></div>
-</div>
+            <h3 class="fw-bold text-center mt-3">Intérêts composés</h3>
+            <form id="compoundInterestForm">
+                <div class="mb-3">
+                <label for="principal" class="form-label">Capital ($):</label>
+                <input type="number" class="form-control" id="principal" placeholder="Entrez le montant du capital">
+                </div>
+                <div class="mb-3">
+                <label for="rate" class="form-label">Taux annuel (%):</label>
+                <input type="number" class="form-control" id="rate" placeholder="Entrez le taux d'intérêt annuel moyen">
+                </div>
+                <div class="mb-3">
+                <label for="time" class="form-label">Année(s):</label>
+                <input type="number" class="form-control" id="time" placeholder="Entrez le nombre d'années">
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="calculateCompoundInterest()">Calculer</button>
+            </form>
+            <div id="resultCI" class="mt-3"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
