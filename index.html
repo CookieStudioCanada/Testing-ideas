@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taxes</title>
+    <title>F.J.T.</title>
     
     <!-- <script type="module" src="firebase.js"></script> -->
     <link rel="stylesheet" type="text/css" href="styles.css">
@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom sticky-top">
         <div class="container-fluid">
           <!-- Navbar Brand -->
-          <a class="navbar-brand" href="#" style="font-size: x-large; font-weight: bold;">Taxes</a>
+          <a class="navbar-brand" href="#" style="font-size: x-large; font-weight: bold;">F.J.T.</a>
       
           <!-- Toggler Button -->
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
     <div id="Home" class="tabcontent">
         <div class="container">
             <h3 class="fw-bold text-center mt-3">Accueil</h3>
-            <p class="text-justify px-3">Bienvenue à Taxes.</p>
+            <p class="text-justify px-3">Bienvenue sur F.J.T., votre assistant personnel pour une gestion financière simplifiée. Ici, vous pouvez facilement gérer votre budget, planifier vos économies CELI et préparer votre retraite de manière efficace et intuitive. Commencez dès aujourd'hui à prendre des décisions financières avisées pour un avenir plus sûr et plus prospère!.</p>
         </div>
     </div>
 
@@ -80,15 +80,15 @@
                 <tbody>
                     <tr>
                         <td>Salaire</td>
-                        <td>1000</td>
+                        <td><input type="number" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Bonis</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr class="table-primary">
-                        <td><strong>Total</strong></td>
-                        <td><strong>1000</strong></td>
+                        <td><strong>Total Revenus</strong></td>
+                        <td><strong><span id="totalRevenus">0</span></strong></td>
                     </tr>
                     <tr>
                         <td colspan="2"></td> <!-- Empty row for spacing -->
@@ -99,91 +99,91 @@
                     </tr>
                     <tr>
                         <td>Loyer</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Automobile</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Assurance santé/dentaire</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
-                        <td>Assurance auto</td>
-                        <td>0</td>
+                        <td>Assurance automobile</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Assurance habitation</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Transport</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Hydro-Québec</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Cellulaire</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Internet</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Épicerie</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Médicaments</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Restaurants</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Divertissements</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Cadeaux</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Abonnements mensuels</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Remboursement capital</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Remboursement marge</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>CELI</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>REER</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Comptes auto-géré</td>
-                        <td>0</td>
+                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr class="table-danger">
-                        <td><strong>Total</strong></td>
-                        <td><strong>0</strong></td>
+                        <td><strong>Total Dépenses</strong></td>
+                        <td><strong><span id="totalDepenses">0</span></strong></td>
                     </tr>
                     <tr class="table-success">
-                        <td><strong>Argent disponible</strong></td>
-                        <td><strong>1000</strong></td>
+                        <td><strong>Argent Disponible</strong></td>
+                        <td><strong><span id="argentDisponible">0</span></strong></td>
                     </tr>
                 </tbody>
             </table>

@@ -85,3 +85,24 @@ window.onload = function() {
         select.appendChild(option);
     }
 };
+
+// Budget
+
+function updateTotals() {
+  var totalRevenus = 0;
+  var revenusInputs = document.querySelectorAll('.revenu-input');
+  revenusInputs.forEach(function(input) {
+      totalRevenus += parseFloat(input.value) || 0;
+  });
+  document.getElementById('totalRevenus').innerText = totalRevenus;
+
+  var totalDepenses = 0;
+  var depensesInputs = document.querySelectorAll('.depense-input');
+  depensesInputs.forEach(function(input) {
+      totalDepenses += parseFloat(input.value) || 0;
+  });
+  document.getElementById('totalDepenses').innerText = totalDepenses;
+
+  var argentDisponible = totalRevenus - totalDepenses;
+  document.getElementById('argentDisponible').innerText = argentDisponible;
+}
