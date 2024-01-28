@@ -11,7 +11,7 @@
             color: #333333; /* Couleur du texte */
         }
         .container {
-            max-width: 75%;
+            max-width: 85%;
         }
         .result {
             font-size: 1.5rem;
@@ -23,18 +23,18 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Calculateur de plafond de cotisation CELI</h1>
+        <h1 class="text-center">Calculateur de plafond de cotisation CÉLI</h1>
         <div class="mb-3">
             <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
             <select id="birthYear" class="form-select"></select>
         </div>
         <div class="mb-3">
-            <label for="deposit" class="form-label">Montant du dépôt :</label>
-            <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant du dépôt">
+            <label for="deposit" class="form-label">Montant des cotisations :</label>
+            <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant des cotisations">
         </div>
         <div class="mb-3">
-            <label for="withdrawal" class="form-label">Montant du retrait :</label>
-            <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant du retrait">
+            <label for="withdrawal" class="form-label">Montant des retraits :</label>
+            <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
         </div>
         <button onclick="calculateCELI()" class="btn btn-primary">Calculer</button>
         <p id="result" class="result"></p>
