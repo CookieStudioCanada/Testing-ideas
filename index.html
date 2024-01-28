@@ -37,23 +37,23 @@
           <!-- Navbar Links -->
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="openPage('Home', this); closeNavbar();" id="defaultOpen">Accueil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="openPage('CELI', this); closeNavbar();">CÉLI</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="openPage('Budget', this); closeNavbar();">Budget</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="openPage('FAQ', this); closeNavbar();">FAQ</a>
-              </li>
-              <!--
-              <li class="nav-item">
-                <a class="nav-link" href="#" onclick="window.location='signin.html'">Compte</a>
-              </li>
-              -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openPage('Home', this); closeNavbar();" id="defaultOpen">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openPage('Budget', this); closeNavbar();">Budget</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openPage('CELI', this); closeNavbar();">CÉLI</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="openPage('FAQ', this); closeNavbar();">FAQ</a>
+                </li>
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="window.location='signin.html'">Compte</a>
+                </li>
+                -->
             </ul>
           </div>
         </div>
@@ -65,31 +65,7 @@
             <p class="text-justify px-3">Bienvenue à Taxes.</p>
         </div>
     </div>
-      
-    <div id="CELI" class="tabcontent">
-        <div class="container">
-            <h3 class="fw-bold text-center mt-3">Plafond de cotisation CÉLI</h3>
-                
-            <div class="mb-3">
-                <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
-                <select id="birthYear" class="form-select"></select>
-            </div>
-    
-            <div class="mb-3">
-                <label for="deposit" class="form-label">Montant des cotisations :</label>
-                <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant des cotisations">
-            </div>
-    
-            <div class="mb-3">
-                <label for="withdrawal" class="form-label">Montant des retraits :</label>
-                <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
-            </div>
-            
-            <button onclick="calculateCELI()" class="btn btn-secondary">Calculer</button>
-            <p id="result" class="result"></p> 
-        </div>
-    </div>
-      
+
     <div id="Budget" class="tabcontent">
         <div class="container">
             <h3 class="text-center fw-bold mt-3">Budget</h3>
@@ -211,12 +187,37 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>   
+
+    <div id="CELI" class="tabcontent">
+        <div class="container">
+            <h3 class="fw-bold text-center mt-3">Plafond de cotisation CÉLI</h3>
+                
+            <div class="mb-3">
+                <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
+                <select id="birthYear" class="form-select"></select>
+            </div>
+    
+            <div class="mb-3">
+                <label for="deposit" class="form-label">Montant des cotisations :</label>
+                <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant des cotisations">
+            </div>
+    
+            <div class="mb-3">
+                <label for="withdrawal" class="form-label">Montant des retraits :</label>
+                <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
+            </div>
+            
+            <button onclick="calculateCELI()" class="btn btn-secondary">Calculer</button>
+            <p id="result" class="result"></p> 
+        </div>
     </div>
       
     <div id="FAQ" class="tabcontent">
         <div class="container">
             <h3 class="text-center fw-bold mt-3">FAQ</h3>
-            À venir.
+            <p class="text-justify px-3">À venir.</p>
         </div>
     </div>
 
