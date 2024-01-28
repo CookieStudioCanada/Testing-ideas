@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrepreneur Platform</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.0.0-alpha5/bootstrap-icons.min.css">
     <!-- Additional CSS Here -->
 </head>
 <body>
@@ -25,17 +26,6 @@
         <h2>Entrepreneur Name</h2>
         <div id="product-list" class="row">
             <!-- Dynamically load products here -->
-            <!-- Example Product Card -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="product-image.jpg" alt="Product Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Product Name</h5>
-                        <p class="card-text">Product Description</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -43,7 +33,6 @@
     <div class="container mt-4">
         <h2>Add/Edit Product</h2>
         <form id="product-form">
-            <!-- Form fields for product details -->
             <div class="form-group">
                 <label for="productName">Product Name</label>
                 <input type="text" class="form-control" id="productName" placeholder="Enter product name">
@@ -53,18 +42,47 @@
                 <textarea class="form-control" id="productDescription" placeholder="Product description"></textarea>
             </div>
             <div class="form-group">
-                <label for="productImage">Image URL</label>
-                <input type="text" class="form-control" id="productImage" placeholder="Image URL">
+                <label for="productIcon">Product Icon</label>
+                <select class="form-control" id="productIcon">
+                    <option value="bi-alarm">Alarm</option>
+                    <option value="bi-heart-fill">Heart</option>
+                    <option value="bi-gear-fill">Gear</option>
+                    <!-- Add more Bootstrap icons as needed -->
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Save Product</button>
         </form>
     </div>
 
-    <!-- JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@firebase/app"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@firebase/firestore"></script>
-    <!-- Firebase and Other Scripts Here -->
+    <!-- JavaScript for Form Handling and Adding Products -->
+    <script>
+        document.getElementById('product-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get values from the form
+            var productName = document.getElementById('productName').value;
+            var productDescription = document.getElementById('productDescription').value;
+            var productIcon = document.getElementById('productIcon').value;
 
+            // Create a new product card
+            var productCard = '<div class="col-md-4"><div class="card" style="width: 18rem;">' +
+                              '<div class="card-body">' +
+                              '<i class="bi ' + productIcon + '"></i>' +
+                              '<h5 class="card-title">' + productName + '</h5>' +
+                              '<p class="card-text">' + productDescription + '</p>' +
+                              '<a href="#" class="btn btn-primary">Buy Now</a>' +
+                              '</div></div></div>';
+
+            // Append the new product to the product list
+            document.getElementById('product-list').innerHTML += productCard;
+
+            // Clear the form
+            document.getElementById('product-form').reset();
+        });
+    </script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
