@@ -1,103 +1,226 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Calculateur de plafond de cotisation CELI</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxes</title>
+    
+    <!-- <script type="module" src="firebase.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif; /* Police de caractères */
-            padding: 20px;
-            background-color: #f0f2f5; /* Couleur de fond */
-            color: #333333; /* Couleur du texte */
-        }
-        .container {
-            max-width: 85%;
-        }
-        .result {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            color: #007bff; /* Couleur punchy pour les résultats */
-        }
-        /* Autres styles personnalisés */
-    </style>
+    
+    <!-- Meta for SEO and Social Sharing  
+    <meta property="og:title" content="Taxes">
+    <meta property="og:description" content="Taxes: Calculateur financier.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://xx.com">
+    <meta property="og:type" content="website">  
+
+    Icons
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    -->
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Calculateur de plafond de cotisation CÉLI</h1>
-        <div class="mb-3">
-            <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
-            <select id="birthYear" class="form-select"></select>
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom sticky-top">
+        <div class="container-fluid">
+          <!-- Navbar Brand -->
+          <a class="navbar-brand" href="#" style="font-size: x-large; font-weight: bold;">Taxes</a>
+      
+          <!-- Toggler Button -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <!-- Navbar Links -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openPage('Home', this); closeNavbar();" id="defaultOpen">Accueil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openPage('CELI', this); closeNavbar();">CÉLI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openPage('Budget', this); closeNavbar();">Budget</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openPage('FAQ', this); closeNavbar();">FAQ</a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="window.location='signin.html'">Compte</a>
+              </li>
+              -->
+            </ul>
+          </div>
         </div>
-        <div class="mb-3">
-            <label for="deposit" class="form-label">Montant des cotisations :</label>
-            <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant des cotisations">
+    </nav>  
+
+    <div id="Home" class="tabcontent">
+        <div class="container">
+            <h3 class="fw-bold text-center mt-3">Accueil</h3>
+            <p class="text-justify px-3">Bienvenue à Taxes.</p>
         </div>
-        <div class="mb-3">
-            <label for="withdrawal" class="form-label">Montant des retraits :</label>
-            <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
+    </div>
+      
+    <div id="CELI" class="tabcontent">
+        <div class="container">
+            <h3 class="fw-bold text-center mt-3">Plafond de cotisation CÉLI</h3>
+                
+            <div class="mb-3">
+                <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
+                <select id="birthYear" class="form-select"></select>
+            </div>
+    
+            <div class="mb-3">
+                <label for="deposit" class="form-label">Montant des cotisations :</label>
+                <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant des cotisations">
+            </div>
+    
+            <div class="mb-3">
+                <label for="withdrawal" class="form-label">Montant des retraits :</label>
+                <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
+            </div>
+            
+            <button onclick="calculateCELI()" class="btn btn-secondary">Calculer</button>
+            <p id="result" class="result"></p> 
         </div>
-        <button onclick="calculateCELI()" class="btn btn-primary">Calculer</button>
-        <p id="result" class="result"></p>
+    </div>
+      
+    <div id="Budget" class="tabcontent">
+        <div class="container">
+            <h3 class="text-center fw-bold mt-3">Budget</h3>
+
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Revenus</th>
+                        <th>Mensuel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Salaire</td>
+                        <td>1000</td>
+                    </tr>
+                    <tr>
+                        <td>Bonis</td>
+                        <td>0</td>
+                    </tr>
+                    <tr class="table-primary">
+                        <td><strong>Total</strong></td>
+                        <td><strong>1000</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td> <!-- Empty row for spacing -->
+                    </tr>
+                    <tr class="thead-dark">
+                        <th>Dépenses</th>
+                        <th>Mensuel</th>
+                    </tr>
+                    <tr>
+                        <td>Loyer</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Automobile</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Assurance santé/dentaire</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Assurance auto</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Assurance habitation</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Transport</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Hydro-Québec</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Cellulaire</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Internet</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Épicerie</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Médicaments</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Restaurants</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Divertissements</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Cadeaux</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Abonnements mensuels</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Remboursement capital</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Remboursement marge</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>CELI</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>REER</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Comptes auto-géré</td>
+                        <td>0</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td><strong>Total</strong></td>
+                        <td><strong>0</strong></td>
+                    </tr>
+                    <tr class="table-success">
+                        <td><strong>Argent disponible</strong></td>
+                        <td><strong>1000</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+      
+    <div id="FAQ" class="tabcontent">
+        <div class="container">
+            <h3 class="text-center fw-bold mt-3">FAQ</h3>
+            À venir.
+        </div>
     </div>
 
-    <script>
-        function calculateCELI() {
-            var birthYear = document.getElementById("birthYear").value;
-            var deposit = parseFloat(document.getElementById("deposit").value) || 0; // Cotisation
-            var withdrawal = parseFloat(document.getElementById("withdrawal").value) || 0; // Retrait
-        
-            var currentYear = 2024;
-            var craLimits = {
-                2009: 5000,
-                2010: 5000,
-                2011: 5000,
-                2012: 5000,
-                2013: 5500,
-                2014: 5500,
-                2015: 10000,
-                2016: 5500,
-                2017: 5500,
-                2018: 5500,
-                2019: 6000,
-                2020: 6000,
-                2021: 6000,
-                2022: 6000,
-                2023: 6500,
-                2024: 7000
-            };
-            
-            var firstContributionYear = Math.max(2009, parseInt(birthYear) + 18);
-            var cumulativeLimit = 0;
-            for (var year = firstContributionYear; year <= currentYear; year++) {
-                cumulativeLimit += craLimits[year];
-            }
-        
-            // Ajustement du plafond en fonction des cotisations et retraits
-            cumulativeLimit -= deposit; // Les cotisations diminuent le plafond
-            if (withdrawal > 0 && birthYear <= (currentYear - 18)) {
-                // Les retraits augmentent le plafond, mais pas pour l'année en cours
-                cumulativeLimit += withdrawal;
-            }
-        
-            var finalBalance = cumulativeLimit;
-            var resultMessage = "Solde final du plafond de cotisation CELI : " + finalBalance + " $.";
-            if (withdrawal > 0) {
-                resultMessage += " Note: Les retraits de l'année en cours n'augmenteront le plafond qu'à partir de l'année suivante.";
-            }
-            document.getElementById("result").innerHTML = resultMessage;
-        }
-
-        window.onload = function() {
-            var select = document.getElementById("birthYear");
-            for (var year = 2006; year >= 1900; year--) {
-                var option = document.createElement("option");
-                option.value = year;
-                option.text = year;
-                select.appendChild(option);
-            }
-        };
-    </script>
-
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
