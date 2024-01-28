@@ -106,3 +106,16 @@ function updateTotals() {
   var argentDisponible = totalRevenus - totalDepenses;
   document.getElementById('argentDisponible').innerText = argentDisponible;
 }
+
+// Compound interest
+
+function calculateCompoundInterest() {
+  var principal = document.getElementById("principal").value;
+  var rate = document.getElementById("rate").value;
+  var time = document.getElementById("time").value;
+
+  var amount = principal * Math.pow((1 + rate / 100), time);
+  var interest = amount - principal;
+
+  document.getElementById("result").innerHTML = "Compound Interest: $" + interest.toFixed(2) + "<br>Total Amount: $" + amount.toFixed(2);
+}
