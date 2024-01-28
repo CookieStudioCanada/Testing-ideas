@@ -5,8 +5,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif; /* Police de caractères */
             padding: 20px;
+            background-color: #f0f2f5; /* Couleur de fond */
+            color: #333333; /* Couleur du texte */
         }
         .container {
             max-width: 75%;
@@ -14,35 +16,36 @@
         .result {
             font-size: 1.5rem;
             margin-top: 20px;
+            color: #007bff; /* Couleur punchy pour les résultats */
         }
+        /* Autres styles personnalisés */
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center">Calculateur de plafond de cotisation CELI</h1>
-        <div class="my-3">
+        <div class="mb-3">
             <label for="birthYear" class="form-label">Sélectionnez votre année de naissance :</label>
-            <select id="birthYear" class="form-select">
-                <!-- Options ajoutées par JavaScript -->
-            </select>
+            <select id="birthYear" class="form-select"></select>
+        </div>
+        <div class="mb-3">
+            <label for="deposit" class="form-label">Montant du dépôt :</label>
+            <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant du dépôt">
+        </div>
+        <div class="mb-3">
+            <label for="withdrawal" class="form-label">Montant du retrait :</label>
+            <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant du retrait">
         </div>
         <button onclick="calculateCELI()" class="btn btn-primary">Calculer</button>
         <p id="result" class="result"></p>
-    </div>
-    
-    <div class="mb-3">
-        <label for="deposit" class="form-label">Montant du dépôt :</label>
-        <input type="number" id="deposit" class="form-control" placeholder="Entrez le montant du dépôt">
-    </div>
-    
-    <div class="mb-3">
-        <label for="withdrawal" class="form-label">Montant du retrait :</label>
-        <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant du retrait">
     </div>
 
     <script>
         function calculateCELI() {
             var birthYear = document.getElementById("birthYear").value;
+            var deposit = parseFloat(document.getElementById("deposit").value) || 0;
+            var withdrawal = parseFloat(document.getElementById("withdrawal").value) || 0;
+        
             var currentYear = 2024;
             var craLimits = {
                 2009: 5000,
@@ -62,17 +65,17 @@
                 2023: 6500,
                 2024: 7000
             };
-
+        
             var firstContributionYear = Math.max(2009, parseInt(birthYear) + 18);
             var cumulativeLimit = 0;
             for (var year = firstContributionYear; year <= currentYear; year++) {
                 cumulativeLimit += craLimits[year];
             }
-
-            document.getElementById("result").innerHTML = "Plafond cumulatif de cotisation CELI pour quelqu'un né en " + birthYear + " : " + cumulativeLimit + " $";
+        
+            var finalBalance = cumulativeLimit + deposit - withdrawal;
+            document.getElementById("result").innerHTML = "Solde final après dépôts et retraits : " + finalBalance + " $";
         }
 
-        // Remplir le menu déroulant avec des années de naissance
         window.onload = function() {
             var select = document.getElementById("birthYear");
             for (var year = 2006; year >= 1900; year--) {
