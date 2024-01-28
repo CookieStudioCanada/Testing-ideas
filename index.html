@@ -65,7 +65,7 @@
         // Remplir le menu déroulant avec des années de naissance
         window.onload = function() {
             var select = document.getElementById("birthYear");
-            for (var year = 1900; year <= 2006; year++) {
+            for (var year = 2006; year >= 1900; year--) {
                 var option = document.createElement("option");
                 option.value = year;
                 option.text = year;
