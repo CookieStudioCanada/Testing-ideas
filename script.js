@@ -117,5 +117,5 @@ function calculateCompoundInterest() {
   var amount = principal * Math.pow((1 + rate / 100), time);
   var interest = amount - principal;
 
-  document.getElementById("result").innerHTML = "Compound Interest: $" + interest.toFixed(2) + "<br>Total Amount: $" + amount.toFixed(2);
+  document.getElementById("resultCI").innerHTML = "Compound Interest: $" + interest.toFixed(2) + "<br>Total Amount: $" + amount.toFixed(2);
 }
