@@ -4,80 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f0f0f0;
-}
-
-.container {
-    width: 80%;
-    max-width: 400px;
-    margin: auto;
-    padding-top: 50px;
-}
-
-input {
-    width: 70%;
-    padding: 10px;
-    margin-right: 5px;
-}
-
-button {
-    width: 25%;
-    padding: 10px;
-    margin: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background-color: #ddd;
-    margin-top: 5px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-li.completed {
-    text-decoration: line-through;
-}
-</style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            max-width: 400px;
+            margin: auto;
+            padding-top: 50px;
+        }
+        input, .due-date {
+            width: 70%;
+            padding: 10px;
+            margin-right: 5px;
+        }
+        button {
+            width: 25%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #ddd;
+            margin-top: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        li.completed {
+            background-color: #a5d6a7;
+        }
+        .edit-mode {
+            display: flex;
+            justify-content: space-between;
+        }
+        .edit-mode input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>My To-Do List</h1>
         <input type="text" id="taskInput" placeholder="Add a new task...">
+        <input type="date" class="due-date" id="dueDate">
         <button onclick="addTask()">Add Task</button>
         <ul id="tasksList"></ul>
     </div>
-    <script src="script.js"></script>
-</body>
-<script>
-function addTask() {
-    let taskInput = document.getElementById('taskInput');
-    let tasksList = document.getElementById('tasksList');
+    <script>
+        document.addEventListener('DOMContentLoaded', loadTasks);
 
-    if (taskInput.value.trim() !== '') {
-        let li = document.createElement('li');
-        li.textContent = taskInput.value;
-        li.onclick = function() {
-            this.classList.toggle('completed');
-        };
-        li.ondblclick = function() {
-            this.remove();
-        };
-        tasksList.appendChild(li);
-        taskInput.value = '';
-    }
-}
-</script>
+        function addTask() {
+            let taskInput = document.getElementById('taskInput');
+            let dueDate = document.getElementById('dueDate').value;
+            let tasksList = document.getElementById('tasksList');
+
+            if (taskInput.value.trim() !== '') {
+                let li = document.createElement('li');
+                li.innerHTML = '<span onclick="toggleComplete(this)">' + taskInput.value + 
+                               '</span> <span class="due-date">' + 
+                               (dueDate ? new Date(dueDate).toLocaleDateString() : 'No due date') + 
+                               '</span> <button onclick="editTask(this)">Edit</button>';
+                tasksList.appendChild(li);
+                saveTasks();
+                taskInput.value = '';
+            }
+        }
+
+        function toggleComplete(span) {
+            span.parentNode.classList.toggle('completed');
+            saveTasks();
+        }
+
+        function editTask(button) {
+            let li = button.parentNode;
+            if (li.classList.contains('edit-mode')) {
+                li.innerHTML = '<span onclick="toggleComplete(this)">' + 
+                               li.querySelector('input').value + '</span> <span class="due-date">' +
+                               li.querySelector('.due-date').value + '</span> <button onclick="editTask(this)">Edit</button>';
+            } else {
+                let text = li.querySelector('span').textContent;
+                let dueDate = li.querySelector('.due-date').textContent;
+                li.innerHTML = '<input type="text" value="' + text + 
+                               '"> <input type="date" class="due-date" value="' + 
+                               new Date(dueDate).toISOString().split('T')[0] + 
+                               '"> <button onclick="editTask(this)">Save</button>';
+            }
+            li.classList.toggle('edit-mode');
+            saveTasks();
+        }
+
+        function saveTasks() {
+            let tasksList = document.getElementById('tasksList');
+            localStorage.setItem('tasks', tasksList.innerHTML);
+        }
+
+        function loadTasks() {
+            let tasks = localStorage.getItem('tasks');
+            if (tasks) {
+                document.getElementById('tasksList').innerHTML = tasks;
+            }
+        }
+    </script>
+</body>
 </html>
