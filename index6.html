@@ -8,44 +8,108 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: lightyellow;
+            background-color: lightyellow; /* or any color that matches your design */
         }
+        
         .container {
             width: 80%;
-            max-width: 400px;
+            max-width: 600px; /* Adjusted to fit the layout of the sketch */
             margin: auto;
             padding-top: 50px;
+            border: 1px solid #000; /* Black border around the container */
+            background-color: #fff; /* White background for the container */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
         }
-        input {
-            width: 70%;
+        
+        /* Style adjustments for input fields and buttons to match the sketch */
+        input[type="text"], input[type="date"], textarea, select {
+            width: calc(33% - 10px); /* Adjust width to sit in a row */
             padding: 10px;
-            margin: 10px;
+            margin: 5px;
+            border: 1px solid #ccc; /* Light grey border */
+            border-radius: 5px; /* Rounded corners */
         }
+        
+        textarea {
+            height: 50px; /* Fixed height for description */
+            resize: none; /* Disable resizing */
+        }
+        
         button {
-            width: 25%;
-            padding: 10px;
-            background-color: black;
-            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
             border: none;
+            border-radius: 5px; /* Rounded corners */
         }
+        
         ul {
             list-style: none;
             padding: 0;
+            text-align: left; /* Align text to the left */
         }
+        
         li {
-            background-color: lightgrey;
+            background-color: #f7f7f7; /* Light grey background */
             margin-top: 5px;
             padding: 10px;
             cursor: pointer;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Space elements out */
             align-items: center;
+            border-radius: 5px; /* Rounded corners */
         }
+        
         li.completed {
-            background-color: #a5d6a7;
+            background-color: #a5d6a7; /* Light green for completed tasks */
         }
+        
         .task-text {
             flex-grow: 1;
+        }
+        
+        /* Additional styles for the new elements (due date, priority, etc.) */
+        .due-date, .priority, .category {
+            margin-left: 10px; /* Space out the elements */
+        }
+        
+        .delete-btn {
+            background-color: #ff4d4d; /* Red background for delete button */
+        }
+        
+        /* Checkmark box */
+        .checkmark {
+            width: 20px; /* Fixed width and height */
+            height: 20px;
+            border: 1px solid #000; /* Black border */
+            margin-right: 10px; /* Space from the task text */
+        }
+        
+        /* Hide the default checkmark and customize */
+        .checkmark input[type="checkbox"] {
+            display: none;
+        }
+        
+        /* Custom checkmark style */
+        .checkmark .custom-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        /* Style for the custom checkmark (when checked) */
+        .checkmark .custom-checkbox:after {
+            content: '✔';
+            display: none;
+            color: #000;
+        }
+        
+        /* Show checkmark when input is checked */
+        .checkmark input[type="checkbox"]:checked + .custom-checkbox:after {
+            display: block;
         }
     </style>
 </head>
