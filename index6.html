@@ -170,25 +170,17 @@
             let uniqueId = new Date().getTime(); // Unique ID for the task
         
             if (taskInput.value.trim() !== '') {
-                let cardBody = document.createElement('div');
-                cardBody.className = 'card-body';
-                cardBody.innerHTML = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="task-${uniqueId}">
-                        <label class="form-check-label" for="task-${uniqueId}">
-                            ${taskInput.value}
-                        </label>
-                    </div>
-                    <span class="due-date">Due: ${dueDateInput.value}</span>
-                    <span class="priority">Priority: ${priorityInput.value}</span>
-                    <span class="category">Category: ${categoryInput.value}</span>
-                    <p class="description">${descriptionInput.value}</p>
-                    <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
-                `;
+                let task = {
+                    id: uniqueId,
+                    title: taskInput.value,
+                    dueDate: dueDateInput.value,
+                    priority: priorityInput.value,
+                    category: categoryInput.value,
+                    description: descriptionInput.value,
+                    completed: false
+                };
         
-                let li = document.createElement('li');
-                li.className = 'card';
-                li.appendChild(cardBody);
+                let li = createCard(task);
                 tasksList.appendChild(li);
                 
                 saveTasks();
@@ -204,11 +196,8 @@
         
         function toggleComplete(checkbox) {
             let cardBody = checkbox.closest('.card-body');
-            if (checkbox.checked) {
-                cardBody.classList.add('bg-success', 'text-white');
-            } else {
-                cardBody.classList.remove('bg-success', 'text-white');
-            }
+            cardBody.classList.toggle('bg-success', checkbox.checked);
+            cardBody.classList.toggle('text-white', checkbox.checked);
             saveTasks();
         }
         
@@ -243,28 +232,7 @@
             tasksList.innerHTML = ''; // Clear current list
         
             tasks.forEach(task => {
-                let cardBody = document.createElement('div');
-                cardBody.className = 'card-body';
-                if (task.completed) {
-                    cardBody.classList.add('bg-success', 'text-white');
-                }
-                cardBody.innerHTML = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="task-${task.id}" ${task.completed ? 'checked' : ''} onchange="toggleComplete(this)">
-                        <label class="form-check-label" for="task-${task.id}">
-                            ${task.title}
-                        </label>
-                    </div>
-                    <span class="due-date">Due: ${task.dueDate}</span>
-                    <span class="priority">Priority: ${task.priority}</span>
-                    <span class="category">Category: ${task.category}</span>
-                    <p class="description">${task.description}</p>
-                    <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
-                `;
-        
-                let li = document.createElement('li');
-                li.className = 'card';
-                li.appendChild(cardBody);
+                let li = createCard(task);
                 tasksList.appendChild(li);
             });
         }
@@ -296,16 +264,32 @@
                     return categoryInput ? task.category.toLowerCase() === categoryInput : true;
                 })
                 .forEach(task => {
-                    let cardBody = document.createElement('div');
-                    cardBody.className = 'card-body';
-                    // ... rest of your existing cardBody.innerHTML setup ...
-                    
-                    let li = document.createElement('li');
-                    li.className = 'card';
-                    li.appendChild(cardBody);
+                    let li = createCard(task);
                     tasksList.appendChild(li);
                 });
         }
-    </script>
-</body>
-</html>
+        
+        function createCard(task) {
+            let cardBody = document.createElement('div');
+            cardBody.className = `card-body ${task.completed ? 'bg-success text-white' : ''}`;
+            cardBody.innerHTML = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="task-${task.id}" ${task.completed ? 'checked' : ''} onchange="toggleComplete(this)">
+                    <label class="form-check-label" for="task-${task.id}">
+                        ${task.title}
+                    </label>
+                </div>
+                <span class="due-date">Due: ${task.dueDate}</span>
+                <span class="priority">Priority: ${task.priority}</span>
+                <span class="category">Category: ${task.category}</span>
+                <p class="description">${task.description}</p>
+                <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
+            `;
+            let li = document.createElement('li');
+            li.className = 'card';
+            li.appendChild(cardBody);
+            return li;
+        }
+            </script>
+        </body>
+        </html>
