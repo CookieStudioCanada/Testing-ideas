@@ -57,15 +57,14 @@
             text-align: left;
         }
         
+        /* Remove the previous li styles and replace with Bootstrap card styles */
         li {
-            background-color: #f7f7f7;
             margin-top: 10px;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: auto 1fr auto auto auto;
-            gap: 10px;
-            align-items: center;
-            border-radius: 5px;
+        }
+        
+        /* Additional styles if needed */
+        .card-body span, .card-body p {
+            display: block; /* Each component takes a full line */
         }
         
         li.completed {
@@ -184,21 +183,26 @@
         
             tasks.forEach(task => {
                 let li = document.createElement('li');
+                li.className = 'card'; // Use Bootstrap card class
+                let cardBody = document.createElement('div');
+                cardBody.className = 'card-body';
                 if (task.completed) {
-                    li.classList.add('completed');
+                    cardBody.classList.add('bg-success', 'text-white');
                 }
-                li.innerHTML = `
-                    <div class="checkmark">
-                        <input type="checkbox" id="task-${new Date().getTime()}" ${task.completed ? 'checked' : ''}>
-                        <label for="task-${new Date().getTime()}" class="custom-checkbox"></label>
+                cardBody.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="task-${task.id}" ${task.completed ? 'checked' : ''} onchange="toggleComplete(this)">
+                        <label class="form-check-label" for="task-${task.id}">
+                            ${task.title}
+                        </label>
                     </div>
-                    <span class="task-text">${task.title}</span>
                     <span class="due-date">Due: ${task.dueDate}</span>
                     <span class="priority">Priority: ${task.priority}</span>
                     <span class="category">Category: ${task.category}</span>
                     <p class="description">${task.description}</p>
-                    <button class="delete-btn" onclick="deleteTask(this)">X</button>
+                    <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
                 `;
+                li.appendChild(cardBody);
                 tasksList.appendChild(li);
             });
         }
