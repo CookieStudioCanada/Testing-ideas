@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List.</title>
+
+    <!-- Meta for SEO and Social Sharing -->   
+    <meta property="og:title" content="List.">
+    <meta property="og:description" content="List. To-do list app.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://cookiestudiocanada.github.io/Testing-ideas/index6.html">
+    <meta property="og:type" content="website">  
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <title>List.</title>
 
     <style>
         body {
@@ -273,6 +283,7 @@
                 let li = createCard(task);
                 tasksList.appendChild(li);
             });
+
             populateCategoryDropdown();
         }
 
