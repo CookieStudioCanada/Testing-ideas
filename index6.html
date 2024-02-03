@@ -8,81 +8,107 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: lightyellow; /* or any color that matches your design */
+            background-color: lightyellow;
         }
         
         .container {
             width: 80%;
-            max-width: 600px; /* Adjusted to fit the layout of the sketch */
+            max-width: 600px;
             margin: auto;
             padding-top: 50px;
-            border: 1px solid #000; /* Black border around the container */
-            background-color: #fff; /* White background for the container */
+            border: 1px solid #000;
+            background-color: #fff;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        input[type="text"], input[type="date"], textarea, select {
-            width: 100%; /* Full width */
-            display: block; /* Stack vertically */
-            box-sizing: border-box; /* Include padding and border in the element's total width */
-            margin: 10px auto; /* Centering and spacing */
+        input[type="text"], 
+        input[type="date"], 
+        textarea, 
+        select {
+            width: 100%;
+            display: block;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        textarea {
+            height: 50px;
+            resize: none;
         }
         
         button {
-            display: block; /* Stack vertically */
-            width: auto; /* Auto width according to content */
-            margin: 10px auto; /* Centering and spacing */
+            display: block;
+            width: auto;
+            padding: 10px 20px;
+            margin: 10px auto;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
         }
         
         ul {
             list-style: none;
             padding: 0;
-            text-align: left; /* Align text to the left */
+            text-align: left;
         }
         
         li {
-            background-color: #f7f7f7; /* Light grey background */
-            margin-top: 5px;
-            padding: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between; /* Space elements out */
+            background-color: #f7f7f7;
+            margin-top: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 10px;
             align-items: center;
-            border-radius: 5px; /* Rounded corners */
+            border-radius: 5px;
         }
         
         li.completed {
-            background-color: #a5d6a7; /* Light green for completed tasks */
+            background-color: #a5d6a7;
+        }
+        
+        li.completed .task-text {
+            text-decoration: line-through;
         }
         
         .task-text {
-            flex-grow: 1;
+            margin-right: 10px;
         }
         
-        /* Additional styles for the new elements (due date, priority, etc.) */
-        .due-date, .priority, .category {
-            margin-left: 10px; /* Space out the elements */
+        .due-date, .priority, .category, .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .delete-btn {
-            background-color: #ff4d4d; /* Red background for delete button */
+            padding: 5px 10px;
+            font-size: 0.8em;
+            border-radius: 5px;
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
         }
         
-        /* Checkmark box */
         .checkmark {
-            width: 20px; /* Fixed width and height */
+            display: inline-block;
+            width: 20px;
             height: 20px;
-            border: 1px solid #000; /* Black border */
-            margin-right: 10px; /* Space from the task text */
+            border-radius: 3px;
+            border: 1px solid #000;
+            margin-right: 10px;
+            background: transparent;
         }
         
-        /* Hide the default checkmark and customize */
         .checkmark input[type="checkbox"] {
             display: none;
         }
         
-        /* Custom checkmark style */
         .checkmark .custom-checkbox {
             display: flex;
             align-items: center;
@@ -90,14 +116,12 @@
             height: 100%;
         }
         
-        /* Style for the custom checkmark (when checked) */
         .checkmark .custom-checkbox:after {
             content: '✔';
             display: none;
             color: #000;
         }
         
-        /* Show checkmark when input is checked */
         .checkmark input[type="checkbox"]:checked + .custom-checkbox:after {
             display: block;
         }
