@@ -38,12 +38,26 @@
 </head>
 <body>
 
-    <nav class="navbar">
+    <nav class="navbar bg-dark">
         <div class="container-fluid">
-            <h1>List.</h1>
-            <button type="button" class="btn" style="background-color: rgb(250, 82, 130); color: white;" data-bs-toggle="modal" data-bs-target="#addTaskModal">Nouvelle tâche</button>
+            <h1 style="color: white;">List.</h1>
+            <div class="d-flex align-items-center">
+                <!-- Add Task Button -->
+                <button type="button" class="btn me-2" style="background-color: rgb(250, 82, 130); color: white;" data-bs-toggle="modal" data-bs-target="#addTaskModal">Nouvelle tâche</button>
+        
+                <!-- Dropdown Button -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Listes
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryList">
+                        <!-- Categories will be added here dynamically -->
+                    </ul>
+                </div>
+            </div>
         </div>
-      </nav>
+    </nav>
+    
 
     <div class="container py-4" style="background-color: lightpink;">
         
@@ -54,7 +68,7 @@
             </ul>
         </div>
 
-        <footer class="sticky-bottom" style="background-color: black; padding: 20px; margin: 20px; border-radius: 15px;">
+        <footer class="sticky-bottom" style="background-color: black; padding: 20px; margin: 15px; border-radius: 15px;">
             <!-- Filter -->
             <div class="mb-3 d-flex align-items-center justify-content-between">
                 <input type="text" id="searchInput" class="form-control me-2" placeholder="Mot-clef..." style="flex-grow: 1;">
@@ -79,7 +93,7 @@
                             <option value="Important">Important</option>
                             <option value="Aucune">Aucune</option>
                         </select>
-                        <input type="text" id="categoryInput" class="form-control mb-2" placeholder="Tag...">
+                        <input type="text" id="categoryInput" class="form-control mb-2" placeholder="Liste...">
                         <textarea id="descriptionInput" class="form-control" placeholder="Description..."></textarea>
                     </div>
                     <button style="margin: 15px;" type="button" onclick="addTask()" class="btn btn-secondary">Ajouter</button>
@@ -104,7 +118,7 @@
                             <option value="Important">Important</option>
                             <option value="Aucune">Aucune</option>
                         </select>
-                        <input type="text" id="categoryInputEDIT" class="form-control mb-2" placeholder="Tag...">
+                        <input type="text" id="categoryInputEDIT" class="form-control mb-2" placeholder="Liste...">
                         <textarea id="descriptionInputEDIT" class="form-control" placeholder="Description..."></textarea>
                     </div>
                     <button id="editBTN" type="button" style="margin: 15px;" onclick="updateTask()" class="btn btn-secondary">Modifier</button>
@@ -212,6 +226,8 @@
                 // Close the modal
                 bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide();
             }
+
+            populateCategoryDropdown()
         }
     
         function saveTasks() {
@@ -232,6 +248,7 @@
             });
     
             localStorage.setItem('tasks', JSON.stringify(tasks));
+            populateCategoryDropdown()
         }
 
         function loadTasks() {
@@ -243,30 +260,56 @@
                 let li = createCard(task);
                 tasksList.appendChild(li);
             });
+            populateCategoryDropdown()
         }
 
-    function filterTasks() {
-        let searchInput = document.getElementById('searchInput').value.toLowerCase();
-        let tasksList = document.getElementById('tasksList');
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        function filterTasks(category = '') {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let tasksList = document.getElementById('tasksList');
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-        tasksList.innerHTML = ''; // Clear current list
+            tasksList.innerHTML = ''; // Clear current list
 
-        tasks
-            .filter(task => {
-                // Filter by title, tag, or description
-                return (
-                    task.title.toLowerCase().includes(searchInput) ||
-                    task.category.toLowerCase().includes(searchInput) ||
-                    task.description.toLowerCase().includes(searchInput)
-                );
-            })
-            .forEach(task => {
-                let li = createCard(task);
-                tasksList.appendChild(li);
+            tasks
+                .filter(task => {
+                    // Filter by category if provided
+                    return category ? task.category === category : true;
+                })
+                .filter(task => {
+                    // Filter by title, tag, or description
+                    return (
+                        task.title.toLowerCase().includes(searchInput) ||
+                        task.category.toLowerCase().includes(searchInput) ||
+                        task.description.toLowerCase().includes(searchInput)
+                    );
+                })
+                .forEach(task => {
+                    let li = createCard(task);
+                    tasksList.appendChild(li);
+                });
+        }
+
+
+        function populateCategoryDropdown() {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let categorySet = new Set(tasks.map(task => task.category));
+            let categoryList = document.getElementById('categoryList');
+
+            categoryList.innerHTML = ''; // Clear current list
+
+            categorySet.forEach(category => {
+                if (category) { // Check if category is not empty
+                    let listItem = document.createElement('li');
+                    let link = document.createElement('a');
+                    link.className = 'dropdown-item';
+                    link.href = '#';
+                    link.textContent = category;
+                    link.onclick = function() { filterTasks(category); }; // Set onclick event
+                    listItem.appendChild(link);
+                    categoryList.appendChild(listItem);
+                }
             });
-    }
-
+        }
 
     </script>    
     
