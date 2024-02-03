@@ -51,28 +51,50 @@
 </head>
 <body>
     <div class="container">
-        <h1>My To-Do List</h1>
-        <input type="text" id="taskInput" placeholder="Add a new task...">
-        <button onclick="addTask()">Add Task</button>
-        <ul id="tasksList"></ul>
-    </div>
+    <h1>My To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Task title...">
+    <input type="date" id="dueDateInput" placeholder="Due date...">
+    <select id="priorityInput">
+        <option value="High">High</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Low">Low</option>
+    </select>
+    <input type="text" id="categoryInput" placeholder="Category...">
+    <textarea id="descriptionInput" placeholder="Description..."></textarea>
+    <button onclick="addTask()">Add Task</button>
+    <ul id="tasksList"></ul>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', loadTasks);
 
         function addTask() {
             let taskInput = document.getElementById('taskInput');
+            let dueDateInput = document.getElementById('dueDateInput');
+            let priorityInput = document.getElementById('priorityInput');
+            let categoryInput = document.getElementById('categoryInput');
+            let descriptionInput = document.getElementById('descriptionInput');
             let tasksList = document.getElementById('tasksList');
-
+        
             if (taskInput.value.trim() !== '') {
                 let li = document.createElement('li');
                 li.innerHTML = `<span class="task-text" onclick="toggleComplete(this)">${taskInput.value}</span>
+                                <span>Due: ${dueDateInput.value}</span>
+                                <span>Priority: ${priorityInput.value}</span>
+                                <span>Category: ${categoryInput.value}</span>
+                                <p>${descriptionInput.value}</p>
                                 <button onclick="deleteTask(this)">Delete</button>`;
                 tasksList.appendChild(li);
                 saveTasks();
                 taskInput.value = '';
+                dueDateInput.value = '';
+                priorityInput.value = 'Medium';
+                categoryInput.value = '';
+                descriptionInput.value = '';
             }
         }
-
+        
+        // Modify saveTasks and loadTasks similarly to handle new fields
+        
         function toggleComplete(span) {
             span.parentNode.classList.toggle('completed');
             saveTasks();
@@ -85,21 +107,44 @@
 
         function saveTasks() {
             let tasksList = document.getElementById('tasksList');
-            localStorage.setItem('tasks', tasksList.innerHTML);
+            let tasks = [];
+        
+            tasksList.querySelectorAll('li').forEach(li => {
+                let task = {
+                    title: li.querySelector('.task-text').textContent,
+                    dueDate: li.querySelector('.due-date').textContent.replace('Due: ', ''),
+                    priority: li.querySelector('.priority').textContent.replace('Priority: ', ''),
+                    category: li.querySelector('.category').textContent.replace('Category: ', ''),
+                    description: li.querySelector('.description').textContent,
+                    completed: li.classList.contains('completed')
+                };
+                tasks.push(task);
+            });
+        
+            localStorage.setItem('tasks', JSON.stringify(tasks));
         }
-
+        
         function loadTasks() {
-            let tasks = localStorage.getItem('tasks');
-            if (tasks) {
-                document.getElementById('tasksList').innerHTML = tasks;
-                // Reattach events after loading from local storage
-                document.querySelectorAll('#tasksList .task-text').forEach(span => {
-                    span.onclick = () => toggleComplete(span);
-                });
-                document.querySelectorAll('#tasksList button').forEach(button => {
-                    button.onclick = () => deleteTask(button);
-                });
-            }
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = ''; // Clear current list
+        
+            tasks.forEach(task => {
+                let li = document.createElement('li');
+                li.classList.add('list-group-item');
+                if (task.completed) {
+                    li.classList.add('completed');
+                }
+        
+                li.innerHTML = `<span class="task-text" onclick="toggleComplete(this)">${task.title}</span>
+                                <span class="due-date">Due: ${task.dueDate}</span>
+                                <span class="priority">Priority: ${task.priority}</span>
+                                <span class="category">Category: ${task.category}</span>
+                                <p class="description">${task.description}</p>
+                                <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>`;
+        
+                tasksList.appendChild(li);
+            });
         }
     </script>
 </body>
