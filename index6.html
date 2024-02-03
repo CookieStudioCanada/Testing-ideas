@@ -133,6 +133,17 @@
 <body>
     <div class="container">
     <h1>My To-Do List</h1>
+    
+    <div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="Search title / tag / description...">
+    <input type="date" id="dateInput">
+    <select id="categoryInput">
+        <option value="">All Categories</option>
+        <!-- Dynamically load categories here -->
+    </select>
+    <button onclick="filterTasks()">Filter</button>
+    </div>
+
     <input type="text" id="taskInput" placeholder="Task title...">
     <input type="date" id="dueDateInput" placeholder="Due date...">
     <select id="priorityInput">
@@ -144,6 +155,7 @@
     <textarea id="descriptionInput" placeholder="Description..."></textarea>
     <button onclick="addTask()">Add Task</button>
     <ul id="tasksList"></ul>
+
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', loadTasks);
@@ -255,6 +267,44 @@
                 li.appendChild(cardBody);
                 tasksList.appendChild(li);
             });
+        }
+        
+        function filterTasks() {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let dateInput = document.getElementById('dateInput').value;
+            let categoryInput = document.getElementById('categoryInput').value.toLowerCase();
+            let tasksList = document.getElementById('tasksList');
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+            tasksList.innerHTML = ''; // Clear current list
+        
+            tasks
+                .filter(task => {
+                    // Filter by title, tag, or description
+                    return (
+                        task.title.toLowerCase().includes(searchInput) ||
+                        task.category.toLowerCase().includes(searchInput) ||
+                        task.description.toLowerCase().includes(searchInput)
+                    );
+                })
+                .filter(task => {
+                    // Filter by due date if date input is not empty
+                    return dateInput ? task.dueDate === dateInput : true;
+                })
+                .filter(task => {
+                    // Filter by category if category input is not "All Categories"
+                    return categoryInput ? task.category.toLowerCase() === categoryInput : true;
+                })
+                .forEach(task => {
+                    let cardBody = document.createElement('div');
+                    cardBody.className = 'card-body';
+                    // ... rest of your existing cardBody.innerHTML setup ...
+                    
+                    let li = document.createElement('li');
+                    li.className = 'card';
+                    li.appendChild(cardBody);
+                    tasksList.appendChild(li);
+                });
         }
     </script>
 </body>
