@@ -151,23 +151,33 @@
             let categoryInput = document.getElementById('categoryInput');
             let descriptionInput = document.getElementById('descriptionInput');
             let tasksList = document.getElementById('tasksList');
+            let uniqueId = new Date().getTime(); // Unique ID for the task
         
             if (taskInput.value.trim() !== '') {
-                let li = document.createElement('li');
-                li.innerHTML = `
-                    <div class="checkmark">
-                        <input type="checkbox" id="task-${new Date().getTime()}">
-                        <label for="task-${new Date().getTime()}" class="custom-checkbox"></label>
+                let cardBody = document.createElement('div');
+                cardBody.className = 'card-body';
+                cardBody.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="task-${uniqueId}">
+                        <label class="form-check-label" for="task-${uniqueId}">
+                            ${taskInput.value}
+                        </label>
                     </div>
-                    <span class="task-text">${taskInput.value}</span>
                     <span class="due-date">Due: ${dueDateInput.value}</span>
                     <span class="priority">Priority: ${priorityInput.value}</span>
                     <span class="category">Category: ${categoryInput.value}</span>
                     <p class="description">${descriptionInput.value}</p>
-                    <button class="delete-btn" onclick="deleteTask(this)">X</button>
+                    <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
                 `;
+        
+                let li = document.createElement('li');
+                li.className = 'card';
+                li.appendChild(cardBody);
                 tasksList.appendChild(li);
+                
                 saveTasks();
+        
+                // Clear input fields
                 taskInput.value = '';
                 dueDateInput.value = '';
                 priorityInput.value = 'Medium';
@@ -176,14 +186,47 @@
             }
         }
         
+        function toggleComplete(checkbox) {
+            let cardBody = checkbox.closest('.card-body');
+            if (checkbox.checked) {
+                cardBody.classList.add('bg-success', 'text-white');
+            } else {
+                cardBody.classList.remove('bg-success', 'text-white');
+            }
+            saveTasks();
+        }
+        
+        function deleteTask(button) {
+            button.closest('.card').remove();
+            saveTasks();
+        }
+        
+        function saveTasks() {
+            let tasksList = document.getElementById('tasksList');
+            let tasks = [];
+        
+            tasksList.querySelectorAll('.card').forEach(card => {
+                let task = {
+                    id: card.querySelector('.form-check-input').id.split('-')[1],
+                    title: card.querySelector('.form-check-label').textContent,
+                    dueDate: card.querySelector('.due-date').textContent.replace('Due: ', ''),
+                    priority: card.querySelector('.priority').textContent.replace('Priority: ', ''),
+                    category: card.querySelector('.category').textContent.replace('Category: ', ''),
+                    description: card.querySelector('.description').textContent,
+                    completed: card.querySelector('.form-check-input').checked
+                };
+                tasks.push(task);
+            });
+        
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+        
         function loadTasks() {
             let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             let tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = ''; // Clear current list
         
             tasks.forEach(task => {
-                let li = document.createElement('li');
-                li.className = 'card'; // Use Bootstrap card class
                 let cardBody = document.createElement('div');
                 cardBody.className = 'card-body';
                 if (task.completed) {
@@ -202,42 +245,13 @@
                     <p class="description">${task.description}</p>
                     <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
                 `;
+        
+                let li = document.createElement('li');
+                li.className = 'card';
                 li.appendChild(cardBody);
                 tasksList.appendChild(li);
             });
         }
-        
-        // Modify saveTasks and loadTasks similarly to handle new fields
-        
-        function toggleComplete(span) {
-            span.parentNode.classList.toggle('completed');
-            saveTasks();
-        }
-
-        function deleteTask(button) {
-            button.parentNode.remove();
-            saveTasks();
-        }
-
-        function saveTasks() {
-            let tasksList = document.getElementById('tasksList');
-            let tasks = [];
-        
-            tasksList.querySelectorAll('li').forEach(li => {
-                let task = {
-                    title: li.querySelector('.task-text').textContent,
-                    dueDate: li.querySelector('.due-date').textContent.replace('Due: ', ''),
-                    priority: li.querySelector('.priority').textContent.replace('Priority: ', ''),
-                    category: li.querySelector('.category').textContent.replace('Category: ', ''),
-                    description: li.querySelector('.description').textContent,
-                    completed: li.classList.contains('completed')
-                };
-                tasks.push(task);
-            });
-        
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
-        
     </script>
 </body>
 </html>
