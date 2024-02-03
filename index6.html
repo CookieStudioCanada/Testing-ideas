@@ -12,12 +12,10 @@
         }
         
         .container {
-            width: 85%;
             max-width: 600px;
             margin: auto;
             padding-top: 30px; /* Reduced padding */
             padding: 15px; /* Reduced padding */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
         input[type="text"], 
@@ -62,10 +60,17 @@
             margin-top: 10px; /* Space between cards */
             padding: 15px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds shadow for depth */
+            background-color: white;
         }
         
         .card-body span, .card-body p {
             display: block; /* Each component takes a full line */
+            margin-bottom: 10px; /* Adds space between lines */
+        }
+        
+        /* If you also want to add space between the checkbox and the task title */
+        .form-check {
+            margin-bottom: 10px; /* Adds space below the checkbox */
         }
         
         li.completed {
