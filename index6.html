@@ -15,10 +15,9 @@
             width: 80%;
             max-width: 600px;
             margin: auto;
-            padding-top: 50px;
-            border: 1px solid #000;
+            padding-top: 30px; /* Reduced padding */
             background-color: #fff;
-            padding: 20px;
+            padding: 15px; /* Reduced padding */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
@@ -26,11 +25,11 @@
         input[type="date"], 
         textarea, 
         select {
-            width: 100%;
+            width: calc(100% - 20px); /* Adjust width accounting for padding */
             display: block;
             box-sizing: border-box;
             padding: 10px;
-            margin: 10px auto;
+            margin: 5px auto; /* Reduced margin */
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -44,7 +43,7 @@
             display: block;
             width: auto;
             padding: 10px 20px;
-            margin: 10px auto;
+            margin: 10px auto; /* Reduced margin */
             background-color: #000;
             color: #fff;
             border: none;
@@ -57,12 +56,14 @@
             text-align: left;
         }
         
-        /* Remove the previous li styles and replace with Bootstrap card styles */
-        li {
-            margin-top: 10px;
+        /* Bootstrap card styles */
+        li.card {
+            border: 1px solid #ccc; /* Added border */
+            border-radius: 5px; /* Rounded corners for the card */
+            margin-top: 10px; /* Space between cards */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds shadow for depth */
         }
         
-        /* Additional styles if needed */
         .card-body span, .card-body p {
             display: block; /* Each component takes a full line */
         }
