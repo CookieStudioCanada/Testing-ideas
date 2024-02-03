@@ -3,52 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <title>List.</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: lightyellow;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding-top: 30px; /* Reduced padding */
-            padding: 15px; /* Reduced padding */
-        }
-        
-        .border {
-            border: solid black 1px;
-        }
-        
-        input[type="text"], 
-        input[type="date"], 
-        textarea, 
-        select {
-            width: calc(100% - 20px); /* Adjust width accounting for padding */
-            display: block;
-            box-sizing: border-box;
-            padding: 10px;
-            margin: 5px auto; /* Reduced margin */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        
-        textarea {
-            height: 50px;
-            resize: none;
-        }
-        
-        button {
-            display: block;
-            width: auto;
-            padding: 10px 20px;
-            margin: 10px auto; /* Reduced margin */
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+            background-color: #FFE4E1;
         }
         
         ul {
@@ -57,12 +21,9 @@
             text-align: left;
         }
         
-        /* Bootstrap card styles */
         li.card {
-            border: 1px solid #ccc; /* Added border */
-            border-radius: 5px; /* Rounded corners for the card */
             margin-top: 10px; /* Space between cards */
-            padding: 15px;
+            padding: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds shadow for depth */
             background-color: white;
         }
@@ -72,97 +33,90 @@
             margin-bottom: 10px; /* Adds space between lines */
         }
         
-        /* If you also want to add space between the checkbox and the task title */
-        .form-check {
-            margin-bottom: 10px; /* Adds space below the checkbox */
-        }
-        
-        li.completed {
-            background-color: #a5d6a7;
-        }
-        
-        li.completed .task-text {
-            text-decoration: line-through;
-        }
-        
-        .task-text {
-            margin-right: 10px;
-        }
-        
-        .due-date, .priority, .category, .description {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .delete-btn {
-            border-radius: 5px;
-            background-color: #ff4d4d;
-            border: none;
-            color: white;
-        }
-        
-        .checkmark {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-            border: 1px solid #000;
-            margin-right: 10px;
-            background: transparent;
-        }
-        
-        .checkmark input[type="checkbox"] {
-            display: none;
-        }
-        
-        .checkmark .custom-checkbox {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-        
-        .checkmark .custom-checkbox:after {
-            content: '✔';
-            display: none;
-            color: #000;
-        }
-        
-        .checkmark input[type="checkbox"]:checked + .custom-checkbox:after {
-            display: block;
-        }
     </style>
+
 </head>
 <body>
-    <div class="container">
-    <h1>My To-Do List</h1>
-    
-    <div class="border">
-        <div class="filter-bar">
-        <input type="text" id="searchInput" placeholder="Search title / tag / description...">
-        <input type="date" id="dateInput">
-        <button onclick="filterTasks()">Filter</button>
+
+    <div class="container py-4">
+        
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1>List.</h1>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
         </div>
+        
+        <!-- Filter -->
+        <div class="mb-3">
+            <input type="text" id="searchInput" class="form-control mb-2" placeholder="Recherchez...">
+            <input type="date" id="dateInput" class="form-control mb-2">
+            <button onclick="filterTasks()" class="btn btn-secondary">Filtrer</button>
+        </div>
+
+        <!-- Task List -->
+        <div class="mt-3">
+            <ul id="tasksList" class="list-group"></ul>
+        </div>
+
+        <!-- Add Task Modal -->
+        <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: pink;">
+                        <h5 class="modal-title" id="addTaskModalLabel">Nouvelle tâche</h5>
+                        <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="taskInput" class="form-control mb-2" placeholder="Titre...">
+                        <input type="date" id="dueDateInput" class="form-control mb-2" placeholder="Date...">
+                        <select id="priorityInput" class="form-select mb-2">
+                            <option disabled value="" selected>- Choisir une priorité -</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="Important">Important</option>
+                            <option value="Aucune">Aucune</option>
+                        </select>
+                        <input type="text" id="categoryInput" class="form-control mb-2" placeholder="Tag...">
+                        <textarea id="descriptionInput" class="form-control" placeholder="Description..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="addTask()" class="btn btn-secondary">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Task Modal -->
+        <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: pink;">
+                        <h5 class="modal-title" id="addTaskModalLabel">Modifier une tâche</h5>
+                        <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="taskInputEDIT" class="form-control mb-2" placeholder="Titre...">
+                        <input type="date" id="dueDateInputEDIT" class="form-control mb-2" placeholder="Date...">
+                        <select id="priorityInputEDIT" class="form-select mb-2">
+                            <option disabled value="" selected>- Choisir une priorité -</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="Important">Important</option>
+                            <option value="Aucune">Aucune</option>
+                        </select>
+                        <input type="text" id="categoryInputEDIT" class="form-control mb-2" placeholder="Tag...">
+                        <textarea id="descriptionInputEDIT" class="form-control" placeholder="Description..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="updateTask()" class="btn btn-secondary">Modifier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="border">
-        <input type="text" id="taskInput" placeholder="Task title...">
-        <input type="date" id="dueDateInput" placeholder="Due date...">
-        <select id="priorityInput">
-            <option value="High">High</option>
-            <option value="Medium" selected>Medium</option>
-            <option value="Low">Low</option>
-        </select>
-        <input type="text" id="categoryInput" placeholder="Category...">
-        <textarea id="descriptionInput" placeholder="Description..."></textarea>
-        <button onclick="addTask()">Add Task</button>
-        <ul id="tasksList"></ul>
-    </div>
-</div>
     <script>
         document.addEventListener('DOMContentLoaded', loadTasks);
-
+    
         function addTask() {
             let taskInput = document.getElementById('taskInput');
             let dueDateInput = document.getElementById('dueDateInput');
@@ -174,13 +128,12 @@
         
             if (taskInput.value.trim() !== '') {
                 let task = {
-                    id: uniqueId,
+                    id: uniqueId.toString(),
                     title: taskInput.value,
                     dueDate: dueDateInput.value,
                     priority: priorityInput.value,
                     category: categoryInput.value,
-                    description: descriptionInput.value,
-                    completed: false
+                    description: descriptionInput.value
                 };
         
                 let li = createCard(task);
@@ -191,64 +144,116 @@
                 // Clear input fields
                 taskInput.value = '';
                 dueDateInput.value = '';
-                priorityInput.value = 'Medium';
+                priorityInput.value = '';
                 categoryInput.value = '';
                 descriptionInput.value = '';
+
+                bootstrap.Modal.getInstance(document.getElementById('addTaskModal')).hide();
             }
         }
-        
-        function toggleComplete(checkbox) {
-            let cardBody = checkbox.closest('.card-body');
-            cardBody.classList.toggle('bg-success', checkbox.checked);
-            cardBody.classList.toggle('text-white', checkbox.checked);
-            saveTasks();
-        }
-        
+    
         function deleteTask(button) {
             button.closest('.card').remove();
             saveTasks();
         }
         
+        function createCard(task) {
+            let cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+            cardBody.innerHTML = `
+                <h5>${task.title}</h5>
+                <span class="due-date">Date: ${task.dueDate}</span>
+                <span class="priority">Priorité: ${task.priority}</span>
+                <span class="category">Categorie: ${task.category}</span>
+                <p class="description">${task.description}</p>
+                <button class="btn btn-secondary edit-btn" onclick="editTask('${task.id}')">Modifier</button>
+                <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Supprimer</button>
+            `;
+            let li = document.createElement('li');
+            li.className = 'card';
+            li.appendChild(cardBody);
+            return li;
+        }
+    
+        function editTask(taskId) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let taskToEdit = tasks.find(task => task.id === taskId);
+    
+            if (taskToEdit) {
+                document.getElementById('taskInputEDIT').value = taskToEdit.title;
+                document.getElementById('dueDateInputEDIT').value = taskToEdit.dueDate;
+                document.getElementById('priorityInputEDIT').value = taskToEdit.priority;
+                document.getElementById('categoryInputEDIT').value = taskToEdit.category;
+                document.getElementById('descriptionInputEDIT').value = taskToEdit.description;
+    
+                // Set onclick to updateTask function with the task ID
+                let editButton = document.querySelector('#editTaskModal .modal-footer button');
+                editButton.setAttribute('onclick', `updateTask('${taskId}')`);
+    
+                // Show the edit modal
+                new bootstrap.Modal(document.getElementById('editTaskModal')).show();
+            }
+        }
+    
+        function updateTask(taskId) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let taskIndex = tasks.findIndex(task => task.id === taskId);
+    
+            if (taskIndex !== -1) {
+                tasks[taskIndex].title = document.getElementById('taskInputEDIT').value;
+                tasks[taskIndex].dueDate = document.getElementById('dueDateInputEDIT').value;
+                tasks[taskIndex].priority = document.getElementById('priorityInputEDIT').value;
+                tasks[taskIndex].category = document.getElementById('categoryInputEDIT').value;
+                tasks[taskIndex].description = document.getElementById('descriptionInputEDIT').value;
+    
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                loadTasks(); // Reload the tasks to reflect the updated task
+    
+                // Close the modal
+                bootstrap.Modal.getInstance(document.getElementById('editTaskModal')).hide();
+            }
+        }
+    
         function saveTasks() {
             let tasksList = document.getElementById('tasksList');
             let tasks = [];
-        
+    
             tasksList.querySelectorAll('.card').forEach(card => {
+                let id = card.querySelector('.edit-btn').getAttribute('onclick').split("'")[1];
                 let task = {
-                    id: card.querySelector('.form-check-input').id.split('-')[1],
-                    title: card.querySelector('.form-check-label').textContent,
-                    dueDate: card.querySelector('.due-date').textContent.replace('Due: ', ''),
-                    priority: card.querySelector('.priority').textContent.replace('Priority: ', ''),
-                    category: card.querySelector('.category').textContent.replace('Category: ', ''),
+                    id: id,
+                    title: card.querySelector('h5').textContent,
+                    dueDate: card.querySelector('.due-date').textContent.replace('Date: ', ''),
+                    priority: card.querySelector('.priority').textContent.replace('Priorité: ', ''),
+                    category: card.querySelector('.category').textContent.replace('Categorie: ', ''),
                     description: card.querySelector('.description').textContent,
-                    completed: card.querySelector('.form-check-input').checked
                 };
                 tasks.push(task);
             });
-        
+    
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
-        
+
         function loadTasks() {
             let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             let tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = ''; // Clear current list
-        
+
             tasks.forEach(task => {
                 let li = createCard(task);
                 tasksList.appendChild(li);
             });
         }
-        
+
         function filterTasks() {
             let searchInput = document.getElementById('searchInput').value.toLowerCase();
             let dateInput = document.getElementById('dateInput').value;
             let categoryInput = document.getElementById('categoryInput').value.toLowerCase();
             let tasksList = document.getElementById('tasksList');
             let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        
+
             tasksList.innerHTML = ''; // Clear current list
-        
+
             tasks
                 .filter(task => {
                     // Filter by title, tag, or description
@@ -271,28 +276,11 @@
                     tasksList.appendChild(li);
                 });
         }
-        
-        function createCard(task) {
-            let cardBody = document.createElement('div');
-            cardBody.className = `card-body ${task.completed ? 'bg-success text-white' : ''}`;
-            cardBody.innerHTML = `
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="task-${task.id}" ${task.completed ? 'checked' : ''} onchange="toggleComplete(this)">
-                    <label class="form-check-label" for="task-${task.id}">
-                        ${task.title}
-                    </label>
-                </div>
-                <span class="due-date">Due: ${task.dueDate}</span>
-                <span class="priority">Priority: ${task.priority}</span>
-                <span class="category">Category: ${task.category}</span>
-                <p class="description">${task.description}</p>
-                <button class="btn btn-danger delete-btn" onclick="deleteTask(this)">Delete</button>
-            `;
-            let li = document.createElement('li');
-            li.className = 'card';
-            li.appendChild(cardBody);
-            return li;
-        }
-            </script>
-        </body>
-        </html>
+
+    </script>    
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
