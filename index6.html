@@ -95,16 +95,26 @@
                         <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="taskInput" class="form-control mb-2" placeholder="Titre...">
-                        <input type="date" id="dueDateInput" class="form-control mb-2" placeholder="Date...">
-                        <select id="priorityInput" class="form-select mb-2">
+                        
+                        <label for="taskInput" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 10px;">Titre de la tâche</label>
+                        <input type="text" id="taskInput" class="form-control mb-3" placeholder="Titre...">
+
+                        <label for="dueDateInput" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 10px;">Date d'échéance</label>
+                        <input type="date" id="dueDateInput" class="form-control mb-3" placeholder="Date...">
+
+                        <label for="priorityInput" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 10px;">Priorité</label>
+                        <select id="priorityInput" class="form-select mb-3">
                             <option disabled value="" selected>- Choisir une priorité -</option>
                             <option value="Urgent">Urgent</option>
                             <option value="Important">Important</option>
                             <option value="Aucune">Aucune</option>
                         </select>
-                        <input type="text" id="categoryInput" class="form-control mb-2" placeholder="Liste...">
-                        <textarea id="descriptionInput" class="form-control" placeholder="Description..."></textarea>
+
+                        <label for="categoryInput" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 10px;">Liste associée</label>
+                        <input type="text" id="categoryInput" class="form-control mb-3" placeholder="Liste...">
+
+                        <label for="descriptionInput" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 10px;">Description</label>
+                        <textarea id="descriptionInput" class="form-control mb-3" placeholder="Description..."></textarea>
                     </div>
                     <button style="margin: 15px;" type="button" onclick="addTask()" class="btn btn-secondary">Ajouter</button>
                 </div>
@@ -116,20 +126,31 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: rgb(250, 82, 130); color: white;">
-                        <h5 class="modal-title" id="addTaskModalLabel">Modifier une tâche</h5>
+                        <h5 class="modal-title" id="editTaskModalLabel">Modifier une tâche</h5>
                         <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="taskInputEDIT" class="form-control mb-2" placeholder="Titre...">
-                        <input type="date" id="dueDateInputEDIT" class="form-control mb-2" placeholder="Date...">
-                        <select id="priorityInputEDIT" class="form-select mb-2">
+
+                        <label for="taskInputEDIT" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 4px;">Titre de la tâche</label>
+                        <input type="text" id="taskInputEDIT" class="form-control mb-3" placeholder="Titre...">
+
+                        <label for="dueDateInputEDIT" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 4px;">Date d'échéance</label>
+                        <input type="date" id="dueDateInputEDIT" class="form-control mb-3" placeholder="Date...">
+
+                        <label for="priorityInputEDIT" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 4px;">Priorité</label>
+                        <select id="priorityInputEDIT" class="form-select mb-3">
                             <option disabled value="" selected>- Choisir une priorité -</option>
                             <option value="Urgent">Urgent</option>
                             <option value="Important">Important</option>
                             <option value="Aucune">Aucune</option>
                         </select>
-                        <input type="text" id="categoryInputEDIT" class="form-control mb-2" placeholder="Liste...">
-                        <textarea id="descriptionInputEDIT" class="form-control" placeholder="Description..."></textarea>
+
+                        <label for="categoryInputEDIT" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 4px;">Liste associée</label>
+                        <input type="text" id="categoryInputEDIT" class="form-control mb-3" placeholder="Liste...">
+
+                        <label for="descriptionInputEDIT" class="form-label" style="font-size: small; font-weight: bold; margin-bottom: 4px;">Description</label>
+                        <textarea id="descriptionInputEDIT" class="form-control mb-3" placeholder="Description..."></textarea>
+
                     </div>
                     <button id="editBTN" type="button" style="margin: 15px;" onclick="updateTask()" class="btn btn-secondary">Modifier</button>
                 </div>
