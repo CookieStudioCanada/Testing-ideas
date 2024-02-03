@@ -175,7 +175,7 @@
             let cardBody = document.createElement('div');
             cardBody.className = 'card-body';
             cardBody.innerHTML = `
-                <h5>${task.title}</h5>
+                <h3>${task.title}</h3>
                 <span class="due-date">Date: ${task.dueDate}</span>
                 <span class="priority">Priorité: ${task.priority}</span>
                 <span class="category">Categorie: ${task.category}</span>
@@ -238,7 +238,7 @@
                 let id = card.querySelector('.edit-btn').getAttribute('onclick').split("'")[1];
                 let task = {
                     id: id,
-                    title: card.querySelector('h5').textContent,
+                    title: card.querySelector('h3').textContent,
                     dueDate: card.querySelector('.due-date').textContent.replace('Date: ', ''),
                     priority: card.querySelector('.priority').textContent.replace('Priorité: ', ''),
                     category: card.querySelector('.category').textContent.replace('Categorie: ', ''),
@@ -256,12 +256,26 @@
             let tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = ''; // Clear current list
 
+            // Check if tasks array is empty and add a default task
+            if (tasks.length === 0) {
+                let defaultTask = {
+                    id: 'default1',
+                    title: 'Bienvenue',
+                    dueDate: '2025-01-01',
+                    priority: 'Aucune',
+                    category: 'Général',
+                    description: 'Bienvenue sur list. Vous pouvez ajouter une nouvelle tâche et afficher votre contenu par liste.'
+                };
+                tasks.push(defaultTask);
+            }
+
             tasks.forEach(task => {
                 let li = createCard(task);
                 tasksList.appendChild(li);
             });
-            populateCategoryDropdown()
+            populateCategoryDropdown();
         }
+
 
         function filterTasks(category = '') {
             let searchInput = document.getElementById('searchInput').value.toLowerCase();
