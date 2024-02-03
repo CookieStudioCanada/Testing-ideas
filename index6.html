@@ -22,27 +22,17 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
         }
         
-        /* Style adjustments for input fields and buttons to match the sketch */
         input[type="text"], input[type="date"], textarea, select {
-            width: calc(33% - 10px); /* Adjust width to sit in a row */
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc; /* Light grey border */
-            border-radius: 5px; /* Rounded corners */
-        }
-        
-        textarea {
-            height: 50px; /* Fixed height for description */
-            resize: none; /* Disable resizing */
+            width: 100%; /* Full width */
+            display: block; /* Stack vertically */
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+            margin: 10px auto; /* Centering and spacing */
         }
         
         button {
-            padding: 10px 20px;
-            margin: 5px;
-            background-color: #000; /* Black background */
-            color: #fff; /* White text */
-            border: none;
-            border-radius: 5px; /* Rounded corners */
+            display: block; /* Stack vertically */
+            width: auto; /* Auto width according to content */
+            margin: 10px auto; /* Centering and spacing */
         }
         
         ul {
@@ -141,12 +131,18 @@
         
             if (taskInput.value.trim() !== '') {
                 let li = document.createElement('li');
-                li.innerHTML = `<span class="task-text" onclick="toggleComplete(this)">${taskInput.value}</span>
-                                <span>Due: ${dueDateInput.value}</span>
-                                <span>Priority: ${priorityInput.value}</span>
-                                <span>Category: ${categoryInput.value}</span>
-                                <p>${descriptionInput.value}</p>
-                                <button onclick="deleteTask(this)">Delete</button>`;
+                li.innerHTML = `
+                    <div class="checkmark">
+                        <input type="checkbox" id="task-${new Date().getTime()}" ${task.completed ? 'checked' : ''}>
+                        <label for="task-${new Date().getTime()}" class="custom-checkbox"></label>
+                    </div>
+                    <span class="task-text">${task.title}</span>
+                    <span class="due-date">${task.dueDate}</span>
+                    <span class="priority">${task.priority}</span>
+                    <span class="category">${task.category}</span>
+                    <p class="description">${task.description}</p>
+                    <button class="delete-btn" onclick="deleteTask(this)">X</button>
+                `;
                 tasksList.appendChild(li);
                 saveTasks();
                 taskInput.value = '';
