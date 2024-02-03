@@ -157,14 +157,14 @@
                 let li = document.createElement('li');
                 li.innerHTML = `
                     <div class="checkmark">
-                        <input type="checkbox" id="task-${new Date().getTime()}" ${task.completed ? 'checked' : ''}>
+                        <input type="checkbox" id="task-${new Date().getTime()}">
                         <label for="task-${new Date().getTime()}" class="custom-checkbox"></label>
                     </div>
-                    <span class="task-text">${task.title}</span>
-                    <span class="due-date">${task.dueDate}</span>
-                    <span class="priority">${task.priority}</span>
-                    <span class="category">${task.category}</span>
-                    <p class="description">${task.description}</p>
+                    <span class="task-text">${taskInput.value}</span>
+                    <span class="due-date">Due: ${dueDateInput.value}</span>
+                    <span class="priority">Priority: ${priorityInput.value}</span>
+                    <span class="category">Category: ${categoryInput.value}</span>
+                    <p class="description">${descriptionInput.value}</p>
                     <button class="delete-btn" onclick="deleteTask(this)">X</button>
                 `;
                 tasksList.appendChild(li);
@@ -175,6 +175,32 @@
                 categoryInput.value = '';
                 descriptionInput.value = '';
             }
+        }
+        
+        function loadTasks() {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = ''; // Clear current list
+        
+            tasks.forEach(task => {
+                let li = document.createElement('li');
+                if (task.completed) {
+                    li.classList.add('completed');
+                }
+                li.innerHTML = `
+                    <div class="checkmark">
+                        <input type="checkbox" id="task-${new Date().getTime()}" ${task.completed ? 'checked' : ''}>
+                        <label for="task-${new Date().getTime()}" class="custom-checkbox"></label>
+                    </div>
+                    <span class="task-text">${task.title}</span>
+                    <span class="due-date">Due: ${task.dueDate}</span>
+                    <span class="priority">Priority: ${task.priority}</span>
+                    <span class="category">Category: ${task.category}</span>
+                    <p class="description">${task.description}</p>
+                    <button class="delete-btn" onclick="deleteTask(this)">X</button>
+                `;
+                tasksList.appendChild(li);
+            });
         }
         
         // Modify saveTasks and loadTasks similarly to handle new fields
@@ -208,28 +234,6 @@
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
         
-        function loadTasks() {
-            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-            let tasksList = document.getElementById('tasksList');
-            tasksList.innerHTML = ''; // Clear current list
-        
-            tasks.forEach(task => {
-                let li = document.createElement('li');
-                li.classList.add('list-group-item');
-                if (task.completed) {
-                    li.classList.add('completed');
-                }
-        
-                li.innerHTML = `<span class="task-text" onclick="toggleComplete(this)">${task.title}</span>
-                                <span class="due-date">Due: ${task.dueDate}</span>
-                                <span class="priority">Priority: ${task.priority}</span>
-                                <span class="category">Category: ${task.category}</span>
-                                <p class="description">${task.description}</p>
-                                <button class="btn btn-danger" onclick="deleteTask(this)">Delete</button>`;
-        
-                tasksList.appendChild(li);
-            });
-        }
     </script>
 </body>
 </html>
