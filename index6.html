@@ -12,7 +12,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #FFE4E1;
+            background-color: lightpink;
         }
         
         ul {
@@ -38,31 +38,35 @@
 </head>
 <body>
 
-    <div class="container py-4">
-        
-        <!-- Header -->
-        <div class="d-flex align-items-center justify-content-between mb-4">
+    <nav class="navbar bg-dark">
+        <div class="container-fluid" style="color: white;">
             <h1>List.</h1>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
+            <button type="button" class="btn" style="background-color: rgb(250, 82, 130); color: white;" data-bs-toggle="modal" data-bs-target="#addTaskModal">Nouvelle tâche</button>
         </div>
-        
-        <!-- Filter -->
-        <div class="mb-3">
-            <input type="text" id="searchInput" class="form-control mb-2" placeholder="Recherchez...">
-            <input type="date" id="dateInput" class="form-control mb-2">
-            <button onclick="filterTasks()" class="btn btn-secondary">Filtrer</button>
-        </div>
+      </nav>
 
+    <div class="container py-4" style="background-color: lightpink;">
+        
         <!-- Task List -->
         <div class="mt-3">
-            <ul id="tasksList" class="list-group"></ul>
+            <ul id="tasksList" class="list-group">
+                <!-- Dynamic tasks will be added here -->
+            </ul>
         </div>
+
+        <footer class="sticky-bottom" style="background-color: black; padding: 20px; margin: 20px; border-radius: 15px;">
+            <!-- Filter -->
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <input type="text" id="searchInput" class="form-control me-2" placeholder="Mot-clef..." style="flex-grow: 1;">
+                <button onclick="filterTasks()" class="btn btn-secondary">Rechercher</button>
+            </div>
+        </footer>
 
         <!-- Add Task Modal -->
         <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header" style="background-color: pink;">
+                    <div class="modal-header" style="background-color: rgb(250, 82, 130); color: white">
                         <h5 class="modal-title" id="addTaskModalLabel">Nouvelle tâche</h5>
                         <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -78,9 +82,7 @@
                         <input type="text" id="categoryInput" class="form-control mb-2" placeholder="Tag...">
                         <textarea id="descriptionInput" class="form-control" placeholder="Description..."></textarea>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="addTask()" class="btn btn-secondary">Ajouter</button>
-                    </div>
+                    <button style="margin: 15px;" type="button" onclick="addTask()" class="btn btn-secondary">Ajouter</button>
                 </div>
             </div>
         </div>
@@ -89,7 +91,7 @@
         <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header" style="background-color: pink;">
+                    <div class="modal-header" style="background-color: rgb(250, 82, 130); color: white;">
                         <h5 class="modal-title" id="addTaskModalLabel">Modifier une tâche</h5>
                         <button type="button" class="btn-close" style="color: white;" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -105,9 +107,7 @@
                         <input type="text" id="categoryInputEDIT" class="form-control mb-2" placeholder="Tag...">
                         <textarea id="descriptionInputEDIT" class="form-control" placeholder="Description..."></textarea>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="updateTask()" class="btn btn-secondary">Modifier</button>
-                    </div>
+                    <button id="editBTN" type="button" style="margin: 15px;" onclick="updateTask()" class="btn btn-secondary">Modifier</button>
                 </div>
             </div>
         </div>
@@ -187,7 +187,7 @@
                 document.getElementById('descriptionInputEDIT').value = taskToEdit.description;
     
                 // Set onclick to updateTask function with the task ID
-                let editButton = document.querySelector('#editTaskModal .modal-footer button');
+                let editButton = document.getElementById('editBTN');
                 editButton.setAttribute('onclick', `updateTask('${taskId}')`);
     
                 // Show the edit modal
@@ -245,37 +245,28 @@
             });
         }
 
-        function filterTasks() {
-            let searchInput = document.getElementById('searchInput').value.toLowerCase();
-            let dateInput = document.getElementById('dateInput').value;
-            let categoryInput = document.getElementById('categoryInput').value.toLowerCase();
-            let tasksList = document.getElementById('tasksList');
-            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    function filterTasks() {
+        let searchInput = document.getElementById('searchInput').value.toLowerCase();
+        let tasksList = document.getElementById('tasksList');
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-            tasksList.innerHTML = ''; // Clear current list
+        tasksList.innerHTML = ''; // Clear current list
 
-            tasks
-                .filter(task => {
-                    // Filter by title, tag, or description
-                    return (
-                        task.title.toLowerCase().includes(searchInput) ||
-                        task.category.toLowerCase().includes(searchInput) ||
-                        task.description.toLowerCase().includes(searchInput)
-                    );
-                })
-                .filter(task => {
-                    // Filter by due date if date input is not empty
-                    return dateInput ? task.dueDate === dateInput : true;
-                })
-                .filter(task => {
-                    // Filter by category if category input is not "All Categories"
-                    return categoryInput ? task.category.toLowerCase() === categoryInput : true;
-                })
-                .forEach(task => {
-                    let li = createCard(task);
-                    tasksList.appendChild(li);
-                });
-        }
+        tasks
+            .filter(task => {
+                // Filter by title, tag, or description
+                return (
+                    task.title.toLowerCase().includes(searchInput) ||
+                    task.category.toLowerCase().includes(searchInput) ||
+                    task.description.toLowerCase().includes(searchInput)
+                );
+            })
+            .forEach(task => {
+                let li = createCard(task);
+                tasksList.appendChild(li);
+            });
+    }
+
 
     </script>    
     
