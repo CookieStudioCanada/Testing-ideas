@@ -18,6 +18,10 @@
             padding: 15px; /* Reduced padding */
         }
         
+        border {
+            border: solid black 1px;
+        }
+        
         input[type="text"], 
         input[type="date"], 
         textarea, 
@@ -134,28 +138,31 @@
     <div class="container">
     <h1>My To-Do List</h1>
     
-    <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search title / tag / description...">
-    <input type="date" id="dateInput">
-    <select id="categoryInput">
-        <option value="">All Categories</option>
-        <!-- Dynamically load categories here -->
-    </select>
-    <button onclick="filterTasks()">Filter</button>
+    <div class="border">
+        <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search title / tag / description...">
+        <input type="date" id="dateInput">
+        <select id="categoryInput">
+            <option value="">All Categories</option>
+            <!-- Dynamically load categories here -->
+        </select>
+        <button onclick="filterTasks()">Filter</button>
+        </div>
     </div>
 
-    <input type="text" id="taskInput" placeholder="Task title...">
-    <input type="date" id="dueDateInput" placeholder="Due date...">
-    <select id="priorityInput">
-        <option value="High">High</option>
-        <option value="Medium" selected>Medium</option>
-        <option value="Low">Low</option>
-    </select>
-    <input type="text" id="categoryInput" placeholder="Category...">
-    <textarea id="descriptionInput" placeholder="Description..."></textarea>
-    <button onclick="addTask()">Add Task</button>
-    <ul id="tasksList"></ul>
-
+    <div class="border">
+        <input type="text" id="taskInput" placeholder="Task title...">
+        <input type="date" id="dueDateInput" placeholder="Due date...">
+        <select id="priorityInput">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <input type="text" id="categoryInput" placeholder="Category...">
+        <textarea id="descriptionInput" placeholder="Description..."></textarea>
+        <button onclick="addTask()">Add Task</button>
+        <ul id="tasksList"></ul>
+    </div>
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', loadTasks);
