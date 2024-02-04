@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Labyrinth MVP</title>
+    <style>
+        
+        #game-board {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #card-deck {
+            width: 120px;
+            height: 180px;
+            background-color: grey;
+            text-align: center;
+            line-height: 180px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100px;
+            height: 150px;
+            background-color: lightblue;
+            margin: 5px;
+            display: inline-block;
+            text-align: center;
+            line-height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-board">
+        <div id="card-deck">Click to Draw</div>
+        <div id="hand"></div>
+    </div>
+
+    <script>
+        document.getElementById('card-deck').addEventListener('click', drawCard);
+
+        function drawCard() {
+            var hand = document.getElementById('hand');
+            var card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = 'Business Card';
+            hand.appendChild(card);
+        }
+    </script>
+</body>
+</html>
