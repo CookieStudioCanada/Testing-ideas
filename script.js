@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Share button
 document.getElementById('shareButton').addEventListener('click', function() {
-  let shareText = "Budget Summary:\n";
+  let shareText = "Sommaire de budget:\n";
   let totalRevenus = 0;
   let totalDepenses = 0;
 
@@ -165,7 +165,7 @@ document.getElementById('shareButton').addEventListener('click', function() {
   // Use Web Share API if available
   if (navigator.share) {
       navigator.share({
-          title: 'My Budget Summary',
+          title: 'Mon sommaire de budget',
           text: shareText,
       }).then(() => console.log('Content shared successfully'))
       .catch(error => console.log('Error sharing:', error));
