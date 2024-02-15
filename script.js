@@ -87,29 +87,92 @@ window.onload = function() {
     }
 };
 
-// Budget
-
+// Budget update and save logic
 function updateTotals() {
   var totalRevenus = 0;
-  var revenusInputs = document.querySelectorAll('.revenu-input');
-  revenusInputs.forEach(function(input) {
+  document.querySelectorAll('.revenu-input').forEach(input => {
       totalRevenus += parseFloat(input.value) || 0;
   });
-  var revenus = formatNumber(totalRevenus);
-  document.getElementById('totalRevenus').innerText = revenus;
 
   var totalDepenses = 0;
-  var depensesInputs = document.querySelectorAll('.depense-input');
-  depensesInputs.forEach(function(input) {
+  document.querySelectorAll('.depense-input').forEach(input => {
       totalDepenses += parseFloat(input.value) || 0;
   });
-  var depenses = formatNumber(totalDepenses);
-  document.getElementById('totalDepenses').innerText = depenses;
 
   var argentDisponible = totalRevenus - totalDepenses;
-  var argent = formatNumber(argentDisponible);
-  document.getElementById('argentDisponible').innerText = argent;
+
+  // Update DOM
+  document.getElementById('totalRevenus').textContent = totalRevenus;
+  document.getElementById('totalDepenses').textContent = totalDepenses;
+  document.getElementById('argentDisponible').textContent = argentDisponible;
+
+  // Save to localStorage
+  localStorage.setItem('totalRevenus', totalRevenus);
+  localStorage.setItem('totalDepenses', totalDepenses);
+  localStorage.setItem('argentDisponible', argentDisponible);
+
+  console.log(`Total Revenus: ${totalRevenus}, Total Dépenses: ${totalDepenses}, Argent Disponible: ${argentDisponible}`);
+
 }
+
+// Load
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.querySelectorAll('.revenu-input, .depense-input').forEach(input => {
+    // Ensure the input has a unique ID for localStorage key
+    if (input.id) {
+      var savedValue = localStorage.getItem(input.id);
+      console.log(`Loading ${input.id}: ${savedValue}`); // Confirm value being loaded
+      if (savedValue !== null) {
+        input.value = savedValue;
+      }
+    }
+  });
+
+  updateTotals(); // Recalculate totals with the loaded values
+});
+
+// Share button
+document.getElementById('shareButton').addEventListener('click', function() {
+  let shareText = "Budget Summary:\n";
+  let totalRevenus = 0;
+  let totalDepenses = 0;
+
+  // Calculate Revenus and Dépenses on the fly
+  document.querySelectorAll('.revenu-input').forEach(input => {
+      const value = parseFloat(input.value) || 0;
+      totalRevenus += value;
+      if (value !== 0) {
+          shareText += `Revenus - ${input.closest('tr').querySelector('td').textContent.trim()}: ${value}\n`;
+      }
+  });
+
+  document.querySelectorAll('.depense-input').forEach(input => {
+      const value = parseFloat(input.value) || 0;
+      totalDepenses += value;
+      if (value !== 0) {
+          shareText += `Dépenses - ${input.closest('tr').querySelector('td').textContent.trim()}: ${value}\n`;
+      }
+  });
+
+  let argentDisponible = totalRevenus - totalDepenses;
+
+  // Append calculated totals to the shareText
+  shareText += `\nTotal Revenus: ${totalRevenus}\n`;
+  shareText += `Total Dépenses: ${totalDepenses}\n`;
+  shareText += `Argent Disponible: ${argentDisponible}`;
+
+  // Use Web Share API if available
+  if (navigator.share) {
+      navigator.share({
+          title: 'My Budget Summary',
+          text: shareText,
+      }).then(() => console.log('Content shared successfully'))
+      .catch(error => console.log('Error sharing:', error));
+  } else {
+      console.log('Web Share API not supported.');
+  }
+});
 
 // Compound interest
 
@@ -135,4 +198,3 @@ function formatNumber(number) {
   // Format with spaces as thousand separators
   return fixedNumber.toLocaleString('fr-FR');
 }
-

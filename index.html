@@ -69,7 +69,6 @@
     <div id="Budget" class="tabcontent">
         <div class="container">
             <h3 class="text-center fw-bold mt-3">Budget</h3>
-
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -80,11 +79,11 @@
                 <tbody>
                     <tr>
                         <td>Salaire</td>
-                        <td><input type="number" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="salaireInput" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Bonis</td>
-                        <td><input type="number" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="bonisInput" class="form-control revenu-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr class="table-primary">
                         <td><strong>Total Revenus</strong></td>
@@ -99,83 +98,87 @@
                     </tr>
                     <tr>
                         <td>Loyer</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="loyerInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Automobile</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="automobileInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
-                        <td>Assurance santé/dentaire</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
-                    </tr>
-                    <tr>
-                        <td>Assurance automobile</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
-                    </tr>
-                    <tr>
-                        <td>Assurance habitation</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td>Essence</td>
+                        <td><input type="number" id="essenceInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Transport</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="transportInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                    </tr>
+                    <tr>
+                        <td>Assurance santé/dentaire</td>
+                        <td><input type="number" id="assuranceSanteInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                    </tr>
+                    <tr>
+                        <td>Assurance automobile</td>
+                        <td><input type="number" id="assuranceAutoInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                    </tr>
+                    <tr>
+                        <td>Assurance habitation</td>
+                        <td><input type="number" id="assuranceHabitationInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Hydro-Québec</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="hydroQuebecInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Cellulaire</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="cellulaireInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Internet</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="internetInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Épicerie</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="epicerieInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Médicaments</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="medicamentsInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Restaurants</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="restaurantsInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Divertissements</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="divertissementsInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Cadeaux</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="cadeauxInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Abonnements mensuels</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
-                    </tr>
-                    <tr>
-                        <td>Remboursement capital</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
-                    </tr>
-                    <tr>
-                        <td>Remboursement marge</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="abonnementsInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>CELI</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="celiInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>REER</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="reerInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr>
                         <td>Comptes auto-géré</td>
-                        <td><input type="number" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                        <td><input type="number" id="comptesAutoGereInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                    </tr>
+                    <tr>
+                        <td>Prêt/Dette</td>
+                        <td><input type="number" id="pretDetteInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
+                    </tr>
+                    <tr>
+                        <td>Autres</td>
+                        <td><input type="number" id="autresDepensesInput" class="form-control depense-input" value="0" onchange="updateTotals()"></td>
                     </tr>
                     <tr class="table-danger">
                         <td><strong>Total Dépenses</strong></td>
@@ -188,7 +191,12 @@
                 </tbody>
             </table>
         </div>
-    </div>   
+
+        <div class="d-flex justify-content-center">
+            <button id="shareButton" class="btn btn-secondary btn-lg" style="margin: 20px;">Exporter</button>
+        </div>
+        
+    </div>
 
     <div id="CELI" class="tabcontent">
         <div class="container">
