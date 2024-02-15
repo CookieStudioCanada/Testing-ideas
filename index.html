@@ -245,7 +245,12 @@
                 <input type="number" id="withdrawal" class="form-control" placeholder="Entrez le montant des retraits">
             </div>
             
-            <button onclick="calculateCELI()" class="btn btn-secondary">Calculer</button>
+            <div class="d-flex justify-content-center">
+                              
+               <button onclick="calculateCELI()" class="btn btn-secondary">Calculer</button>
+            
+             </div>
+            
             <p id="result" class="result"></p> 
         </div>
     </div>
@@ -266,7 +271,9 @@
                 <label for="time" class="form-label">Année(s):</label>
                 <input type="number" class="form-control" id="time" placeholder="Entrez le nombre d'années">
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="calculateCompoundInterest()">Calculer</button>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary" onclick="calculateCompoundInterest()">Calculer</button>
+                        </div>
             </form>
             <div id="resultCI" class="mt-3"></div>
         </div>
