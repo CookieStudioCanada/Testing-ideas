@@ -28,8 +28,7 @@
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom sticky-top">
         <div class="container-fluid">
           <!-- Navbar Brand -->
-          <a class="navbar-brand" href="#" style="font-size: x-large; font-weight: bold;">F.J.T.</a>
-      
+          <a class="navbar-brand" href="#" onclick="openPage('Home', this); closeNavbar();" style="font-size: x-large; font-weight: bold;">F.J.T.</a>
           <!-- Toggler Button -->
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -68,9 +67,8 @@
     <div class="col-md-4">
       <div class="card h-100 shadow-sm" onclick="openPage('Budget', this, '')" style="cursor:pointer; border-radius: 8px;">
         <div class="card-body">
-          <h5 class="card-title">Calculateur de Budget</h5>
+          <h5 class="card-title"><i class="bi bi-calculator"></i> Calculateur de Budget</h5>
           <p class="card-text">Planifiez votre budget mensuel facilement.</p>
-          <i class="bi bi-calculator" style="font-size: 2rem; color: #4CAF50;"></i>
         </div>
       </div>
     </div>
@@ -78,19 +76,17 @@
     <div class="col-md-4">
       <div class="card h-100 shadow-sm" onclick="openPage('CELI', this, '')" style="cursor:pointer; border-radius: 8px;">
         <div class="card-body">
-          <h5 class="card-title">CÉLI</h5>
-          <p class="card-text">Calculez vos contributions de votre CÉLI.</p>
-          <i class="bi bi-piggy-bank" style="font-size: 2rem; color: #4CAF50;"></i>
+          <h5 class="card-title"><i class="bi bi-piggy-bank-fill"></i> CÉLI</h5>
+          <p class="card-text">Calculez vos contributions et la croissance de votre CÉLI.</p>
         </div>
       </div>
     </div>
     <!-- Calculateur d'Intérêt -->
     <div class="col-md-4">
-      <div class="card h-100 shadow-sm" onclick="openPage('CI', this, '')" style="cursor:pointer; border-radius: 8px;">
+      <div class="card h-100 shadow-sm" onclick="openPage('Interest', this, '')" style="cursor:pointer; border-radius: 8px;">
         <div class="card-body">
-          <h5 class="card-title">Calculateur d'Intérêt</h5>
+          <h5 class="card-title"><i class="bi bi-graph-up"></i> Calculateur d'Intérêt</h5>
           <p class="card-text">Découvrez le pouvoir de l'intérêt composé.</p>
-          <i class="bi bi-graph-up" style="font-size: 2rem; color: #4CAF50;"></i>
         </div>
       </div>
     </div>
