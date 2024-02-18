@@ -177,47 +177,31 @@ document.getElementById('shareButton').addEventListener('click', function() {
 // Compound interest
 
 function calculateCompoundInterest() {
-  var initialContribution = parseFloat(document.getElementById("initialContribution").value);
   var principal = parseFloat(document.getElementById("principal").value);
-  var rate = parseFloat(document.getElementById("rate").value);
+  var rate = parseFloat(document.getElementById("rate").value) / 100;
   var time = parseInt(document.getElementById("time").value);
   var newContribution = parseFloat(document.getElementById("newContribution").value);
-  var frequency = document.getElementById("frequency").value;
-
-  var periods = getPeriods(frequency);
-  var totalAmount = initialContribution + principal * Math.pow((1 + rate / 100), time);
-
-  // Calculate compound interest with new contributions
-  for (var i = 1; i <= time * periods; i++) {
-    totalAmount += newContribution * Math.pow((1 + rate / (100 * periods)), i);
-  }
+  var frequencyValue = getFrequencyValue(document.getElementById("frequency").value);
+  var totalAmount = principal * Math.pow((1 + rate / frequencyValue), time * frequencyValue);
   
-  // Format the result
-  var formattedAmount = formatNumber(totalAmount);
+  for (var i = 1; i <= time * frequencyValue; i++) {
+    totalAmount += newContribution * Math.pow((1 + rate / frequencyValue), i - 1);
+  }
 
-  // Display the result
-  document.getElementById("resultCI").innerText = 'Montant: ' + formattedAmount + "$";
+  var formattedAmount = formatNumber(totalAmount);
+  document.getElementById("resultCI").innerText = 'Montant à l\'échéance: ' + formattedAmount + " $";
 }
 
-function getPeriods(frequency) {
+function getFrequencyValue(frequency) {
   switch (frequency) {
-    case "monthly":
-      return 12;
-    case "quarterly":
-      return 4;
-    case "semiannually":
-      return 2;
-    case "annually":
-      return 1;
-    default:
-      return 1;
+    case "monthly": return 12;
+    case "quarterly": return 4;
+    case "semiannually": return 2;
+    case "annually": return 1;
+    default: return 1;
   }
 }
 
 function formatNumber(number) {
-  // Convert to fixed decimal string, then back to number
-  var fixedNumber = Number(number.toFixed(0));
-
-  // Format with spaces as thousand separators
-  return fixedNumber.toLocaleString('fr-FR');
+  return number.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
