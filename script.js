@@ -177,18 +177,41 @@ document.getElementById('shareButton').addEventListener('click', function() {
 // Compound interest
 
 function calculateCompoundInterest() {
-  var principal = document.getElementById("principal").value;
-  var rate = document.getElementById("rate").value;
-  var time = document.getElementById("time").value;
+  var initialContribution = parseFloat(document.getElementById("initialContribution").value);
+  var principal = parseFloat(document.getElementById("principal").value);
+  var rate = parseFloat(document.getElementById("rate").value);
+  var time = parseInt(document.getElementById("time").value);
+  var newContribution = parseFloat(document.getElementById("newContribution").value);
+  var frequency = document.getElementById("frequency").value;
 
-  // Calculate compound interest
-  var amount = principal * Math.pow((1 + rate / 100), time);
+  var periods = getPeriods(frequency);
+  var totalAmount = initialContribution + principal * Math.pow((1 + rate / 100), time);
+
+  // Calculate compound interest with new contributions
+  for (var i = 1; i <= time * periods; i++) {
+    totalAmount += newContribution * Math.pow((1 + rate / (100 * periods)), i);
+  }
   
   // Format the result
-  var formattedAmount = formatNumber(amount);
+  var formattedAmount = formatNumber(totalAmount);
 
   // Display the result
   document.getElementById("resultCI").innerText = 'Montant: ' + formattedAmount + "$";
+}
+
+function getPeriods(frequency) {
+  switch (frequency) {
+    case "monthly":
+      return 12;
+    case "quarterly":
+      return 4;
+    case "semiannually":
+      return 2;
+    case "annually":
+      return 1;
+    default:
+      return 1;
+  }
 }
 
 function formatNumber(number) {
