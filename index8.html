@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eat Time!</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  #restaurant {
+    margin: 20px;
+    font-size: 24px;
+  }
+  button {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+<h2>What's for Eat Time?</h2>
+<button id="findRestaurant">Find a Restaurant</button>
+<div id="restaurant"></div>
+
+<script>
+  const restaurants = [
+    "The Italian Kitchen",
+    "Sushi World",
+    "Burger House",
+    "Vegan Delight",
+    "The Steak Loft",
+    "Pizzeria Gio",
+    "Mexican Fiesta",
+    "Chinese Garden",
+    "Middle Eastern Flavors",
+    "French Gourmet Bistro"
+  ];
+
+  document.getElementById("findRestaurant").addEventListener("click", function() {
+    const choice = restaurants[Math.floor(Math.random() * restaurants.length)];
+    document.getElementById("restaurant").textContent = `How about: ${choice}?`;
+  });
+</script>
+
+</body>
+</html>
