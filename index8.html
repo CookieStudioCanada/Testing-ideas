@@ -50,8 +50,8 @@
 <body>
 
 <div class="container">
-  <h2>Quoi manger ce soit?</h2>
-  <button id="findRestaurant">Recherche</button>
+  <h2>Où manger ce soir?</h2>
+  <button id="findRestaurant">Trouver un restaurant</button>
   <div id="restaurant"></div>
 </div>
 
@@ -73,7 +73,7 @@
 
   document.getElementById("findRestaurant").addEventListener("click", function() {
     const choice = restaurants[Math.floor(Math.random() * restaurants.length)];
-    document.getElementById("restaurant").textContent = `How about: ${choice}?`;
+    document.getElementById("restaurant").textContent = `Je vous propose ${choice}?`;
   });
 </script>
 
