@@ -4,32 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eat Time!</title>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 <style>
   body {
-    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    font-family: 'Poppins', sans-serif;
+  }
+  .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-direction: column;
+  }
+  .card {
+    width: 22rem;
+    background-color: #ffc107; /* Funky yellow */
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .card-header {
+    background-color: #d39e00; /* Darker yellow */
+    border-bottom: none;
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .btn-primary {
+    background-color: #6c757d; /* Bootstrap's secondary color for contrast */
+    border: none;
+    margin-top: 15px;
   }
   #restaurant {
-    margin: 20px;
-    font-size: 24px;
-  }
-  button {
-    cursor: pointer;
-    padding: 10px 20px;
-    font-size: 18px;
+    font-size: 20px;
+    color: #343a40; /* Bootstrap dark */
+    margin-top: 15px;
   }
 </style>
 </head>
 <body>
 
-<h2>What's for Eat Time?</h2>
-<button id="findRestaurant">Find a Restaurant</button>
-<div id="restaurant"></div>
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">
+      <h2>Where to eat near DIX30?</h2>
+    </div>
+    <div class="card-body">
+      <button id="findRestaurant" class="btn btn-primary">Find a Restaurant</button>
+      <div id="restaurant" class="mt-3"></div>
+    </div>
+  </div>
+</div>
 
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
   const restaurants = [
     "Siam",
@@ -48,7 +77,7 @@
 
   document.getElementById("findRestaurant").addEventListener("click", function() {
     const choice = restaurants[Math.floor(Math.random() * restaurants.length)];
-    document.getElementById("restaurant").textContent = `How about: ${choice}?`;
+    document.getElementById("restaurant").innerHTML = `<strong>How about: ${choice}?</strong>`;
   });
 </script>
 
