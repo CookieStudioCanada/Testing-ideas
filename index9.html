@@ -3,78 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio Builder</title>
+    <title>Minimal Portfolio Builder</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            padding-top: 56px;
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            background-color: #343a40;
-        }
-        .welcome-section {
-            margin-top: 40px;
-            padding: 40px 0;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .portfolio-item {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .portfolio-item h2 {
+            padding-top: 60px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f4f4f4;
             color: #333;
         }
-        .portfolio-item p {
-            color: #666;
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .container {
+            max-width: 960px;
+        }
+        h1, h2, h3, p {
+            margin-bottom: 1.5rem;
+        }
+        .project {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Portfolio Builder</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Me</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#">Projects</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container welcome-section">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Welcome to Your Portfolio Builder</h1>
-                <p class="lead">Create and customize your personal portfolio effortlessly</p>
-            </div>
+    <div class="container mt-3">
+        <div class="text-center">
+            <h1>Welcome to Your Minimal Portfolio</h1>
+            <p class="lead">Showcase your work with a simple, elegant portfolio.</p>
         </div>
-    </div>
-
-    <div class="container mt-4">
-        <div class="portfolio-item">
-            <h2>Your Project Title Here</h2>
-            <p>Description of your project goes here. Explain what it does, the technologies used, and any other relevant details.</p>
+        <div class="project">
+            <h2>Project Title</h2>
+            <p>This is a brief description of your project. Discuss the project goals, your role, technologies used, and any outcomes or lessons learned.</p>
         </div>
-        <!-- More portfolio items can be added here -->
+        <!-- More project entries can go here -->
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
