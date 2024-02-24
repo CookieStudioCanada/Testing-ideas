@@ -3,36 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Portfolio Builder</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Professional Portfolio Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --bs-font-sans-serif: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        }
         body {
-            padding-top: 60px;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: var(--bs-font-sans-serif);
+            background-color: #f8f9fa;
+            color: #212529;
         }
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        .navbar-light .navbar-brand {
+            color: #000;
         }
-        .container {
-            max-width: 960px;
-        }
-        h1, h2, h3, p {
-            margin-bottom: 1.5rem;
-        }
-        .project {
-            background-color: #ffffff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+        .portfolio-item {
+            background-color: #fff;
+            border-radius: .5rem;
+            margin-top: 1rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+            padding: 1rem;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container">
             <a class="navbar-brand" href="#">Portfolio Builder</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +36,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Me</a>
+                        <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Projects</a>
@@ -51,18 +46,20 @@
         </div>
     </nav>
 
-    <div class="container mt-3">
-        <div class="text-center">
-            <h1>Welcome to Your Minimal Portfolio</h1>
-            <p class="lead">Showcase your work with a simple, elegant portfolio.</p>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h1 class="display-4">Welcome to Portfolio Builder</h1>
+                <p class="lead">Showcase your projects and skills with elegance.</p>
+            </div>
         </div>
-        <div class="project">
+        <div class="portfolio-item">
             <h2>Project Title</h2>
-            <p>This is a brief description of your project. Discuss the project goals, your role, technologies used, and any outcomes or lessons learned.</p>
+            <p>This section describes your project. Include objectives, technologies used, and any relevant outcomes or links.</p>
         </div>
-        <!-- More project entries can go here -->
+        <!-- More project items can be added here -->
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
