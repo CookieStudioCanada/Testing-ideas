@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couple's Productivity App</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body { padding-top: 5rem; }
+    .container { max-width: 960px; }
+    .icon { width: 24px; height: 24px; }
+    .overview-box { padding: 20px; margin-bottom: 20px; border: 1px solid #eee; border-radius: 8px; }
+    .overview-title { margin-bottom: 15px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Couple's App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <a class="btn btn-outline-success" href="#">Sign in</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 overview-box">
+            <div class="overview-title">Good Morning, User!</div>
+            <p>Today's Overview: Sunny, 24°C</p>
+        </div>
+        <div class="col-md-6 overview-box">
+            <div class="overview-title">Tasks Due Today</div>
+            <ul>
+                <li>Buy groceries</li>
+                <li>Pay bills</li>
+                <li>Plan date night</li>
+            </ul>
+        </div>
+        <div class="col-md-6 overview-box">
+            <div class="overview-title">Upcoming Events</div>
+            <ul>
+                <li>Dinner with the Morgans, 7 PM</li>
+                <li>Anniversary, All Day</li>
+            </ul>
+        </div>
+        <div class="col-md-6 overview-box">
+            <div class="overview-title">Budget Overview</div>
+            <p>Remaining Budget: $500</p>
+            <p>Upcoming Bills: $200</p>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<script>
+// Example JavaScript to toggle a class for demonstration purposes
+// Replace or expand upon with your application's functionality
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Your JavaScript code here
+});
+</script>
+</body>
+</html>
