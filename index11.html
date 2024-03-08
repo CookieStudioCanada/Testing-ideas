@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag and Drop Document Upload</title>
+<style>
+  #drop_zone {
+    border: 2px dashed #ccc;
+    width: 300px;
+    height: 200px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    cursor: pointer;
+  }
+  .hover {
+    background-color: #f0f0f0;
+  }
+</style>
+</head>
+<body>
+
+<div id="drop_zone">Drag and drop your document here</div>
+
+<script>
+  let dropZone = document.getElementById('drop_zone');
+
+  // Add event listeners for drag & drop functionality
+  dropZone.addEventListener('dragover', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy'; // Show as a copy action
+    dropZone.classList.add('hover'); // Optional: Add a hover effect
+  });
+
+  dropZone.addEventListener('dragleave', function(e) {
+    dropZone.classList.remove('hover'); // Optional: Remove hover effect
+  });
+
+  dropZone.addEventListener('drop', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    dropZone.classList.remove('hover'); // Remove hover effect
+
+    let files = e.dataTransfer.files; // Get the dropped files
+    for (let i = 0, file; file = files[i]; i++) {
+      // Handle each file separately
+      readFile(file);
+    }
+  });
+
+  // Function to read and process the dropped file
+  function readFile(file) {
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+      // Display file content in console; you might want to process/display it in your application
+      console.log('File content:', e.target.result);
+    };
+
+    reader.readAsText(file); // Read the file as text
+  }
+</script>
+
+</body>
+</html>
