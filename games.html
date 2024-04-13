@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Jeu RPG avec Cartes</title>
+<style>
+/* Ajouter du style pour rendre le jeu visuellement attrayant */
+#game-container {
+width: 80%;
+margin: auto;
+text-align: center;
+}
+.card {
+display: inline-block;
+width: 120px;
+height: 200px;
+margin: 10px;
+background-color: lightgrey;
+border: 1px solid black;
+border-radius: 10px;
+padding: 10px;
+cursor: pointer;
+}
+.card:hover {
+background-color: grey;
+}
+.card.effect {
+background-color: gold;
+}
+</style>
+</head>
+<body>
+<div id="game-container">
+<h2>Mon jeu RPG avec cartes</h2>
+<div id="cards-container"></div>
+</div>
+
+<script>
+// Données de base pour les cartes
+const cardsData = [
+{ id: 1, name: "Guerrier", effect: "force" },
+{ id: 2, name: "Sorcier", effect: "magie" },
+{ id: 3, name: "Archer", effect: "agilité" }
+];
+
+function createCard(cardData) {
+// Créer l'élément de carte
+const cardElement = document.createElement('div');
+cardElement.classList.add('card');
+
+// Ajouter un effet spécial si nécessaire
+if (cardData.effect) {
+cardElement.classList.add('effect');
+// Ici, vous pouvez ajouter des animations ou des effets visuels en JS
+cardElement.title = "Effet: " + cardData.effect;
+}
+
+cardElement.innerHTML = `
+<h3>${cardData.name}</h3>
+`;
+
+// Ajouter un écouteur d'événements pour interagir avec la carte
+cardElement.addEventListener('click', () => {
+alert("Carte choisie: " + cardData.name + "\nEffet: " + cardData.effect);
+});
+
+return cardElement;
+}
+
+function initializeGame() {
+const cardsContainer = document.getElementById('cards-container');
+cardsData.forEach(cardData => {
+// Créer et afficher les cartes à partir des données
+const card = createCard(cardData);
+cardsContainer.appendChild(card);
+});
+}
+
+// Initialiser le jeu une fois que le DOM est prêt
+document.addEventListener('DOMContentLoaded', initializeGame);
+</script>
+</body>
+</html>
