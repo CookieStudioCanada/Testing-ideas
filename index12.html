@@ -1,0 +1,127 @@
+    <!-- fea45cd00d63dbfc935a92049703b35a -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHL Games</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">NHL Games</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">Games</a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">NHL Games</h1>
+        <input type="date" id="dateInput" class="form-control mb-3" placeholder="Select date">
+        <button id="searchBtn" class="btn btn-secondary mb-3">Search</button>
+        <table id="gamesTable" class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Home</th>
+                    <th>Away</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Games will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const searchButton = document.getElementById('searchBtn');
+            searchButton.addEventListener('click', fetchGamesOnDate);
+
+            async function fetchGamesOnDate() {
+
+                const date = document.getElementById('dateInput').value;
+                if (!date) {
+                    alert("Please select a date.");
+                    return;
+                }
+                
+                const apiUrl = `https://v1.hockey.api-sports.io/games?date=${date}&league=57&season=2023&timezone=America/Montreal`;
+                fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-host": "v1.hockey.api-sports.io",
+                        "x-rapidapi-key": "fea45cd00d63dbfc935a92049703b35a"  // Replace with your actual API key
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data.response);  // Log data to the console
+                    displayGames(data.response);
+                })
+                .catch(err => {
+                    console.error('Error fetching games:', err);
+                    alert('Failed to fetch games. Check console for details.');
+                });
+            }
+
+            function displayGames(games) {
+                const tbody = document.getElementById('gamesTable').getElementsByTagName('tbody')[0];
+                tbody.innerHTML = '';
+
+                games.forEach(game => {
+                    const row = tbody.insertRow();
+                    // Simplified date display
+                    const formattedDate = new Date(game.date).toLocaleDateString('en-US', { timeZone: 'America/Montreal', month: 'long', day: 'numeric' });
+                    row.insertCell(0).innerHTML = `<strong>${formattedDate}</strong>`;
+                    row.insertCell(1).innerHTML = `<img src="${game.teams.home.logo}" style="width:30px;"> ${game.teams.home.name}`;
+                    row.insertCell(2).innerHTML = `<img src="${game.teams.away.logo}" style="width:30px;"> ${game.teams.away.name}`;
+                    // Adjust score text for different game statuses
+                    let scoreText = "Upcoming";
+
+                    if (game.status.short === "FT") {
+                        scoreText = `${game.scores.home} - ${game.scores.away} R`;
+                    } else if (game.status.short === "AOT") {
+                        scoreText = `${game.scores.home} - ${game.scores.away} OT`;
+                    }
+
+                    row.insertCell(3).textContent = scoreText;
+                });
+
+            }
+
+
+        });
+
+    </script>
+        
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
