@@ -35,7 +35,7 @@
     </nav>
 
     <div class="container mt-5">
-        <h1 class="mb-4">NHL</h1>
+        <h1 class="mb-4">Search NHL history</h1>
         <input type="date" id="dateInput" class="form-control mb-3" placeholder="Select date">
         <button id="searchBtn" class="btn btn-secondary mb-3">Search</button>
         <table id="gamesTable" class="table">
@@ -54,16 +54,37 @@
     </div>
 
     <div class="container mt-5">
+        <h1 class="mb-4">NHL</h1>
+        
+        <div id="wg-api-hockey-games"
+            data-host="v1.hockey.api-sports.io"
+            data-key="fea45cd00d63dbfc935a92049703b35a"
+            data-date="2024-04-29"
+            data-league="57"
+            data-season="2023"
+            data-theme=""
+            data-refresh="0"
+            data-show-toolbar="true"
+            data-show-errors="false"
+            data-show-logos="true"
+            data-modal-game="true"
+            data-modal-standings="true"
+            data-modal-show-logos="true">
+    </div>
+    </div>
+
+    <div class="container mt-5">
         <h1 class="mb-4">NBA</h1>
+        
         <div id="wg-api-basketball-games"
             data-host="v1.basketball.api-sports.io"
             data-key="fea45cd00d63dbfc935a92049703b35a"
-            data-date=""
+            data-date="2024-04-29"
             data-league="12"
             data-season="2023-2024"
             data-theme=""
             data-refresh="0"
-            data-show-toolbar="true"
+            data-show-toolbar="false"
             data-show-errors="false"
             data-show-logos="true"
             data-modal-game="true"
@@ -80,6 +101,19 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
+
+            function getCurrentDate() {
+                var now = new Date();  // Create a new Date object with the current date and time
+                var year = now.getFullYear();  // Get the current year
+                var month = now.getMonth() + 1;  // Get the current month (Note: Months are 0-indexed, so add 1)
+                var day = now.getDate();  // Get the current day of the month
+
+                // Format the date as a string, adding leading zeros if necessary
+                return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                }
+
+                console.log(getCurrentDate());  // Outputs the current date, e.g., "2024-04-29"
+
 
             const searchButton = document.getElementById('searchBtn');
             searchButton.addEventListener('click', fetchGamesOnDate);
