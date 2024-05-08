@@ -36,6 +36,13 @@
     <input id="incomeInput" type="number" placeholder="Enter your income">
     <div id="result"></div>
     
+    <!--
+    <input type="checkbox" id="personalCredit" /> Personal Income Tax Credit 
+    <br>
+    <input type="checkbox" id="abatement" /> Provincial Abatement (16.5% of Federal Tax)
+    <br>
+    -->
+    
     <script>
     function calculateFederalTax(income) {
     let tax = 0;
@@ -50,7 +57,12 @@
     } else {
         tax = (55867 * 0.15) + ((111733 - 55867) * 0.205) + ((173205 - 111733) * 0.26) + ((246752 - 173205) * 0.29) + ((income - 246752) * 0.33);
     }
-    return tax;
+    let afterAbatement = tax - (tax * 0.165);
+    
+    console.log("tax" + tax);
+    console.log("after abatement" + afterAbatement);
+    
+    return afterAbatement;
 }
 
 function calculateQuebecTax(income) {
