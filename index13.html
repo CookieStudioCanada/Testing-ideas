@@ -22,31 +22,39 @@
     </nav>
     
     <div class="container mt-5">
-        <h1>Calculateur d'impôts</h1>
-        <div class="mb-3">
-            <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
-            <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
-        </div>
-        <div class="mb-3">
-            <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
-            <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
-        </div>
-        <div class="mb-3">
+    <h1>Calculateur d'impôts</h1>
+    <div class="mb-3">
+        <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
+        <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
+    </div>
+    <div class="mb-3">
+        <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
+        <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
+    </div>
+
+    <!-- Dividend inputs in the same row -->
+    <div class="row">
+        <div class="col-12 col-md-6 mb-3">
             <label for="determinedDividend" class="form-label" title="Dividendes déterminés de vos investissements.">Dividende déterminé:</label>
             <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
         </div>
-        <div class="mb-3">
+        <div class="col-12 col-md-6 mb-3">
             <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
             <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
         </div>
-        <div class="mb-3">
+    </div>
+
+    <!-- Combined business and property income inputs in the same row -->
+    <div class="row">
+        <div class="col-12 col-md-6 mb-3">
             <label for="propertyIncome" class="form-label" title="Revenu généré par la propriété, comme la location.">Revenu de biens:</label>
             <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu de biens">
         </div>
-        <div class="mb-3">
+        <div class="col-12 col-md-6 mb-3">
             <label for="businessIncome" class="form-label" title="Revenu de votre entreprise ou activité autonome.">Revenu d'entreprise:</label>
             <input id="businessIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise">
         </div>
+    </div>
         <!-- Button container for responsive layout -->
         <div class="d-flex flex-wrap align-items-center justify-content-between">
             <button class="btn btn-primary" onclick="calculateTotalTax()">Calculer les Impôts</button>
