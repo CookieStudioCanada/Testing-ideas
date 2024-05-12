@@ -17,9 +17,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
-                    <!-- <li class="nav-item">
-                        <button class="nav-link" onclick="resetFields()">Réinitialiser</button>
-                    </li> -->
+
                     <li class="nav-item">
                         <button class="nav-link" onclick="showLogs()">Détails du calcul</button>
                     </li>
@@ -45,6 +43,10 @@
                             <li><a class="dropdown-item"><input type="checkbox" checked disabled> Individu</a></li>
                             <li><a class="dropdown-item"><input type="checkbox" disabled> Société par actions</a></li>
                         </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="modal" data-bs-target="#glossaireModal">Glossaire</button>
                     </li>
                 </ul>
             </div>
@@ -92,6 +94,21 @@
                 </div>
                 <div class="toast-body" id="toastBody">Aucun calcul</div>
             </div>
+    </div>
+
+    <!-- Modal for Glossaire -->
+    <div class="modal fade" id="glossaireModal" tabindex="-1" aria-labelledby="glossaireModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Glossaire</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    À venir...
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal for CELIAPP -->
