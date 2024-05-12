@@ -5,100 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .mb-3 {
-            margin-bottom: 1rem !important; /* Adding more space between inputs */
-        }
-    </style>
 </head>
 <body>
+
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Calculus</a>
-        </div>
-    </nav>
-    
-    <div class="container mt-5">
-    <h1>Calculateur d'impôts</h1>
-    <div class="mb-3">
-        <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
-        <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
-    </div>
-    <div class="mb-3">
-        <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
-        <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
-    </div>
-
-    <!-- Dividend inputs in the same row -->
-    <div class="row">
-        <div class="col-12 col-md-6 mb-3">
-            <label for="determinedDividend" class="form-label" title="Dividendes déterminés de vos investissements.">Dividende déterminé:</label>
-            <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
-            <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
-        </div>
-    </div>
-
-    <!-- Combined business and property income inputs in the same row -->
-    <div class="row">
-        <div class="col-12 col-md-6 mb-3">
-            <label for="propertyIncome" class="form-label" title="Revenu généré par la propriété, comme la location.">Revenu de biens:</label>
-            <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu de biens">
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <label for="businessIncome" class="form-label" title="Revenu de votre entreprise ou activité autonome.">Revenu d'entreprise:</label>
-            <input id="businessIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise">
-        </div>
-    </div>
-        <!-- Button container for responsive layout -->
-        <div class="d-flex flex-wrap align-items-center justify-content-between">
-            <button class="btn btn-primary" onclick="calculateTotalTax()">Calculer les Impôts</button>
-            <button class="btn btn-secondary" onclick="resetFields()">Réinitialiser</button>
-            <button class="btn btn-info" onclick="showLogs()">Afficher les détails</button>
-            
-        <!-- Dropdown for Deductions -->
-        <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle" type="button" id="deductionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                Déductions
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="deductionsMenu">
-                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#celiappModal">CELIAPP</a></li>
-                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reerModal">REER</a></li>
-                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dgcModal">DGC</a></li>
-            </ul>
-        </div>
-            
-            <!-- Dropdown for Options with Checklists -->
-            <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" id="optionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                    Options
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="optionsMenu">
-                    <li><a class="dropdown-item"><input type="checkbox" checked> Abattement QC</a></li>
-                    <li><a class="dropdown-item"><input type="checkbox" checked> Crédit d'impôt personnel</a></li>
-                    <li><a class="dropdown-item"><input type="checkbox" checked disabled> Invididu</a></li>
-                    <li><a class="dropdown-item"><input type="checkbox" disabled> Société par actions</a></li>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <!-- <li class="nav-item">
+                        <button class="nav-link" onclick="resetFields()">Réinitialiser</button>
+                    </li> -->
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="showLogs()">Détails du calcul</button>
+                    </li>
+                    <!-- Dropdown for Deductions -->
+                    <li class="nav-item dropdown">
+                        <button class="dropdown-toggle nav-link" type="button" id="deductionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            Déductions
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="deductionsMenu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#celiappModal">CELIAPP</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reerModal">REER</a></li>
+                            <!-- <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dgcModal">DGC</a></li> -->
+                        </ul>
+                    </li>
+                    <!-- Dropdown for Options with Checklists -->
+                    <li class="nav-item dropdown">
+                        <button class="dropdown-toggle nav-link" type="button" id="optionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="optionsMenu">
+                            <li><a class="dropdown-item"><input type="checkbox" checked> Abattement QC</a></li>
+                            <!-- <li><a class="dropdown-item"><input type="checkbox" checked> Crédit d'impôt personnel</a></li> -->
+                            <li><a class="dropdown-item"><input type="checkbox" checked disabled> Individu</a></li>
+                            <li><a class="dropdown-item"><input type="checkbox" disabled> Société par actions</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
-        
+    </nav>
+
+    <!-- Form-->
+    <div class="container mt-3">
+        <h3>Calculateur d'impôts</h3>
+        <div class="mb-3">
+            <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
+            <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
+        </div>
+        <div class="mb-3">
+            <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
+            <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
+        </div>
+        <div class="mb-3">
+            <label for="determinedDividend" class="form-label" title="Dividendes déterminés de vos investissements.">Dividende déterminé:</label>
+            <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
+        </div>
+        <div class="mb-3">
+            <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
+            <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
+        </div>
+        <div class="mb-3">
+            <label for="propertyIncome" class="form-label" title="Revenu de biens ou d'entreprise.">Revenu d'entreprise/biens:</label>
+            <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise/biens">
+        </div>
+
+        <button class="btn btn-secondary me-2" onclick="calculateTotalTax()">Calculer</button>
+        <button class="btn btn-danger me-2" onclick="resetFields()">Réinitialiser</button>        
+
         <!-- Result Display -->
         <div id="result" class="mt-3"></div>
 
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    </div>
+        
+    <!-- Toast -->  
+    <div class="toast-container position-fixed top-0 end-0 p-3">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="me-auto">Détails des Calculs</strong>
+                    <strong class="me-auto">Détails du calcul</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body" id="toastBody"></div>
+                <div class="toast-body" id="toastBody">Aucun calcul</div>
             </div>
-        </div>
     </div>
 
     <!-- Modal for CELIAPP -->
@@ -138,7 +131,7 @@
     </div>
 
     <!-- Modal for DGC -->
-    <div class="modal fade" id="dgcModal" tabindex="-1" aria-labelledby="dgcModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="dgcModal" tabindex="-1" aria-labelledby="dgcModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -153,10 +146,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
     <script>
     let detailedLogs = "";
+    let totIncome;
 
     function logDetailedResults(logs) {
         detailedLogs = logs.join('\n');
@@ -245,9 +239,9 @@
         const determinedDividend = parseFloat(document.getElementById('determinedDividend').value) || 0;
         const undeterminedDividend = parseFloat(document.getElementById('undeterminedDividend').value) || 0;
         const propertyIncome = parseFloat(document.getElementById('propertyIncome').value) || 0;
-        const businessIncome = parseFloat(document.getElementById('businessIncome').value) || 0;
 
-        const totalIncome = employmentIncome + capitalGains + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome + businessIncome;
+        const totalIncome = employmentIncome + (capitalGains * 0.50) + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome;
+        totIncome = totalIncome;
         
         if (isNaN(totalIncome) || totalIncome === 0) {
             document.getElementById('result').textContent = 'Veuillez entrer un chiffre valide dans au moins une catégorie.';
@@ -294,64 +288,77 @@
         toast.show();
     }
     
-    // Calculate tax based on the income and tax rates
-    function calculateTax(income) {
-        let tax = 0;
-        if (income <= 55867) {
-            tax = income * 0.15;
-        } else if (income <= 111733) {
-            tax = 55867 * 0.15 + (income - 55867) * 0.205;
-        } else if (income <= 173205) {
-            tax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (income - 111733) * 0.26;
-        } else if (income <= 246752) {
-            tax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (income - 173205) * 0.29;
-        } else {
-            tax = 55867 * 0.15 + (111733 - 55867) * 0.205 + (173205 - 111733) * 0.26 + (246752 - 173205) * 0.29 + (income - 246752) * 0.33;
-        }
-        return tax;
-    }
-
-    // Function to calculate REER impact
+    // Deductions
     function calculateReerImpact() {
         const investment = parseFloat(document.getElementById('reerInput').value);
-        const totalIncome = parseFloat(document.getElementById('totalIncome').value) || 0;
-        if (isNaN(investment) || isNaN(totalIncome)) {
+        console.log(totIncome);
+
+        // Deduction - TO DO
+        if (isNaN(investment) || isNaN(totIncome)) {
             alert("Veuillez entrer un montant valide.");
             return;
         }
-        const originalTax = calculateTax(totalIncome);
-        const newTax = calculateTax(totalIncome - investment);
-        const taxImpact = originalTax - newTax;
+
+        let netIncome = totIncome - investment;
+
+        // Tax Calculations and logs
+        const [federalTax, federalLogs] = calculateFederalTax(netIncome);
+        const [quebecTax, quebecLogs] = calculateQuebecTax(netIncome);
+        const totalTax = federalTax + quebecTax;
+
+        // Regular calculation
+        const [federalTax2, federalLogs2] = calculateFederalTax(totIncome);
+        const [quebecTax2, quebecLogs2] = calculateQuebecTax(totIncome);
+        const totalTax2 = federalTax2 + quebecTax2;
+
+        // Tax credits - TO DO 
+
+        // Logs
+        const taxImpact = totalTax2 - totalTax;
         alert(`En allouant ${investment.toLocaleString('fr-CA')} CAD à votre REER, vous allez réduire votre obligation fiscale d'environ ${taxImpact.toLocaleString('fr-CA')} CAD.`);
     }
 
-    // Function to calculate CELIAPP impact
     function calculateCeliappImpact() {
         const investment = parseFloat(document.getElementById('celiappInput').value);
-        const totalIncome = parseFloat(document.getElementById('totalIncome').value) || 0;
-        if (isNaN(investment) || isNaN(totalIncome)) {
+        console.log(totIncome);
+
+        // Deduction - TO DO
+        if (isNaN(investment) || isNaN(totIncome)) {
             alert("Veuillez entrer un montant valide.");
             return;
         }
-        const originalTax = calculateTax(totalIncome);
-        const newTax = calculateTax(totalIncome - investment); // Assuming CELIAPP also reduces taxable income
-        const taxImpact = originalTax - newTax;
+
+        let netIncome = totIncome - investment;
+
+        // Tax Calculations and logs
+        const [federalTax, federalLogs] = calculateFederalTax(netIncome);
+        const [quebecTax, quebecLogs] = calculateQuebecTax(netIncome);
+        const totalTax = federalTax + quebecTax;
+
+        // Regular calculation
+        const [federalTax2, federalLogs2] = calculateFederalTax(totIncome);
+        const [quebecTax2, quebecLogs2] = calculateQuebecTax(totIncome);
+        const totalTax2 = federalTax2 + quebecTax2;
+
+        // Tax credits - TO DO 
+
+        // Logs
+        const taxImpact = totalTax2 - totalTax;
         alert(`En allouant ${investment.toLocaleString('fr-CA')} CAD à votre CELIAPP, vous allez réduire votre obligation fiscale d'environ ${taxImpact.toLocaleString('fr-CA')} CAD.`);
     }
 
-    // Function to calculate DGC impact
-    function calculateDgcImpact() {
-        const donation = parseFloat(document.getElementById('dgcInput').value);
-        const totalIncome = parseFloat(document.getElementById('totalIncome').value) || 0;
-        if (isNaN(donation) || isNaN(totalIncome)) {
-            alert("Veuillez entrer un montant valide.");
-            return;
-        }
-        const originalTax = calculateTax(totalIncome);
-        const newTax = calculateTax(totalIncome - donation); // Assuming donation also reduces taxable income
-        const taxImpact = originalTax - newTax;
-        alert(`En faisant un don de ${donation.toLocaleString('fr-CA')} CAD à DGC, vous allez réduire votre obligation fiscale d'environ ${taxImpact.toLocaleString('fr-CA')} CAD.`);
-    }
+    // function calculateDgcImpact() {
+    //     const donation = parseFloat(document.getElementById('dgcInput').value);
+    //     const totalIncome = parseFloat(document.getElementById('totalIncome').value) || 0;
+    //     if (isNaN(donation) || isNaN(totalIncome)) {
+    //         alert("Veuillez entrer un montant valide.");
+    //         return;
+    //     }
+    //     const originalTax = calculateTax(totalIncome);
+    //     const newTax = calculateTax(totalIncome - donation); // Assuming donation also reduces taxable income
+    //     const taxImpact = originalTax - newTax;
+    //     alert(`En faisant un don de ${donation.toLocaleString('fr-CA')} CAD à DGC, vous allez réduire votre obligation fiscale d'environ ${taxImpact.toLocaleString('fr-CA')} CAD.`);
+    // }
 
     </script>
 
