@@ -246,14 +246,9 @@
         // NHL function
         function showNHL() {
 
-            // Get the current date
             const today = new Date();
-
-            // Format the date as "YYYY-MM-DD"
-            const formattedDate = today.toISOString().split('T')[0];
-
-            // Output the formatted date
-            console.log(formattedDate);
+            const formattedDate = today.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            console.log(formattedDate);  // Output: 2024-05-13 (assuming it's already past midnight in your local time)
 
             const divNHL = document.getElementById('nhl-div');
 
@@ -283,14 +278,9 @@
         // NBA function
         function showNBA() {
 
-        // Get the current date
-        const today = new Date();
-
-        // Format the date as "YYYY-MM-DD"
-        const formattedDate = today.toISOString().split('T')[0];
-
-        // Output the formatted date
-        console.log(formattedDate);
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            console.log(formattedDate);  // Output: 2024-05-13 (assuming it's already past midnight in your local time)
 
         const divNHL = document.getElementById('nba-div');
 

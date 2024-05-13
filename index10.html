@@ -38,34 +38,103 @@
     </div>
 </nav>
 
-<main class="container">
-    <div class="row">
-        <div class="col-md-6 overview-box">
-            <div class="overview-title">Good Morning, User!</div>
-            <p>Today's Overview: Sunny, 24°C</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Overview</title>
+    <style>
+        .container { max-width: 1000px; margin: auto; }
+        .row { display: flex; flex-wrap: wrap; }
+        .col-md-6 { width: 50%; padding: 10px; box-sizing: border-box; }
+        .overview-box { border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
+        .overview-title { font-size: 24px; color: #333; margin-bottom: 10px; }
+        input, button { margin-top: 10px; }
+    </style>
+</head>
+
+    <main class="container">
+        <div class="row">
+            <div class="col-md-6 overview-box">
+                <div class="overview-title">Tasks Due Today</div>
+                <ul id="tasks-list"></ul>
+                <input type="text" id="new-task" placeholder="Enter new task">
+                <button onclick="addTask()">Add Task</button>
+            </div>
+            <div class="col-md-6 overview-box">
+                <div class="overview-title">Upcoming Events</div>
+                <ul id="events-list"></ul>
+                <input type="text" id="new-event" placeholder="Enter new event">
+                <button onclick="addEvent()">Add Event</button>
+            </div>
+            <div class="col-md-6 overview-box">
+                <div class="overview-title">Budget Overview</div>
+                <p id="remaining-budget">Loading budget...</p>
+                <input type="number" id="amount" placeholder="Enter amount">
+                <button onclick="updateBudget()">Update Budget</button>
+                <p id="upcoming-bills">Loading bills...</p>
+            </div>
         </div>
-        <div class="col-md-6 overview-box">
-            <div class="overview-title">Tasks Due Today</div>
-            <ul>
-                <li>Buy groceries</li>
-                <li>Pay bills</li>
-                <li>Plan date night</li>
-            </ul>
-        </div>
-        <div class="col-md-6 overview-box">
-            <div class="overview-title">Upcoming Events</div>
-            <ul>
-                <li>Dinner with the Morgans, 7 PM</li>
-                <li>Anniversary, All Day</li>
-            </ul>
-        </div>
-        <div class="col-md-6 overview-box">
-            <div class="overview-title">Budget Overview</div>
-            <p>Remaining Budget: $500</p>
-            <p>Upcoming Bills: $200</p>
-        </div>
-    </div>
-</main>
+    </main>
+
+    <script>
+        // Mock data
+        const tasks = ["Buy groceries", "Pay bills", "Plan date night"];
+        const events = ["Dinner with the Morgans, 7 PM", "Anniversary, All Day"];
+        let budget = { remaining: 500, bills: 200 };
+
+        function displayTasks() {
+            const tasksElement = document.getElementById('tasks-list');
+            tasksElement.innerHTML = ''; // Clear existing tasks
+            tasks.forEach(task => {
+                const listItem = document.createElement('li');
+                listItem.textContent = task;
+                tasksElement.appendChild(listItem);
+            });
+        }
+
+        function addTask() {
+            const newTaskInput = document.getElementById('new-task');
+            tasks.push(newTaskInput.value); // Add new task
+            newTaskInput.value = ''; // Clear input field
+            displayTasks();
+        }
+
+        function displayEvents() {
+            const eventsElement = document.getElementById('events-list');
+            eventsElement.innerHTML = ''; // Clear existing events
+            events.forEach(event => {
+                const listItem = document.createElement('li');
+                listItem.textContent = event;
+                eventsElement.appendChild(listItem);
+            });
+        }
+
+        function addEvent() {
+            const newEventInput = document.getElementById('new-event');
+            events.push(newEventInput.value); // Add new event
+            newEventInput.value = ''; // Clear input field
+            displayEvents();
+        }
+
+        function displayBudget() {
+            const budgetElement = document.getElementById('remaining-budget');
+            budgetElement.textContent = `Remaining Budget: $${budget.remaining}`;
+        }
+
+        function updateBudget() {
+            const amountInput = document.getElementById('amount');
+            budget.remaining += parseInt(amountInput.value, 10); // Update budget
+            amountInput.value = ''; // Clear input field
+            displayBudget();
+        }
+
+        // Initial calls to populate the data
+        displayTasks();
+        displayEvents();
+        displayBudget();
+    </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
