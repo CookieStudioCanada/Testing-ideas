@@ -1,142 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Couple's Productivity App</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-    body { padding-top: 5rem; }
-    .container { max-width: 960px; }
-    .icon { width: 24px; height: 24px; }
-    .overview-box { padding: 20px; margin-bottom: 20px; border: 1px solid #eee; border-radius: 8px; }
-    .overview-title { margin-bottom: 15px; font-weight: bold; }
-</style>
-</head>
-<body>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Couple's App</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-            </ul>
-            <div class="d-flex">
-                <a class="btn btn-outline-success" href="#">Sign in</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Overview</title>
+    <title>Share</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .container { max-width: 1000px; margin: auto; }
-        .row { display: flex; flex-wrap: wrap; }
-        .col-md-6 { width: 50%; padding: 10px; box-sizing: border-box; }
-        .overview-box { border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
-        .overview-title { font-size: 24px; color: #333; margin-bottom: 10px; }
-        input, button { margin-top: 10px; }
+        .overview-box { margin-top: 20px; padding: 20px; border: 1px solid #ccc; }
+        .strikethrough { text-decoration: line-through; }
+        table { width: 100%; }
+        th, td { padding: 8px; text-align: left; }
+        .total-row { font-weight: bold; }
     </style>
 </head>
+<body>
 
-    <main class="container">
+    <nav class="navbar bg-dark border-bottom border-body">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1" style="color: white;">Share</span>
+        </div>
+    </nav>
+
+    <div class="container py-1">
         <div class="row">
             <div class="col-md-6 overview-box">
-                <div class="overview-title">Tasks Due Today</div>
-                <ul id="tasks-list"></ul>
-                <input type="text" id="new-task" placeholder="Enter new task">
-                <button onclick="addTask()">Add Task</button>
+                <h4>Tâches</h4>
+                <ul id="tasks-list" class="list-group mb-3"></ul>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" id="new-task" class="form-control" placeholder="Ajouter une nouvelle tâche">
+                    </div>
+                    <div class="col-auto">
+                        <button onclick="addTask()" class="btn btn-success">Ajouter</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 overview-box">
-                <div class="overview-title">Upcoming Events</div>
-                <ul id="events-list"></ul>
-                <input type="text" id="new-event" placeholder="Enter new event">
-                <button onclick="addEvent()">Add Event</button>
+                <h4>Événements à venir</h4>
+                <ul id="events-list" class="list-group mb-3"></ul>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" id="new-event" class="form-control" placeholder="Nom de l'événement">
+                        <input type="date" id="new-event-time" class="form-control mt-2">
+                    </div>
+                    <div class="col-auto">
+                        <button onclick="addEvent()" class="btn btn-success mt-4">Ajouter</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 overview-box">
-                <div class="overview-title">Budget Overview</div>
-                <p id="remaining-budget">Loading budget...</p>
-                <input type="number" id="amount" placeholder="Enter amount">
-                <button onclick="updateBudget()">Update Budget</button>
-                <p id="upcoming-bills">Loading bills...</p>
+                <h4>Transactions</h4>
+                <table id="transactions-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Montant</th>
+                            <th>Catégorie</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-list">
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td>Total:</td>
+                            <td id="total-amount"></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" id="new-transaction-name" class="form-control" placeholder="Description de la transaction">
+                        <input type="number" id="new-transaction-amount" class="form-control mt-2" placeholder="Montant">
+                        <input list="categories" id="new-transaction-category" class="form-control mt-2" placeholder="Catégorie">
+                        <datalist id="categories">
+                            <option value="Grocery">
+                            <option value="Entertainment">
+                            <option value="Utilities">
+                            <option value="Other">
+                        </datalist>
+                    </div>
+                    <div class="col-auto">
+                        <button onclick="addTransaction()" class="btn btn-success mt-4">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 overview-box">
+                <h4>Liste de courses</h4>
+                <ul id="grocery-list" class="list-group mb-3"></ul>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" id="new-grocery" class="form-control" placeholder="Ajouter un article">
+                    </div>
+                    <div class="col-auto">
+                        <button onclick="addGrocery()" class="btn btn-success">Ajouter</button>
+                        <button onclick="clearGroceries()" class="btn btn-secondary">X</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
-        // Mock data
-        const tasks = ["Buy groceries", "Pay bills", "Plan date night"];
-        const events = ["Dinner with the Morgans, 7 PM", "Anniversary, All Day"];
-        let budget = { remaining: 500, bills: 200 };
+        let tasks = ["Payer les factures", "Planifier une soirée"];
+        let events = [{"name": "Dîner avec Bobby", "time": "2024-05-14"}];
+        let transactions = [];
+        let groceries = ["Pain", "Lait", "Fromage"];
 
         function displayTasks() {
             const tasksElement = document.getElementById('tasks-list');
-            tasksElement.innerHTML = ''; // Clear existing tasks
-            tasks.forEach(task => {
+            tasksElement.innerHTML = '';
+            tasks.forEach((task, index) => {
                 const listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                 listItem.textContent = task;
+                const buttonContainer = document.createElement('div');
+                buttonContainer.innerHTML = `<button onclick="editTask(${index})" class="btn btn-sm btn-outline-secondary">Modifier</button>
+                                             <button onclick="deleteTask(${index})" class="btn btn-sm btn-outline-danger">Supprimer</button>`;
+                listItem.appendChild(buttonContainer);
                 tasksElement.appendChild(listItem);
             });
         }
 
-        function addTask() {
-            const newTaskInput = document.getElementById('new-task');
-            tasks.push(newTaskInput.value); // Add new task
-            newTaskInput.value = ''; // Clear input field
-            displayTasks();
-        }
-
         function displayEvents() {
             const eventsElement = document.getElementById('events-list');
-            eventsElement.innerHTML = ''; // Clear existing events
-            events.forEach(event => {
+            eventsElement.innerHTML = '';
+            events.forEach((event, index) => {
                 const listItem = document.createElement('li');
-                listItem.textContent = event;
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.textContent = `${event.name} - ${event.time.replace('T', ' à ')}`;
+                const buttonContainer = document.createElement('div');
+                buttonContainer.innerHTML = `<button onclick="editEvent(${index})" class="btn btn-sm btn-outline-secondary">Modifier</button>
+                                             <button onclick="deleteEvent(${index})" class="btn btn-sm btn-outline-danger">Supprimer</button>`;
+                listItem.appendChild(buttonContainer);
                 eventsElement.appendChild(listItem);
             });
         }
 
+        function displayTransactions() {
+            const transactionsElement = document.getElementById('transactions-list');
+            transactionsElement.innerHTML = '';
+            let totalAmount = 0;
+            transactions.forEach((transaction) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${transaction.description}</td>
+                                 <td>$${transaction.amount}</td>
+                                 <td>${transaction.category}</td>`;
+                transactionsElement.appendChild(row);
+                totalAmount += parseFloat(transaction.amount);
+            });
+            document.getElementById('total-amount').textContent = `$${totalAmount.toFixed(2)}`;
+        }
+
+        function displayGroceries() {
+            const groceriesElement = document.getElementById('grocery-list');
+            groceriesElement.innerHTML = '';
+            groceries.forEach((grocery, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = grocery;
+                listItem.onclick = function() { toggleGrocery(index); };
+                groceriesElement.appendChild(listItem);
+            });
+        }
+
+        function toggleGrocery(index) {
+            const groceryItem = document.getElementById('grocery-list').children[index];
+            groceryItem.classList.toggle('strikethrough');
+        }
+
+        function addTask() {
+            const newTaskInput = document.getElementById('new-task');
+            tasks.push(newTaskInput.value);
+            newTaskInput.value = '';
+            displayTasks();
+        }
+
         function addEvent() {
             const newEventInput = document.getElementById('new-event');
-            events.push(newEventInput.value); // Add new event
-            newEventInput.value = ''; // Clear input field
+            const newEventTime = document.getElementById('new-event-time');
+            events.push({"name": newEventInput.value, "time": newEventTime.value});
+            newEventInput.value = '';
+            newEventTime.value = '';
             displayEvents();
         }
 
-        function displayBudget() {
-            const budgetElement = document.getElementById('remaining-budget');
-            budgetElement.textContent = `Remaining Budget: $${budget.remaining}`;
+        function addTransaction() {
+            const newTransactionName = document.getElementById('new-transaction-name');
+            const newTransactionAmount = document.getElementById('new-transaction-amount');
+            const newTransactionCategory = document.getElementById('new-transaction-category');
+            transactions.push({"description": newTransactionName.value, "amount": newTransactionAmount.value, "category": newTransactionCategory.value});
+            newTransactionName.value = '';
+            newTransactionAmount.value = '';
+            newTransactionCategory.value = '';
+            displayTransactions();
         }
 
-        function updateBudget() {
-            const amountInput = document.getElementById('amount');
-            budget.remaining += parseInt(amountInput.value, 10); // Update budget
-            amountInput.value = ''; // Clear input field
-            displayBudget();
+        function addGrocery() {
+            const newGroceryInput = document.getElementById('new-grocery');
+            groceries.push(newGroceryInput.value);
+            newGroceryInput.value = '';
+            displayGroceries();
+        }
+
+        function clearGroceries() {
+            groceries = [];
+            displayGroceries();
+        }
+
+        function editTask(index) {
+            const newTask = prompt("Modifier la tâche :", tasks[index]);
+            if (newTask) {
+                tasks[index] = newTask;
+                displayTasks();
+            }
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            displayTasks();
+        }
+
+        function editEvent(index) {
+            const newEventName = prompt("Modifier le nom de l'événement :", events[index].name);
+            const newEventTime = prompt("Modifier l'heure de l'événement (format YYYY-MM-DD) :", events[index].time);
+            if (newEventName && newEventTime) {
+                events[index] = {"name": newEventName, "time": newEventTime};
+                displayEvents();
+            }
+        }
+
+        function deleteEvent(index) {
+            events.splice(index, 1);
+            displayEvents();
         }
 
         // Initial calls to populate the data
         displayTasks();
         displayEvents();
-        displayBudget();
+        displayTransactions();
+        displayGroceries();
     </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
