@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container my-4">
+    <h1 class="mb-4">Data</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="api_key" class="form-label">Google API Key</label>
+            <input type="text" id="api_key" name="api_key" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">CSV</label>
+            <input type="file" id="file" name="file" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="prompt" class="form-label">Instructions de l'utilisateur</label>
+            <input type="text" id="prompt" name="prompt" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Demander</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mt-5">Extract Text from PDF</h2>
+<form action="{{ url_for('extract') }}" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="pdfFile" class="form-label">Upload PDF file to extract text:</label>
+        <input class="form-control" type="file" id="pdfFile" name="pdfFile" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Extract Text</button>
+</form>
+
+{% if extracted_text %}
+<h3 class="mt-5">Extracted Text</h3>
+<pre>{{ extracted_text }}</pre>
+{% endif %}
+{% endblock %}

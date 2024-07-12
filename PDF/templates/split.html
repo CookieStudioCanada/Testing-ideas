@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mt-5">Split PDF</h2>
+<form action="{{ url_for('split') }}" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="pdfFile" class="form-label">Upload PDF file to split:</label>
+        <input class="form-control" type="file" id="pdfFile" name="pdfFile" required>
+    </div>
+    <div class="mb-3">
+        <label for="startPage" class="form-label">Start Page:</label>
+        <input class="form-control" type="number" id="startPage" name="startPage" min="1" required>
+    </div>
+    <div class="mb-3">
+        <label for="endPage" class="form-label">End Page:</label>
+        <input class="form-control" type="number" id="endPage" name="endPage" min="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Split</button>
+</form>
+{% endblock %}

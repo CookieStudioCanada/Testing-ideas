@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #333;
+}
+
+.chat-log {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+.chat-log p {
+    margin: 10px 0;
+}
+
+.user-message {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.data-response {
+    font-style: italic;
+    color: #2980b9;
+}
+
+.data-response strong {
+    font-style: normal;
+}
+
+h1, h2, h3, p, li {
+    margin: 10px 0;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+li {
+    list-style-type: disc;
+    margin-left: 20px;
+}

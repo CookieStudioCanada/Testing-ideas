@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="container my-4">
+    <h1 class="mb-4">Data</h1>
+    <div id="chat-log" class="chat-log border p-3 mb-4 rounded">
+        {% for message, response in chat_log %}
+            <div class="mb-3">
+                <p class="user-message"><strong>You:</strong> {{ message }}</p>
+                <p class="data-response"><strong>Data:</strong> {{ response | safe }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <form action="/chat" method="post" class="mb-3">
+        <div class="mb-3">
+            <label for="message" class="form-label">Instructions de l'utilisateur</label>
+            <input type="text" id="message" name="message" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Demander</button>
+    </form>
+    <form action="/" method="get">
+        <button type="submit" class="btn btn-danger">Fermer</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

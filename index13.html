@@ -135,7 +135,7 @@
                     <input type="number" id="celiappInput" class="form-control" placeholder="Entrez le montant de votre investissement CELIAPP">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="calculateCeliappImpact()">Calculer l'impact</button>
+                    <button type="button" class="btn btn-secondary" onclick="calculateCeliappImpact()">Calculer l'impact</button>
                 </div>
             </div>
         </div>
@@ -153,7 +153,7 @@
                     <input type="number" id="reerInput" class="form-control" placeholder="Entrez le montant de votre investissement REER">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="calculateReerImpact()">Calculer l'impact</button>
+                    <button type="button" class="btn btn-secondary" onclick="calculateReerImpact()">Calculer l'impact</button>
                 </div>
             </div>
         </div>
@@ -180,6 +180,8 @@
     <script>
     let detailedLogs = "";
     let totIncome;
+    let dMmajoration;
+    let ndMajoration;
 
     function logDetailedResults(logs) {
         detailedLogs = logs.join('\n');
@@ -223,7 +225,12 @@
                 }
             }
         }
+        
         let abatedTax = tax - (tax * 0.165);
+        
+        // console.log("majorations : deter" + dMmajoration + "nd : " + ndMajoration);
+        // finalTax = abatedTax - (dMmajoration * (6/11)) - (ndMajoration * (9/13));
+        
         logs.push(`Application de l'abattement de 16.5%, réduction de l'impôt de $${(tax * 0.165).toFixed(2)} à $${abatedTax.toFixed(2)}.`);
         return [abatedTax, logs];
     }
@@ -271,6 +278,8 @@
 
         const totalIncome = employmentIncome + (capitalGains * 0.50) + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome;
         totIncome = totalIncome;
+        dMmajoration = (determinedDividend * 1.38) - determinedDividend;
+        ndMajoration = (undeterminedDividend * 1.15) - undeterminedDividend;
         
         if (isNaN(totalIncome) || totalIncome === 0) {
             document.getElementById('result').textContent = 'Veuillez entrer un chiffre valide dans au moins une catégorie.';

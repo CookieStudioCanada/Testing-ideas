@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center mt-5">
+    <h1 class="display-4">Perennity Pickle</h1>
+    <img src="{{ url_for('static', filename='images/PerPickle.png') }}" alt="Perennity Pickle Logo" style="height: 200px; width: 200px; border: 1px solid black;">
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="{{ url_for('merge') }}" role="button">Merge</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('split') }}" role="button">Split</a>
+    <a class="btn btn-success btn-lg" href="{{ url_for('rotate') }}" role="button">Rotate</a>
+    <a class="btn btn-danger btn-lg" href="{{ url_for('extract') }}" role="button">Extract Text</a>
+</div>
+{% endblock %}

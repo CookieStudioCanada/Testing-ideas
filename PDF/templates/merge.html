@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mt-5">Merge PDFs</h2>
+<form id="mergeForm" action="{{ url_for('merge') }}" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="pdfFiles" class="form-label">Upload PDF files to merge:</label>
+        <input class="form-control" type="file" id="pdfFiles" name="pdfFiles" multiple>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload Files</button>
+</form>
+
+<h3 class="mt-5">Files to be Merged</h3>
+<ul>
+    {% for file in files %}
+    <li>{{ file }}</li>
+    {% endfor %}
+</ul>
+
+<form action="{{ url_for('merge') }}" method="POST">
+    <input type="hidden" name="merge" value="true">
+    <button type="submit" class="btn btn-success">Merge Files</button>
+</form>
+{% endblock %}
