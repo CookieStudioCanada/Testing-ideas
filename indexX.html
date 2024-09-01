@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuisto Helper</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Cuisto Helper</h1>
+
+        <!-- Guide des Températures -->
+        <div id="temperature-guide" class="mb-5">
+            <h2 class="text-primary">Températures Recommandées pour la Cuisson</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Type de Viande</th>
+                            <th>Bleu</th>
+                            <th>Saignant</th>
+                            <th>À point</th>
+                            <th>Cuit</th>
+                            <th>Bien Cuit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Boeuf, Veau & Agneau</td>
+                            <td>115°F / 46°C</td>
+                            <td>125°F / 52°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>145°F / 63°C</td>
+                            <td>155°F / 68°C</td>
+                        </tr>
+                        <tr>
+                            <td>Porc</td>
+                            <td>125°F / 52°C</td>
+                            <td>130°F / 54°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>140°F / 60°C</td>
+                        </tr>
+                        <tr>
+                            <td>Saumon & Poissons Gras</td>
+                            <td>115°F / 46°C</td>
+                            <td>125°F / 52°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>145°F / 63°C</td>
+                        </tr>
+                        <tr>
+                            <td>Bar & Poissons Maigres</td>
+                            <td>125°F / 52°C</td>
+                            <td>130°F / 54°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>135°F / 57°C</td>
+                            <td>140°F / 60°C</td>
+                        </tr>
+                        <tr>
+                            <td>Crustacés</td>
+                            <td></td>
+                            <td>120°F / 49°C</td>
+                            <td>130°F / 54°C</td>
+                            <td></td>
+                            <td>140°F / 60°C</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-primary">Températures Additionnelles pour la Sécurité</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Type de Viande</th>
+                            <th>Température</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Viandes Hachées</td>
+                            <td>160°F / 71°C</td>
+                        </tr>
+                        <tr>
+                            <td>Volaille</td>
+                            <td>165°F / 74°C</td>
+                        </tr>
+                        <tr>
+                            <td>Brisket, Côtes de Porc, Épaule</td>
+                            <td>190-205°F / 88-96°C</td>
+                        </tr>
+                        <tr>
+                            <td>Jambon (Cru)</td>
+                            <td>160°F / 71°C</td>
+                        </tr>
+                        <tr>
+                            <td>Jambon (Fumé)</td>
+                            <td>140°F / 60°C</td>
+                        </tr>
+                        <tr>
+                            <td>Saucisse</td>
+                            <td>160°F / 71°C</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <strong>Note :</strong> Ces températures sont couramment utilisées par les chefs professionnels pour obtenir une texture et un goût désirés. Elles ne sont pas recommandées par l'USDA. Pour une cuisson conforme aux recommandations de l'USDA, ajoutez 5 à 10°F (2 à 5°C) supplémentaires. Notez que la température interne continue d'augmenter pendant que le plat repose.
+            </div>
+        </div>
+
+        <!-- Convertisseur d'Unités -->
+        <div id="unit-converter" class="mb-5">
+            <h2 class="text-primary">Convertisseur d'Unités</h2>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" id="value" placeholder="Entrez une valeur">
+                <select id="unit" class="form-select">
+                    <option value="grams">Gramme</option>
+                    <option value="liters">Litre</option>
+                    <option value="cups">Tasse</option>
+                    <option value="ounces">Once</option>
+                </select>
+                <button class="btn btn-primary" onclick="convertUnit()">Convertir</button>
+            </div>
+            <p id="conversion-result"></p>
+        </div>
+
+        <!-- Section Minuteur -->
+        <div id="timer">
+            <h2 class="text-primary">Minuteur</h2>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" id="time" placeholder="Entrez le temps en secondes">
+                <button class="btn btn-danger" onclick="startTimer()">Lancer le Minuteur</button>
+            </div>
+            <p id="timer-result"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
