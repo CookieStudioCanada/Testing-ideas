@@ -3,13 +3,13 @@ from bs4 import BeautifulSoup
 import os
 import google.generativeai as genai
 
-# Configure the Gemini API with your API key
-gemini_api_key = os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=gemini_api_key)
-
-# Get the URL and prompt from the user
+# Get informations from user
+gemini_api_key = 'AIzaSyAJch8mlPK70FNHiRFTBf2gkeOu4EC4tLI' # input("Google API Key : ")
 url = input("URL: ")
 prompt = input("Prompt: ")
+
+# Configure the Gemini API with your API key
+genai.configure(api_key=gemini_api_key)
 
 # Send a GET request to the website
 response = requests.get(url)

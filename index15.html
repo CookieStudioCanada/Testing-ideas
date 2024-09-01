@@ -3,70 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application de Calcul</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Application de Calcul de Gains en Capital Canadien</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
-        /* Ajoutez ici vos styles CSS personnalisés */
+        body {
+            padding-top: 56px;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .table-container {
+            margin-bottom: 20px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .modal-header, .modal-body, .modal-footer {
+            padding: 20px;
+        }
+        #results {
+            font-size: 1.2em;
+            color: #333;
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Logo/Home</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Calcul <span class="caret"></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Historique</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Compte</a>
-                </li>
-            </ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo/Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Calcul <span class="caret"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Historique</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Compte</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
+    <!-- Container Principal -->
     <div class="container mt-4">
         <div class="row">
+            <!-- Colonne Gauche -->
             <div class="col-md-6">
-                <h4>Wind-up</h4>
-                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#helpModal">?</button>
-                <button class="btn btn-warning">*</button>
-                <div>
-                    <h5>Biens de la compagnie</h5>
-                    <!-- Tableau Handsontable ici -->
+                <div class="table-container">
+                    <h4>Wind-up</h4>
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#helpModal">?</button>
+                    <button class="btn btn-warning">*</button>
                 </div>
-                <div>
+                <div class="table-container">
+                    <h5>Items</h5>
+                    <table class="table table-bordered" id="companyItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>Valeur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Item 1</td><td>Actif</td><td>20000</td></tr>
+                            <tr><td>Item 2</td><td>Actif</td><td>15000</td></tr>
+                            <tr><td>Item 3</td><td>Actif</td><td>10000</td></tr>
+                            <tr><td>Item 4</td><td>Passif</td><td>5000</td></tr>
+                            <tr><td>Item 5</td><td>Passif</td><td>7000</td></tr>
+                            <tr><td>Item 6</td><td>Capitaux Propres</td><td>20000</td></tr>
+                            <tr><td>Item 7</td><td>Capitaux Propres</td><td>10000</td></tr>
+                            <tr><td>Item 8</td><td>Actif</td><td>8000</td></tr>
+                            <tr><td>Item 9</td><td>Passif</td><td>3000</td></tr>
+                            <tr><td>Item 10</td><td>Capitaux Propres</td><td>10000</td></tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addItemModal">Ajouter un Item</button>
+                </div>
+                <div class="table-container">
                     <h5>Actionnaires</h5>
-                    <!-- Tableau Handsontable ici -->
+                    <table class="table table-bordered" id="shareholdersTable">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be added dynamically -->
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addShareholderModal">Ajouter un Actionnaire</button>
                 </div>
-                <button class="btn btn-primary">Calculer</button>
+                <button class="btn btn-success" id="calculateButton">Calculer</button>
             </div>
+            <!-- Colonne Droite -->
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Case A</h5>
-                        <!-- Tableau Handsontable ici -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Résultats</h5>
                     </div>
-                    <div class="col-md-6">
-                        <h5>Case B</h5>
-                        <!-- Tableau Handsontable ici -->
+                    <div class="card-body">
+                        <div id="results">
+                            <!-- Résultats -->
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <h5>Case C</h5>
-                        <!-- Tableau Handsontable ici -->
+                    <div class="card-footer">
+                        <h5>Hypothèses</h5>
+                        <ul id="hypothesesList">
+                            <!-- Liste des hypothèses -->
+                        </ul>
                     </div>
                 </div>
-                <h5>Hypothèses</h5>
-                <!-- Liste des hypothèses ici -->
-                <h5>Résultats</h5>
-                <!-- Résultats ici -->
             </div>
         </div>
     </div>
 
-    <!-- Modal d'aide -->
+    <!-- Modal d'Aide -->
     <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -75,15 +158,171 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Contenu de l'aide -->
+                    <p>Comment utiliser l'application.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal pour Ajouter un Item -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemModalLabel">Ajouter un Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addItemForm">
+                        <div class="mb-3">
+                            <label for="itemName" class="form-label">Nom de l'Item</label>
+                            <input type="text" class="form-control" id="itemName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemType" class="form-label">Type</label>
+                            <select class="form-select" id="itemType" required>
+                                <option value="Actif">Actif</option>
+                                <option value="Passif">Passif</option>
+                                <option value="Capitaux Propres">Capitaux Propres</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemValue" class="form-label">Valeur</label>
+                            <input type="number" class="form-control" id="itemValue" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour Ajouter un Actionnaire -->
+    <div class="modal fade" id="addShareholderModal" tabindex="-1" aria-labelledby="addShareholderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addShareholderModalLabel">Ajouter un Actionnaire</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addShareholderForm">
+                        <div class="mb-3">
+                            <label for="shareholderName" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="shareholderName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="shareholderType" class="form-label">Type</label>
+                            <select class="form-select" id="shareholderType" required>
+                                <option value="Votante">Votante</option>
+                                <option value="Participante">Participante</option>
+                                <option value="Privilégiées">Privilégiées</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="shareholderShares" class="form-label">Actions</label>
+                            <input type="number" class="form-control" id="shareholderShares" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
-        // Ajoutez ici vos scripts JavaScript personnalisés
+        $(document).ready(function() {
+            // Initialisation des DataTables
+            let companyItemsTable = $('#companyItemsTable').DataTable();
+            let shareholdersTable = $('#shareholdersTable').DataTable();
+
+            // Ajout d'un item
+            $('#addItemForm').on('submit', function(e) {
+                e.preventDefault();
+                let itemName = $('#itemName').val();
+                let itemType = $('#itemType').val();
+                let itemValue = parseFloat($('#itemValue').val());
+                companyItemsTable.row.add([itemName, itemType, itemValue]).draw();
+                $('#addItemModal').modal('hide');
+                updateResults();
+            });
+
+            // Ajout d'un actionnaire
+            $('#addShareholderForm').on('submit', function(e) {
+                e.preventDefault();
+                let shareholderName = $('#shareholderName').val();
+                let shareholderType = $('#shareholderType').val();
+                let shareholderShares = parseFloat($('#shareholderShares').val());
+                let shareholderValue = 0;  // Valeur fixée par le code
+                if (shareholderType === 'Privilégiées') {
+                    shareholderValue = 10000;  // Exemple de valeur fixe pour les actions privilégiées
+                }
+                shareholdersTable.row.add([shareholderName, shareholderType, shareholderShares, shareholderValue]).draw();
+                $('#addShareholderModal').modal('hide');
+                updateResults();
+            });
+
+            // Logique de calcul des gains en capital canadien et mise à jour des résultats
+            $('#calculateButton').on('click', function() {
+                updateResults();
+            });
+
+            function updateResults() {
+                let companyItems = companyItemsTable.rows().data().toArray();
+                let shareholders = shareholdersTable.rows().data().toArray();
+
+                // Calcul des valeurs des actifs, passifs et capitaux propres
+                let totalAssetsValue = companyItems.filter(item => item[1] === 'Actif').reduce((total, item) => total + parseFloat(item[2]), 0);
+                let totalLiabilitiesValue = companyItems.filter(item => item[1] === 'Passif').reduce((total, item) => total + parseFloat(item[2]), 0);
+                let totalEquityValue = companyItems.filter(item => item[1] === 'Capitaux Propres').reduce((total, item) => total + parseFloat(item[2]), 0);
+
+                // Calcul des valeurs des actions
+                let totalParticipanteValue = 0;
+                let totalPrivilegieeValue = 0;
+                shareholders.forEach(shareholder => {
+                    if (shareholder[1] === 'Participante') {
+                        totalParticipanteValue += shareholder[2];
+                    } else if (shareholder[1] === 'Privilégiées') {
+                        totalPrivilegieeValue += shareholder[3];
+                    }
+                });
+
+                // Allocation des valeurs aux actionnaires
+                let companyValue = 100000;
+                let remainingValue = companyValue - totalPrivilegieeValue;
+                totalParticipanteValue = remainingValue > 0 ? remainingValue : 0;
+
+                // Calcul des gains en capital
+                let capitalGains = totalAssetsValue - (totalLiabilitiesValue + totalEquityValue + totalPrivilegieeValue + totalParticipanteValue);
+
+                $('#results').html(`
+                    <p>Valeur Totale des Actifs: ${totalAssetsValue.toFixed(2)} CAD</p>
+                    <p>Valeur Totale des Passifs: ${totalLiabilitiesValue.toFixed(2)} CAD</p>
+                    <p>Valeur Totale des Capitaux Propres: ${totalEquityValue.toFixed(2)} CAD</p>
+                    <p>Valeur Totale des Actions Participantes: ${totalParticipanteValue.toFixed(2)} CAD</p>
+                    <p>Valeur Totale des Actions Privilégiées: ${totalPrivilegieeValue.toFixed(2)} CAD</p>
+                    <p>Gain en Capital: ${capitalGains.toFixed(2)} CAD</p>
+                `);
+            }
+
+            // Initialisation des valeurs par défaut dans le tableau des actionnaires
+            let initialShareholders = [
+                ['Actionnaire 1', 'Votante', 500, 0],
+                ['Actionnaire 2', 'Participante', 1000, 0],
+                ['Actionnaire 3', 'Privilégiées', 100, 10000]
+            ];
+            initialShareholders.forEach(shareholder => {
+                shareholdersTable.row.add(shareholder).draw();
+            });
+
+            // Mise à jour des résultats dès le chargement
+            updateResults();
+        });
     </script>
 </body>
 </html>
+
