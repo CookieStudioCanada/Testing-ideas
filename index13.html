@@ -276,7 +276,15 @@
         const undeterminedDividend = parseFloat(document.getElementById('undeterminedDividend').value) || 0;
         const propertyIncome = parseFloat(document.getElementById('propertyIncome').value) || 0;
 
-        const totalIncome = employmentIncome + (capitalGains * 0.50) + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome;
+        const capitalGainsOver = 0;
+
+        if (capitalGains > 250000) {
+            capitalGainsOver = capitalGains - 250000;
+        } else {
+            return;
+        }
+
+        const totalIncome = employmentIncome + + (capitalGainsOver * 0,6667) + (capitalGains * 0.50) + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome;
         totIncome = totalIncome;
         dMmajoration = (determinedDividend * 1.38) - determinedDividend;
         ndMajoration = (undeterminedDividend * 1.15) - undeterminedDividend;

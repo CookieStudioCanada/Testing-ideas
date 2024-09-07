@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus - Simplified Tax App</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Calculus</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="showLogs()">Détails du calcul</button>
+                    </li>
+                    <!-- Dropdown for Deductions -->
+                    <li class="nav-item dropdown">
+                        <button class="dropdown-toggle nav-link" type="button" id="deductionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            Déductions
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="deductionsMenu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#celiappModal">CELIAPP</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reerModal">REER</a></li>
+                            <!-- <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dgcModal">DGC</a></li> -->
+                        </ul>
+                    </li>
+                    <!-- Dropdown for Options with Checklists -->
+                    <li class="nav-item dropdown">
+                        <button class="dropdown-toggle nav-link" type="button" id="optionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="optionsMenu">
+                            <li><a class="dropdown-item"><input type="checkbox" checked disabled> Abattement QC</a></li>
+                            <!-- <li><a class="dropdown-item"><input type="checkbox" checked> Crédit d'impôt personnel</a></li> -->
+                            <li><a class="dropdown-item"><input type="checkbox" checked disabled> Individu</a></li>
+                            <li><a class="dropdown-item"><input type="checkbox" disabled> Société par actions</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="modal" data-bs-target="#glossaireModal">Glossaire</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form-->
+    <div class="container mt-3">
+        <h3>Calculateur d'impôts</h3>
+        <div class="mb-3">
+            <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
+            <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
+        </div>
+        <div class="mb-3">
+            <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
+            <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
+        </div>
+        <div class="mb-3">
+            <label for="determinedDividend" class="form-label" title="Dividendes déterminés de vos investissements.">Dividende déterminé:</label>
+            <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
+        </div>
+        <div class="mb-3">
+            <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
+            <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
+        </div>
+        <div class="mb-3">
+            <label for="propertyIncome" class="form-label" title="Revenu de biens ou d'entreprise.">Revenu d'entreprise/biens:</label>
+            <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise/biens">
+        </div>
+
+        <button class="btn btn-secondary me-2" onclick="calculateTotalTax()">Calculer</button>
+        <button class="btn btn-danger me-2" onclick="resetFields()">Réinitialiser</button>        
+
+        <!-- Result Display -->
+        <div id="result" class="mt-3"></div>
+
+    </div>
+        
+    <!-- Toast -->  
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Détails du calcul</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastBody">Aucun calcul</div>
+            </div>
+    </div>
+
+    <!-- Modal for Glossaire -->
+    <div class="modal fade" id="glossaireModal" tabindex="-1" aria-labelledby="glossaireModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Glossaire</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Taux d'imposition</strong> : Pourcentage appliqué au revenu imposable pour calculer l'impôt dû. Différents paliers sont appliqués progressivement selon le niveau de revenu.</p>
+                    <p><strong>Déduction fiscale</strong> : Montants soustraits du revenu pour calculer le revenu imposable. Inclut des déductions pour certaines dépenses comme les contributions à un REER.</p>
+                    <p><strong>Crédit d'impôt</strong> : Réductions directes de l'impôt à payer, accordées pour diverses situations, comme les crédits pour enfants ou pour les dépenses en santé.</p>
+                    <p><strong>Revenu imposable</strong> : Montant du revenu restant après toutes les déductions autorisées, servant de base au calcul de l'impôt.</p>
+                    <p><strong>Gain en capital</strong> : Profit obtenu de la vente de biens (comme des propriétés ou des actions) pour un prix supérieur à leur coût d'achat. Seule une partie est imposable.</p>
+                    <p><strong>Taux d'inclusion</strong> : Proportion d'un gain en capital qui est soumise à l'impôt. Actuellement à 50% jusqu'au 25 juin 2024.</p>
+                    <p><strong>CELIAPP</strong> : Compte d'épargne permettant aux individus d'économiser de manière fiscalement avantageuse pour l'achat d'une première propriété. Les contributions sont déductibles du revenu imposable.</p>
+                    <p><strong>REER</strong> : Compte d'épargne offrant un avantage fiscal, les contributions sont déductibles du revenu imposable, et les retraits sont taxés comme un revenu.</p>
+                    <p><strong>Abattement QC</strong> : Réduction spécifique pour les résidents du Québec en reconnaissance de la fiscalité provinciale. Réduction de 16,5% de l'impôt fédéral.</p> 
+                    <p><strong>Dividende déterminé/non-déterminé</strong> : Dividendes versés par une société. Les dividendes déterminés proviennent des bénéfices qui ont été imposés au taux général d'imposition des sociétés par actions. Ils bénéficient de crédits d'impôt avantageux.</p>
+                    <p><strong>Revenu d'entreprise/biens</strong> : Revenus générés par l'exploitation d'une entreprise ou de biens.</p>
+                    <p><strong>Taux marginal d'imposition</strong> : Taux appliqué sur le dernier dollar de revenu gagné, important pour planifier les implications fiscales des augmentations de revenu.</p>
+                    <p><strong>Taux moyen d'imposition</strong> : Ratio de l'impôt total payé sur le revenu total, utile pour comprendre le fardeau fiscal global.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for CELIAPP -->
+    <div class="modal fade" id="celiappModal" tabindex="-1" aria-labelledby="celiappModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="celiappModalLabel">Impact de l'investissement CELIAPP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="number" id="celiappInput" class="form-control" placeholder="Entrez le montant de votre investissement CELIAPP">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="calculateCeliappImpact()">Calculer l'impact</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for REER -->
+    <div class="modal fade" id="reerModal" tabindex="-1" aria-labelledby="reerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reerModalLabel">Impact de l'investissement REER</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="number" id="reerInput" class="form-control" placeholder="Entrez le montant de votre investissement REER">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="calculateReerImpact()">Calculer l'impact</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="calculus.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
