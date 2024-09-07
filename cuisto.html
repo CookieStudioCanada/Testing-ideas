@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuisto Helper</title>
+    <title>Cuisto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -16,24 +16,27 @@
 </head>
 
 <body>
+    
     <div class="container mt-5">
         <!-- Header Section -->
         <header class="text-center mb-5">
-            <h1 class="display-4 fw-bold">Cuisto Helper</h1>
-            <p class="lead">Votre assistant de cuisine ultime pour des températures de cuisson et des conversions parfaites.</p>
+            <h1 class="display-2 fw-bold">Cuisto</h1>
+            <p class="lead">Votre assistant de cuisine</p>
         </header>
 
         <!-- Guide des Températures -->
         <section id="temperature-guide" class="mb-5">
             <h2 class="mb-3">Températures pour cuisson</h2>
-            <div class="table-responsive">
-                <table class="table">
+
+            <!-- Table for larger screens -->
+            <div class="table-responsive d-none d-sm-block">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Type de Viande</th>
-                            <th>Bleu</th>
                             <th>Saignant</th>
-                            <th>À point</th>
+                            <th>Medium-saignant</th>
+                            <th>Medium</th>
                             <th>Cuit</th>
                             <th>Bien Cuit</th>
                         </tr>
@@ -56,7 +59,7 @@
                             <td>140°F / 60°C</td>
                         </tr>
                         <tr>
-                            <td>Saumon & Poissons Gras</td>
+                            <td>Saumon & Poissons gras</td>
                             <td>115°F / 46°C</td>
                             <td>125°F / 52°C</td>
                             <td>135°F / 57°C</td>
@@ -64,7 +67,7 @@
                             <td>145°F / 63°C</td>
                         </tr>
                         <tr>
-                            <td>Bar & Poissons Maigres</td>
+                            <td>Poissons maigres</td>
                             <td>125°F / 52°C</td>
                             <td>130°F / 54°C</td>
                             <td>135°F / 57°C</td>
@@ -83,9 +86,71 @@
                 </table>
             </div>
 
+            <!-- Card format for smaller screens -->
+            <div class="d-sm-none">
+                <!-- Boeuf, Veau & Agneau -->
+                <div class="card mb-3">
+                    <div class="card-header">Boeuf, Veau & Agneau</div>
+                    <div class="card-body">
+                        <p><strong>Saignant:</strong> 115°F / 46°C</p>
+                        <p><strong>Medium-saignant:</strong> 125°F / 52°C</p>
+                        <p><strong>Medium:</strong> 135°F / 57°C</p>
+                        <p><strong>Cuit:</strong> 145°F / 63°C</p>
+                        <p><strong>Bien Cuit:</strong> 155°F / 68°C</p>
+                    </div>
+                </div>
+
+                <!-- Porc -->
+                <div class="card mb-3">
+                    <div class="card-header">Porc</div>
+                    <div class="card-body">
+                        <p><strong>Saignant:</strong> 125°F / 52°C</p>
+                        <p><strong>Medium-saignant:</strong> 130°F / 54°C</p>
+                        <p><strong>Medium:</strong> 135°F / 57°C</p>
+                        <p><strong>Cuit:</strong> 135°F / 57°C</p>
+                        <p><strong>Bien Cuit:</strong> 140°F / 60°C</p>
+                    </div>
+                </div>
+
+                <!-- Saumon & Poissons gras -->
+                <div class="card mb-3">
+                    <div class="card-header">Saumon & Poissons gras</div>
+                    <div class="card-body">
+                        <p><strong>Saignant:</strong> 115°F / 46°C</p>
+                        <p><strong>Medium-saignant:</strong> 125°F / 52°C</p>
+                        <p><strong>Medium:</strong> 135°F / 57°C</p>
+                        <p><strong>Cuit:</strong> 135°F / 57°C</p>
+                        <p><strong>Bien Cuit:</strong> 145°F / 63°C</p>
+                    </div>
+                </div>
+
+                <!-- Poissons maigres -->
+                <div class="card mb-3">
+                    <div class="card-header">Poissons maigres</div>
+                    <div class="card-body">
+                        <p><strong>Saignant:</strong> 125°F / 52°C</p>
+                        <p><strong>Medium-saignant:</strong> 130°F / 54°C</p>
+                        <p><strong>Medium:</strong> 135°F / 57°C</p>
+                        <p><strong>Cuit:</strong> 135°F / 57°C</p>
+                        <p><strong>Bien Cuit:</strong> 140°F / 60°C</p>
+                    </div>
+                </div>
+
+                <!-- Crustacés -->
+                <div class="card mb-3">
+                    <div class="card-header">Crustacés</div>
+                    <div class="card-body">
+                        <p><strong>Medium-saignant:</strong> 120°F / 49°C</p>
+                        <p><strong>Medium:</strong> 130°F / 54°C</p>
+                        <p><strong>Bien Cuit:</strong> 140°F / 60°C</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autres températures (second table remains unchanged) -->
             <h3 class="mt-4">Autres températures</h3>
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Type de Viande</th>
@@ -120,23 +185,29 @@
                     </tbody>
                 </table>
             </div>
-
         </section>
 
         <!-- Convertisseur d'Unités -->
         <section id="unit-converter" class="mb-5">
-            <h2 class="mb-3">Convertisseur d'Unités</h2>
+            <h2 class="mb-3">Convertisseur d'unités</h2>
+            <!-- Input field for value and dropdown for selecting units -->
             <div class="input-group mb-3">
                 <input type="number" class="form-control" id="value" placeholder="Entrez une valeur">
-                <select id="unit" class="form-select">
-                    <option value="grams">Gramme</option>
-                    <option value="liters">Litre</option>
-                    <option value="cups">Tasse</option>
-                    <option value="ounces">Once</option>
+                <select id="from-unit" class="form-select">
+                    <option value="grammes">Gramme</option>
+                    <option value="litres">Litre</option>
+                    <option value="millilitres">Millilitre</option>
+                    <option value="kilogrammes">Kilogramme</option>
+                    <option value="onces">Once (oz)</option>
+                    <option value="livres">Livre (lb)</option>
+                    <option value="tasses">Tasse (cup)</option>
+                    <option value="pintes">Pinte (quart)</option>
                 </select>
                 <button class="btn btn-secondary" onclick="convertUnit()">Convertir</button>
             </div>
-            <p id="conversion-result" class="text-secondary"></p>
+
+            <!-- Display conversion results here -->
+            <p id="conversion-result"></p>
         </section>
 
         <!-- Minuteur -->
@@ -149,37 +220,45 @@
             <div class="progress mb-3">
                 <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;"></div>
             </div>
-            <p id="timer-result" class="fw-bold text-danger"></p>
+            <p id="timer-result" class="fw-bold"></p>
         </section>
     </div>
 
     <script>
         // Unit Converter
         function convertUnit() {
-            const value = document.getElementById('value').value;
-            const unit = document.getElementById('unit').value;
-            let result;
+            const value = parseFloat(document.getElementById('value').value);
+            const fromUnit = document.getElementById('from-unit').value;
 
-            switch (unit) {
-                case 'grams':
-                    result = value * 0.035274 + ' oz';
-                    break;
-                case 'liters':
-                    result = value * 4.22675 + ' cups';
-                    break;
-                case 'cups':
-                    result = value * 0.236588 + ' liters';
-                    break;
-                case 'ounces':
-                    result = value * 28.3495 + ' grams';
-                    break;
-                default:
-                    result = 'Unité non reconnue';
+            if (isNaN(value) || value <= 0) {
+                document.getElementById('conversion-result').innerHTML = "Veuillez entrer une valeur valide.";
+                return;
             }
 
-            document.getElementById('conversion-result').innerText = 'Résultat : ' + result;
-        }
+            // Conversion rates for both Metric and US systems
+            const conversionRates = {
+                grammes: { kilogrammes: 0.001, millilitres: 1, litres: 0.001, onces: 0.0353, livres: 0.00220462, tasses: 0.00423, pintes: 0.00211338 },
+                litres: { grammes: 1000, kilogrammes: 1, millilitres: 1000, onces: 33.814, livres: 2.20462, tasses: 4.22675, pintes: 1.05669 },
+                millilitres: { grammes: 1, kilogrammes: 0.001, litres: 0.001, onces: 0.033814, livres: 0.00220462, tasses: 0.00423, pintes: 0.00211338 },
+                kilogrammes: { grammes: 1000, millilitres: 1000, litres: 1, onces: 35.274, livres: 2.20462, tasses: 4.22675, pintes: 1.05669 },
+                onces: { grammes: 28.3495, kilogrammes: 0.0283495, millilitres: 29.5735, litres: 0.0295735, livres: 0.0625, tasses: 0.125, pintes: 0.0625 },
+                livres: { grammes: 453.592, kilogrammes: 0.453592, millilitres: 473.176, litres: 0.473176, onces: 16, tasses: 1.97157, pintes: 1 },
+                tasses: { grammes: 236.588, kilogrammes: 0.236588, millilitres: 236.588, litres: 0.236588, onces: 8, livres: 0.5, pintes: 0.5 },
+                pintes: { grammes: 473.176, kilogrammes: 0.473176, millilitres: 473.176, litres: 0.473176, onces: 16, livres: 1, tasses: 2 }
+            };
 
+            let result = '';
+
+            // Convert from the selected unit to all other units
+            for (const [toUnit, conversionRate] of Object.entries(conversionRates[fromUnit])) {
+                const convertedValue = (value * conversionRate).toFixed(2);
+                result += `${value} ${fromUnit} = ${convertedValue} ${toUnit}<br>`;
+            }
+
+            // Display all conversion results
+            document.getElementById('conversion-result').innerHTML = result;
+        }
+        
         // Timer with alarm
         function startTimer() {
             const timeInput = document.getElementById('time').value;
