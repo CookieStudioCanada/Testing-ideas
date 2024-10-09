@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Reading List</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        form, #search-filter {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        form input, form select, form button, #search-filter input, #search-filter select {
+            margin: 5px;
+            padding: 10px;
+            font-size: 1em;
+        }
+        
+        #reading-list {
+            list-style-type: none;
+            padding: 0;
+            max-width: 800px;
+            margin: auto;
+        }
+        
+        #reading-list li {
+            background-color: #fff;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #reading-list li.read {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+        
+        #reading-list button {
+            margin-left: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            form, #search-filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        
+            form input, form select, form button, #search-filter input, #search-filter select {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>My Reading List</h1>
+
+    <!-- Add Item Form -->
+    <form id="add-item-form">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="url" id="url" placeholder="URL" required>
+        <select id="media-type" required>
+            <option value="" disabled selected>Media Type</option>
+            <option value="text">Text</option>
+            <option value="audio">Audio</option>
+            <option value="video">Video</option>
+        </select>
+        <select id="topic" required>
+            <option value="" disabled selected>Topic</option>
+            <option value="tech">Tech</option>
+            <option value="politics">Politics</option>
+            <option value="business">Business</option>
+        </select>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <!-- Search and Filter -->
+    <div id="search-filter">
+        <input type="text" id="search" placeholder="Search...">
+        <select id="filter-media-type">
+            <option value="">All Media Types</option>
+            <option value="text">Text</option>
+            <option value="audio">Audio</option>
+            <option value="video">Video</option>
+        </select>
+        <select id="filter-topic">
+            <option value="">All Topics</option>
+            <option value="tech">Tech</option>
+            <option value="politics">Politics</option>
+            <option value="business">Business</option>
+        </select>
+    </div>
+
+    <!-- Reading List -->
+    <ul id="reading-list"></ul>
+
+    <!-- JavaScript Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+
+            const addItemForm = document.getElementById('add-item-form');
+            const readingListElement = document.getElementById('reading-list');
+            const searchInput = document.getElementById('search');
+            const filterMediaType = document.getElementById('filter-media-type');
+            const filterTopic = document.getElementById('filter-topic');
+
+            // Render the reading list on page load
+            renderList(readingList);
+
+            // Event Listener: Add Item
+            addItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const newItem = {
+                    id: Date.now(),
+                    title: document.getElementById('title').value.trim(),
+                    url: document.getElementById('url').value.trim(),
+                    mediaType: document.getElementById('media-type').value,
+                    topic: document.getElementById('topic').value,
+                    read: false
+                };
+
+                readingList.push(newItem);
+                localStorage.setItem('readingList', JSON.stringify(readingList));
+                renderList(filterList());
+                addItemForm.reset();
+            });
+
+            // Event Listeners: Search and Filter
+            [searchInput, filterMediaType, filterTopic].forEach(element => {
+                element.addEventListener('input', () => {
+                    renderList(filterList());
+                });
+            });
+
+            // Filter Function
+            function filterList() {
+                return readingList.filter(item => {
+                    const matchesSearch = item.title.toLowerCase().includes(searchInput.value.toLowerCase());
+                    const matchesMediaType = filterMediaType.value ? item.mediaType === filterMediaType.value : true;
+                    const matchesTopic = filterTopic.value ? item.topic === filterTopic.value : true;
+                    return matchesSearch && matchesMediaType && matchesTopic;
+                });
+            }
+
+            // Render Function
+            function renderList(list) {
+                readingListElement.innerHTML = '';
+
+                if (list.length === 0) {
+                    readingListElement.innerHTML = '<p>No items found.</p>';
+                    return;
+                }
+
+                list.forEach(item => {
+                    const li = document.createElement('li');
+                    li.classList.toggle('read', item.read);
+
+                    // Item Content
+                    const itemContent = document.createElement('div');
+                    itemContent.innerHTML = `
+                        <a href="${item.url}" target="_blank">${item.title}</a>
+                        <p>[${item.mediaType}] [${item.topic}]</p>
+                    `;
+
+                    // Buttons
+                    const buttonsDiv = document.createElement('div');
+
+                    const markReadButton = document.createElement('button');
+                    markReadButton.textContent = item.read ? 'Mark Unread' : 'Mark Read';
+                    markReadButton.addEventListener('click', () => {
+                        item.read = !item.read;
+                        localStorage.setItem('readingList', JSON.stringify(readingList));
+                        renderList(filterList());
+                    });
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', () => {
+                        readingList = readingList.filter(i => i.id !== item.id);
+                        localStorage.setItem('readingList', JSON.stringify(readingList));
+                        renderList(filterList());
+                    });
+
+                    buttonsDiv.appendChild(markReadButton);
+                    buttonsDiv.appendChild(deleteButton);
+
+                    li.appendChild(itemContent);
+                    li.appendChild(buttonsDiv);
+                    readingListElement.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
