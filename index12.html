@@ -61,8 +61,10 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <!-- Brand -->
-            <a class="navbar-brand" href="#">Noadz</a>
+            <!-- Brand with click event to return to home -->
+            <a class="navbar-brand" href="#" onclick="toggleHomeVisibility()">
+                Noadz
+            </a>
             <!-- Toggler for mobile view -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,8 +80,11 @@
                         <a class="nav-link" href="#" onclick="toggleVisibility('nhl')">NHL</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="toggleVisibility('nba')">NBA</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" onclick="toggleVisibility('nfl')">NFL</a>
-                    </li> 
+                    </li>
                 </ul>
             </div>
         </div>
@@ -88,7 +93,7 @@
     <!-- Home Section -->
     <div id="home" class="content container mt-4 active-content">
         <h1 class="mb-2">Bienvenue sur Noadz!</h1>
-        <p class="subtitle">Your one-stop hub for NHL, NBA, and NFL updates</p>
+        <p class="subtitle">Sports.</p>
         
         <div class="sport-section">
             <h2 class="sport-title">NHL Games</h2>
@@ -99,16 +104,11 @@
             <h2 class="sport-title">NBA Games</h2>
             <div id="nba-div"></div>
         </div>
-
-        <div class="sport-section">
-            <h2 class="sport-title">NFL Scores</h2>
-            <div id="nfl-div"></div>
-        </div>
     </div>
 
     <!-- NHL Section -->
     <div id="nhl" class="container mt-4 content">
-        <h1 class="mb-4">Search NHL History</h1>
+        <h1 class="mb-4">Search NHL games (2024-25)</h1>
         <!-- Date Input and Search Button -->
         <div class="row mb-3">
             <div class="col-md-6">
@@ -134,6 +134,11 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- NBA Section -->
+    <div id="nba" class="container mt-4 content">
+        <h1 class="mb-4">Coming soon...</h1>
     </div>
 
     <!-- NFL Section -->
@@ -167,9 +172,6 @@
             const searchButton = document.getElementById('searchBtn');
             searchButton.addEventListener('click', fetchGamesOnDate);
 
-            /**
-             * Fetch NHL games for the selected date
-             */
             async function fetchGamesOnDate() {
                 const date = document.getElementById('dateInput').value;
                 if (!date) {
@@ -177,7 +179,7 @@
                     return;
                 }
                 
-                const apiUrl = `https://v1.hockey.api-sports.io/games?league=57&season=2023&date=${date}&timezone=America/New_York`;
+                const apiUrl = `https://v1.hockey.api-sports.io/games?league=57&season=2024&date=${date}&timezone=America/New_York`;
                 try {
                     const response = await fetch(apiUrl, {
                         method: "GET",
@@ -264,7 +266,7 @@
                 Object.values(divisions).forEach(division => {
                     let tableHtml = `
                     <div class="table-responsive mb-4">
-                        <h3>${division.division} (${division.conference})</h3>
+                        <h5>${division.division}</h5>
                         <table class="table table-striped">
                             <thead class="table-secondary">
                                 <tr>
@@ -328,10 +330,6 @@
 
         });
 
-        /**
-         * Toggle visibility of content sections based on the selected tab
-         * @param {string} id - The ID of the section to toggle
-         */
         function toggleVisibility(id) {
             const contents = document.querySelectorAll('.content');
             contents.forEach(div => {
@@ -343,12 +341,13 @@
             });
         }
 
-        // Initially display the home section
-        toggleVisibility('home');
+        function toggleHomeVisibility() {
+            const homeSection = document.getElementById('home');
+            if (!homeSection.classList.contains('active-content')) {
+                toggleVisibility('home');
+            }
+        }
 
-        /**
-         * Display NHL widget
-         */
         function showNHL() {
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -362,7 +361,7 @@
                         data-key="fea45cd00d63dbfc935a92049703b35a"
                         data-date="${formattedDate}"
                         data-league="57"
-                        data-season="2023"
+                        data-season="2024"
                         data-theme="light" <!-- Changed theme for better visuals -->
                         data-refresh="0"
                         data-show-toolbar="false"
@@ -375,9 +374,6 @@
             `;
         }
 
-        /**
-         * Display NBA widget
-         */
         function showNBA() {
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -391,7 +387,7 @@
                         data-key="fea45cd00d63dbfc935a92049703b35a"
                         data-date="${formattedDate}"
                         data-league="12"
-                        data-season="2023-2024"
+                        data-season="2024-2025"
                         data-theme="light" <!-- Changed theme for better visuals -->
                         data-refresh="0"
                         data-show-toolbar="false"
@@ -404,39 +400,10 @@
             `;
         }
 
-        /**
-         * Display NFL widget
-         */
-        function showNFL() {
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
-
-            const divNFL = document.getElementById('nfl-div');
-
-            divNFL.innerHTML += 
-            `
-                <div id="wg-api-american-football-games"
-                    data-host="v1.american-football.api-sports.io"
-                    data-key="fea45cd00d63dbfc935a92049703b35a"
-                    data-date="${formattedDate}"
-                    data-league="1"
-                    data-season="2023"
-                    data-theme="light"
-                    data-refresh="15"
-                    data-show-toolbar="true"
-                    data-show-errors="false"
-                    data-show-logos="true"
-                    data-modal-game="true"
-                    data-modal-standings="true"
-                    data-modal-show-logos="true">
-                </div>
-            `;
-        }
-
-        // Initialize NHL, NBA, and NFL widgets
+        // Initialize functions
+        toggleVisibility('home');
         showNHL();
         showNBA();
-        showNFL();
     </script>
 
     <!-- Bootstrap JS Bundle -->
