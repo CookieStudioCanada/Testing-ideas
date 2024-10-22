@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Québec Politique Compass</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Styles personnalisés */
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #324980;
+            margin-top: 20px;
+        }
+        .theme-section {
+            margin-top: 40px;
+        }
+        .theme-title {
+            background-color: #324980;
+            color: #fff;
+            padding: 10px;
+        }
+        #results-container {
+            border-top: 2px solid #324980;
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+        .btn-primary {
+            background-color: #324980;
+            border-color: #324980;
+        }
+        /* Styles pour le compass */
+        #compassCanvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .important-select {
+            width: auto;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .form-select {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Québec Politique Compass</h1>
+        <p class="text-center">Découvrez où vous vous situez sur l'échiquier politique du Québec.</p>
+
+        <!-- Formulaire du Quiz -->
+        <div id="quiz-container">
+            <form id="quiz-form">
+                <!-- Les questions seront générées ici -->
+                <div id="questions"></div>
+
+                <!-- Bouton Soumettre -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-4">Voir les résultats</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Affichage des résultats -->
+        <div id="results-container" class="d-none">
+            <h2 class="text-center">Votre Position Politique</h2>
+            <canvas id="compassCanvas" width="400" height="400"></canvas>
+            <p id="result-text" class="text-center mt-3"></p>
+            <div class="text-center">
+                <button id="download-btn" class="btn btn-success mt-3">Télécharger vos résultats</button>
+                <button id="restart-btn" class="btn btn-secondary mt-3">Recommencer le Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Liste des thèmes
+        const themes = [
+            "Taxes",
+            "Immigration",
+            "Sécurité Sociale",
+            "Économie",
+            "Environnement",
+            "Criminel",
+            "Droits et Libertés"
+        ];
+
+        // Questions par thème (même structure que précédemment)
+        const quizQuestions = {
+            "Taxes": [
+                // 5 questions philosophiques
+                {
+                    question: "1. Pensez-vous que la redistribution des richesses est essentielle pour une société juste?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "2. Les impôts devraient-ils être proportionnels aux revenus pour assurer l'équité fiscale?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "3. Estimez-vous que la taxation est une forme de coercition gouvernementale?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "4. La réduction des impôts favorise-t-elle la liberté individuelle?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "5. Croyez-vous que les taxes environnementales sont justifiées pour lutter contre le changement climatique?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "6. Les impôts sur le revenu des plus riches devraient-ils être augmentés?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "7. Soutenez-vous l'abolition de la taxe de bienvenue sur l'achat d'une première propriété?",
+                    type: "appliquée",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "8. Êtes-vous favorable à une taxe sur les produits de luxe?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                }
+            ],
+            "Immigration": [
+                // 5 questions philosophiques
+                {
+                    question: "9. Le multiculturalisme enrichit-il la société québécoise?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "10. La protection de l'identité culturelle passe-t-elle par une limitation de l'immigration?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "11. Tous les individus devraient-ils avoir le droit de migrer librement entre les pays?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "12. L'assimilation des immigrants est-elle nécessaire pour maintenir la cohésion sociale?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "13. L'immigration économique est-elle bénéfique pour l'économie du Québec?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "14. Le Québec devrait-il accueillir plus d'immigrants pour soutenir la croissance démographique?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "15. Soutenez-vous les tests de valeurs pour les nouveaux immigrants?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "16. Le regroupement familial devrait-il être facilité pour les immigrants récents?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: -1 }
+                }
+            ],
+            "Sécurité Sociale": [
+                // 5 questions philosophiques
+                {
+                    question: "17. Un État-providence est-il essentiel pour garantir le bien-être des citoyens?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "18. La responsabilité individuelle prime-t-elle sur l'aide sociale collective?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "19. Le droit à la santé est-il un droit fondamental qui doit être garanti par l'État?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "20. Les programmes sociaux créent-ils une dépendance nuisible chez les bénéficiaires?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "21. La solidarité nationale justifie-t-elle la redistribution des richesses?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "22. Soutenez-vous l'idée d'un revenu de base universel pour tous les citoyens?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "23. Les prestations d'aide sociale devraient-elles être augmentées?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "24. Faut-il imposer des conditions plus strictes pour l'accès aux programmes sociaux?",
+                    type: "appliquée",
+                    effect: { econ: 1, soc: 0 }
+                }
+            ],
+            "Économie": [
+                // 5 questions philosophiques
+                {
+                    question: "25. Le libre marché est-il le meilleur moyen de réguler l'économie?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "26. L'intervention gouvernementale dans l'économie est-elle nécessaire pour corriger les inégalités?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "27. La propriété privée est-elle un droit fondamental?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "28. Les monopoles publics sont-ils préférables aux monopoles privés?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "29. La concurrence stimule-t-elle l'innovation et la croissance économique?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "30. Le gouvernement devrait-il intervenir davantage dans l'économie pour réguler les marchés?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "31. Êtes-vous favorable à la privatisation de certains services publics?",
+                    type: "appliquée",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "32. Les subventions aux entreprises devraient-elles être réduites?",
+                    type: "appliquée",
+                    effect: { econ: 1, soc: 0 }
+                }
+            ],
+            "Environnement": [
+                // 5 questions philosophiques
+                {
+                    question: "33. La protection de l'environnement doit-elle primer sur la croissance économique?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "34. L'humanité a-t-elle le devoir moral de préserver la nature?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "35. Les technologies vertes peuvent-elles résoudre les problèmes environnementaux sans intervention gouvernementale?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                {
+                    question: "36. Le changement climatique est-il principalement causé par l'activité humaine?",
+                    type: "philosophique",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "37. La nature doit-elle être exploitée pour le bénéfice de l'humanité?",
+                    type: "philosophique",
+                    effect: { econ: 1, soc: 0 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "38. Faut-il imposer des taxes supplémentaires sur les entreprises polluantes?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "39. Soutenez-vous l'interdiction des plastiques à usage unique?",
+                    type: "appliquée",
+                    effect: { econ: -1, soc: 0 }
+                },
+                {
+                    question: "40. Êtes-vous favorable au développement des pipelines pour transporter le pétrole?",
+                    type: "appliquée",
+                    effect: { econ: 1, soc: 0 }
+                }
+            ],
+            "Criminel": [
+                // 5 questions philosophiques
+                {
+                    question: "41. La punition est-elle plus importante que la réhabilitation dans le système judiciaire?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "42. La peine de mort est-elle justifiée pour les crimes les plus graves?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "43. La société est-elle responsable des actions criminelles de ses membres?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "44. Les droits des victimes doivent-ils primer sur ceux des accusés?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "45. La justice réparatrice est-elle plus efficace que la justice punitive?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "46. Pensez-vous que le système judiciaire devrait être plus sévère envers les crimes violents?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "47. Les peines de prison devraient-elles être plus longues pour les récidivistes?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "48. Soutenez-vous la légalisation de toutes les drogues pour réduire le crime organisé?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: -1 }
+                }
+            ],
+            "Droits et Libertés": [
+                // 5 questions philosophiques
+                {
+                    question: "49. La liberté d'expression doit-elle être absolue, même pour les discours haineux?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "50. La sécurité nationale justifie-t-elle la restriction des libertés individuelles?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "51. La séparation de l'Église et de l'État doit-elle être totale?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "52. Les droits collectifs doivent-ils primer sur les droits individuels?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "53. La censure est-elle acceptable pour protéger la morale publique?",
+                    type: "philosophique",
+                    effect: { econ: 0, soc: 1 }
+                },
+                // 3 questions appliquées
+                {
+                    question: "54. Le port de symboles religieux ostentatoires devrait-il être autorisé pour les employés de l'État?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: -1 }
+                },
+                {
+                    question: "55. Êtes-vous d'accord pour interdire les manifestations qui perturbent l'ordre public?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: 1 }
+                },
+                {
+                    question: "56. Les mesures de surveillance gouvernementales sont-elles justifiées pour prévenir le terrorisme?",
+                    type: "appliquée",
+                    effect: { econ: 0, soc: 1 }
+                }
+            ]
+        };
+
+        // Générer les questions
+        const quizContainer = document.getElementById('questions');
+
+        themes.forEach(theme => {
+            // Créer une section pour chaque thème
+            const themeSection = document.createElement('div');
+            themeSection.classList.add('theme-section');
+
+            // Titre du thème
+            const themeTitle = document.createElement('h3');
+            themeTitle.classList.add('theme-title');
+            themeTitle.textContent = theme;
+            themeSection.appendChild(themeTitle);
+
+            // Questions du thème
+            quizQuestions[theme].forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('mb-3', 'mt-3');
+
+                const label = document.createElement('label');
+                label.classList.add('form-label');
+                label.textContent = q.question;
+
+                // Importance
+                const importanceSelect = document.createElement('select');
+                importanceSelect.classList.add('form-select', 'important-select');
+                importanceSelect.innerHTML = `
+                    <option value="" disabled selected>Importance</option>
+                    <option value="1">Pas important</option>
+                    <option value="2">Neutre</option>
+                    <option value="3">Important</option>
+                `;
+
+                // Réponse
+                const responseSelect = document.createElement('select');
+                responseSelect.classList.add('form-select');
+                responseSelect.innerHTML = `
+                    <option value="" disabled selected>Sélectionnez votre réponse</option>
+                    <option value="-2">Fortement en désaccord</option>
+                    <option value="-1">En désaccord</option>
+                    <option value="0">Neutre</option>
+                    <option value="1">En accord</option>
+                    <option value="2">Fortement en accord</option>
+                `;
+
+                questionDiv.appendChild(label);
+                questionDiv.appendChild(importanceSelect);
+                questionDiv.appendChild(responseSelect);
+                themeSection.appendChild(questionDiv);
+
+                // Stocker les éléments dans l'objet question
+                q.importanceElement = importanceSelect;
+                q.responseElement = responseSelect;
+            });
+
+            quizContainer.appendChild(themeSection);
+        });
+
+        // Gérer la soumission du quiz
+        document.getElementById('quiz-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let econScore = 0; // Économie : - socialiste, + libertarien
+            let socScore = 0;  // Social : - libéral, + conservateur
+            let totalWeight = 0;
+            let userResponses = [];
+            let answeredQuestions = 0;
+
+            themes.forEach(theme => {
+                quizQuestions[theme].forEach(q => {
+                    const importance = parseInt(q.importanceElement.value);
+                    const response = parseInt(q.responseElement.value);
+
+                    // Vérifier si une réponse est fournie
+                    if (!isNaN(importance) && !isNaN(response)) {
+                        answeredQuestions++;
+                        // Poids basé sur l'importance
+                        const weight = importance;
+
+                        // Calcul des scores
+                        econScore += response * q.effect.econ * weight;
+                        socScore += response * q.effect.soc * weight;
+                        totalWeight += Math.abs(q.effect.econ * weight) + Math.abs(q.effect.soc * weight);
+
+                        // Stocker les réponses pour le téléchargement
+                        userResponses.push({
+                            question: q.question,
+                            importance: importance === 3 ? "Important" : importance === 2 ? "Neutre" : "Pas important",
+                            response: response,
+                            theme: theme
+                        });
+                    }
+                });
+            });
+
+            if (answeredQuestions === 0) {
+                alert("Veuillez répondre à au moins une question pour voir les résultats.");
+                return;
+            }
+
+            // Afficher les résultats
+            displayResults(econScore, socScore, totalWeight, userResponses);
+        });
+
+        // Afficher les résultats et le compass
+        function displayResults(econScore, socScore, totalWeight, userResponses) {
+            document.getElementById('quiz-container').classList.add('d-none');
+            document.getElementById('results-container').classList.remove('d-none');
+
+            // Normaliser les scores
+            const econPosition = econScore / totalWeight;
+            const socPosition = socScore / totalWeight;
+
+            // Afficher le texte des résultats
+            let econText = econPosition < 0 ? "Socialiste" : "Libertarien";
+            let socText = socPosition < 0 ? "Libéral" : "Conservateur";
+            document.getElementById('result-text').textContent = `Votre position économique est ${econText}, et votre position sociale est ${socText}.`;
+
+            // Dessiner le compass
+            drawCompass(econPosition, socPosition);
+
+            // Télécharger les résultats
+            document.getElementById('download-btn').addEventListener('click', function() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userResponses, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "resultats_politique.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            });
+        }
+
+        // Dessiner le graphique du compass
+        function drawCompass(econPosition, socPosition) {
+            const canvas = document.getElementById('compassCanvas');
+            if (!canvas) {
+                console.error('Canvas element not found');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('Failed to get canvas context');
+                return;
+            }
+
+            // Effacer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dessiner les axes
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+
+            // Marquer le point de l'utilisateur
+            const x = econPosition * (canvas.width / 2);
+            const y = socPosition * (canvas.height / 2);
+
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2 + x, canvas.height / 2 - y, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ff0000';
+            ctx.fill();
+
+            // Ajouter les labels
+            ctx.fillStyle = '#000';
+            ctx.font = '14px Arial';
+            ctx.fillText('Socialiste', 5, canvas.height / 2 - 5);
+            ctx.fillText('Libertarien', canvas.width - 100, canvas.height / 2 - 5);
+            ctx.fillText('Libéral', canvas.width / 2 + 5, 15);
+            ctx.fillText('Conservateur', canvas.width / 2 + 5, canvas.height - 5);
+        }
+
+        // Recommencer le quiz
+        document.getElementById('restart-btn').addEventListener('click', function() {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
