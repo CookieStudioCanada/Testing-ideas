@@ -5,22 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+
+        body {
+            background-color: #f0f3f5; /* Gris très clair */
+        }
+        
+        .navbar {
+            background-color: #4a90e2; /* Bleu clair moderne */
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand, .navbar-light .navbar-nav .nav-link {
+            color: #ffffff !important; /* Texte blanc pour le nom de l'app et les liens */
+        }
+        .btn-primary {
+            background-color: #34495e !important; /* Vert pour les boutons */
+            border-color: #34495e !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover {
+            background-color: black !important;
+            border-color: black !important;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,.05);
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        #result {
+            display: none;
+        }
+        #result.has-result {
+            display: block;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .table thead th {
+            background-color: #34495e; /* Bleu foncé pour les en-têtes */
+            color: #ffffff;
+            border-bottom: none;
+        }
+
+        .table {
+            border: 1px solid #e0e0e0;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .table th, .table td {
+            border-top: none;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Style pour la ligne du total */
+        .table tbody tr:last-child th,
+        .table tbody tr:last-child td {
+            background-color: #e8f0fe; /* Bleu très clair */
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Calculus</a>
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-clipboard-data me-2"></i>Calculus
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 <ul class="navbar-nav">
 
-                    <li class="nav-item">
-                        <button class="nav-link" onclick="showLogs()">Détails du calcul</button>
-                    </li>
                     <!-- Dropdown for Deductions -->
                     <li class="nav-item dropdown">
                         <button class="dropdown-toggle nav-link" type="button" id="deductionsMenu" data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,55 +122,52 @@
     </nav>
 
     <!-- Form-->
-    <div class="container mt-3">
-        <h3>Calculateur d'impôts</h3>
-        <div class="mb-3">
-            <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
-            <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
-        </div>
-        <div class="mb-3">
-            <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
-            <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
-        </div>
-        <div class="mb-3">
-            <label for="determinedDividend" class="form-label" title="Dividendes déterminés de vos investissements.">Dividende déterminé:</label>
-            <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
-        </div>
-        <div class="mb-3">
-            <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
-            <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
-        </div>
-        <div class="mb-3">
-            <label for="propertyIncome" class="form-label" title="Revenu de biens ou d'entreprise.">Revenu d'entreprise/biens:</label>
-            <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise/biens">
-        </div>
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Calculateur d'impôts</h3>
+        <form>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="employmentIncome" class="form-label" title="Entrez le revenu total de votre emploi.">Revenu d'emploi:</label>
+                    <input id="employmentIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'emploi">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="capitalGains" class="form-label" title="Entrez le montant total de vos gains en capital.">Gain en capital:</label>
+                    <input id="capitalGains" type="number" class="form-control" placeholder="Entrez votre gain en capital">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="determinedDividend" class="form-label" title="Dividendes dterminés de vos investissements.">Dividende déterminé:</label>
+                    <input id="determinedDividend" type="number" class="form-control" placeholder="Entrez votre dividende déterminé">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="undeterminedDividend" class="form-label" title="Dividendes non déterminés de vos investissements.">Dividende non-déterminé:</label>
+                    <input id="undeterminedDividend" type="number" class="form-control" placeholder="Entrez votre dividende non-déterminé">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="propertyIncome" class="form-label" title="Revenu de biens ou d'entreprise.">Revenu d'entreprise/biens:</label>
+                <input id="propertyIncome" type="number" class="form-control" placeholder="Entrez votre revenu d'entreprise/biens">
+            </div>
 
-        <button class="btn btn-secondary me-2" onclick="calculateTotalTax()">Calculer</button>
-        <button class="btn btn-danger me-2" onclick="resetFields()">Réinitialiser</button>        
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-primary me-2" onclick="calculateTotalTax()">Calculer</button>
+                <button type="button" class="btn btn-secondary" onclick="resetFields()">Réinitialiser</button>        
+            </div>
+        </form>
 
         <!-- Result Display -->
-        <div id="result" class="mt-3"></div>
+        <div id="result" class="mt-4"></div>
 
     </div>
         
-    <!-- Toast -->  
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <strong class="me-auto">Détails du calcul</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body" id="toastBody">Aucun calcul</div>
-            </div>
-    </div>
-
     <!-- Modal for Glossaire -->
     <div class="modal fade" id="glossaireModal" tabindex="-1" aria-labelledby="glossaireModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-dark text-light">
                     <h5 class="modal-title">Glossaire</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>Taux d'imposition</strong> : Pourcentage appliqué au revenu imposable pour calculer l'impôt dû. Différents paliers sont appliqués progressivement selon le niveau de revenu.</p>
@@ -127,14 +192,14 @@
     <div class="modal fade" id="celiappModal" tabindex="-1" aria-labelledby="celiappModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-dark text-light">
                     <h5 class="modal-title" id="celiappModalLabel">Impact de l'investissement CELIAPP</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="number" id="celiappInput" class="form-control" placeholder="Entrez le montant de votre investissement CELIAPP">
                 </div>
-                <div class="modal-footer">
+                <div class="text-center mb-3">
                     <button type="button" class="btn btn-secondary" onclick="calculateCeliappImpact()">Calculer l'impact</button>
                 </div>
             </div>
@@ -145,82 +210,63 @@
     <div class="modal fade" id="reerModal" tabindex="-1" aria-labelledby="reerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-dark text-light">
                     <h5 class="modal-title" id="reerModalLabel">Impact de l'investissement REER</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="number" id="reerInput" class="form-control" placeholder="Entrez le montant de votre investissement REER">
                 </div>
-                <div class="modal-footer">
+                <div class="text-center mb-3">  
                     <button type="button" class="btn btn-secondary" onclick="calculateReerImpact()">Calculer l'impact</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Modal for DGC -->
-    <!-- <div class="modal fade" id="dgcModal" tabindex="-1" aria-labelledby="dgcModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="dgcModalLabel">Impact de la donation DGC</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="number" id="dgcInput" class="form-control" placeholder="Entrez le montant de votre donation DGC">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="calculateDgcImpact()">Calculer l'impact</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
     
     <script>
-    let detailedLogs = "";
     let totIncome;
     let dMmajoration;
     let ndMajoration;
 
-    function logDetailedResults(logs) {
-        detailedLogs = logs.join('\n');
-        console.log(detailedLogs);
+    // Modify this helper function at the beginning of your script
+    function formatNumber(num) {
+        return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 
     function calculateFederalTax(income) {
-        let logs = [`Calcul des impôts fédéraux pour un revenu de $${income}.`];
+        let logs = [`Calcul des impôts fédéraux pour un revenu de $${formatNumber(income)}.`];
         let tax = 0;
         if (income <= 55867) {
             tax = income * 0.15;
-            logs.push(`Le revenu jusqu'à $55,867 est imposé à 15% : $${tax.toFixed(2)}`);
+            logs.push(`Le revenu jusqu'à $55,867 est imposé à 15% : $${formatNumber(tax)}`);
         } else {
             let initialTax = 55867 * 0.15;
             tax = initialTax;
-            logs.push(`Les premiers $55,867 sont imposés à 15% : $${initialTax.toFixed(2)}`);
+            logs.push(`Les premiers $55,867 sont imposés à 15% : $${formatNumber(initialTax)}`);
             if (income <= 111733) {
                 tax += (income - 55867) * 0.205;
-                logs.push(`Le revenu de $55,867 à $111,733 est imposé à 20.5% : $${((income - 55867) * 0.205).toFixed(2)}`);
+                logs.push(`Le revenu de $55,867 à $111,733 est imposé à 20.5% : $${formatNumber((income - 55867) * 0.205)}`);
             } else {
                 let middleTax = (111733 - 55867) * 0.205;
                 tax += middleTax;
-                logs.push(`Les $55,866 suivants sont imposés à 20.5% : $${middleTax.toFixed(2)}`);
+                logs.push(`Les $55,866 suivants sont imposés à 20.5% : $${formatNumber(middleTax)}`);
                 if (income <= 173205) {
                     tax += (income - 111733) * 0.26;
-                    logs.push(`Le revenu de $111,733 à $173,205 est imposé à 26% : $${((income - 111733) * 0.26).toFixed(2)}`);
+                    logs.push(`Le revenu de $111,733 à $173,205 est imposé à 26% : $${formatNumber((income - 111733) * 0.26)}`);
                 } else {
                     let higherTax = (173205 - 111733) * 0.26;
                     tax += higherTax;
-                    logs.push(`Les $61,472 suivants sont imposés à 26% : $${higherTax.toFixed(2)}`);
+                    logs.push(`Les $61,472 suivants sont imposés à 26% : $${formatNumber(higherTax)}`);
                     if (income <= 246752) {
                         tax += (income - 173205) * 0.29;
-                        logs.push(`Le revenu de $173,205 à $246,752 est imposé à 29% : $${((income - 173205) * 0.29).toFixed(2)}`);
+                        logs.push(`Le revenu de $173,205 à $246,752 est imposé à 29% : $${formatNumber((income - 173205) * 0.29)}`);
                     } else {
                         let highestTax = (246752 - 173205) * 0.29;
                         tax += highestTax;
                         tax += (income - 246752) * 0.33;
-                        logs.push(`Les $73,547 suivants sont imposés à 29% : $${highestTax.toFixed(2)}`);
-                        logs.push(`Le revenu supérieur à $246,752 est imposé à 33% : $${((income - 246752) * 0.33).toFixed(2)}`);
+                        logs.push(`Les $73,547 suivants sont imposés à 29% : $${formatNumber(highestTax)}`);
+                        logs.push(`Le revenu supérieur à $246,752 est imposé à 33% : $${formatNumber((income - 246752) * 0.33)}`);
                     }
                 }
             }
@@ -231,36 +277,36 @@
         // console.log("majorations : deter" + dMmajoration + "nd : " + ndMajoration);
         // finalTax = abatedTax - (dMmajoration * (6/11)) - (ndMajoration * (9/13));
         
-        logs.push(`Application de l'abattement de 16.5%, réduction de l'impôt de $${(tax * 0.165).toFixed(2)} à $${abatedTax.toFixed(2)}.`);
+        logs.push(`Application de l'abattement de 16.5%, réduction de l'impôt de $${formatNumber(tax * 0.165)} à $${formatNumber(abatedTax)}.`);
         return [abatedTax, logs];
     }
 
     function calculateQuebecTax(income) {
-        let logs = [`Calcul des impôts du Québec pour un revenu de $${income}.`];
+        let logs = [`Calcul des impôts du Québec pour un revenu de $${formatNumber(income)}.`];
         let tax = 0;
         if (income <= 51780) {
             tax = income * 0.14;
-            logs.push(`Le revenu jusqu'à $51,780 est imposé à 14% : $${tax.toFixed(2)}`);
+            logs.push(`Le revenu jusqu'à $51,780 est imposé à 14% : $${formatNumber(tax)}`);
         } else {
             let initialTax = 51780 * 0.14;
             tax = initialTax;
-            logs.push(`Les premiers $51,780 sont imposés à 14% : $${initialTax.toFixed(2)}`);
+            logs.push(`Les premiers $51,780 sont imposés à 14% : $${formatNumber(initialTax)}`);
             if (income <= 103545) {
                 tax += (income - 51780) * 0.19;
-                logs.push(`Le revenu de $51,780 à $103,545 est imposé à 19% : $${((income - 51780) * 0.19).toFixed(2)}`);
+                logs.push(`Le revenu de $51,780 à $103,545 est imposé à 19% : $${formatNumber((income - 51780) * 0.19)}`);
             } else {
                 let middleTax = (103545 - 51780) * 0.19;
                 tax += middleTax;
-                logs.push(`Les $51,765 suivants sont imposés à 19% : $${middleTax.toFixed(2)}`);
+                logs.push(`Les $51,765 suivants sont imposés à 19% : $${formatNumber(middleTax)}`);
                 if (income <= 126000) {
                     tax += (income - 103545) * 0.24;
-                    logs.push(`Le revenu de $103,545 à $126,000 est imposé à 24% : $${((income - 103545) * 0.24).toFixed(2)}`);
+                    logs.push(`Le revenu de $103,545 à $126,000 est imposé à 24% : $${formatNumber((income - 103545) * 0.24)}`);
                 } else {
                     let higherTax = (126000 - 103545) * 0.24;
                     tax += higherTax;
                     tax += (income - 126000) * 0.2575;
-                    logs.push(`Les $22,455 suivants sont imposés à 24% : $${higherTax.toFixed(2)}`);
-                    logs.push(`Le revenu supérieur à $126,000 est imposé à 25.75% : $${((income - 126000) * 0.2575).toFixed(2)}`);
+                    logs.push(`Les $22,455 suivants sont imposés à 24% : $${formatNumber(higherTax)}`);
+                    logs.push(`Le revenu supérieur à $126,000 est imposé à 25.75% : $${formatNumber((income - 126000) * 0.2575)}`);
                 }
             }
         }
@@ -268,7 +314,6 @@
     }
 
     function calculateTotalTax() {
-
         // Income
         const employmentIncome = parseFloat(document.getElementById('employmentIncome').value) || 0;
         const capitalGains = parseFloat(document.getElementById('capitalGains').value) || 0;
@@ -276,45 +321,264 @@
         const undeterminedDividend = parseFloat(document.getElementById('undeterminedDividend').value) || 0;
         const propertyIncome = parseFloat(document.getElementById('propertyIncome').value) || 0;
 
-        const capitalGainsOver = 0;
+        let logs = ["<strong>Détail du calcul des impôts:</strong>"];
+        logs.push(`Revenu d'emploi: $${formatNumber(employmentIncome)}`);
+        logs.push(`Gains en capital: $${formatNumber(capitalGains)}`);
+        logs.push(`Dividende déterminé: $${formatNumber(determinedDividend)}`);
+        logs.push(`Dividende non-déterminé: $${formatNumber(undeterminedDividend)}`);
+        logs.push(`Revenu d'entreprise/biens: $${formatNumber(propertyIncome)}`);
 
-        if (capitalGains > 250000) {
-            capitalGainsOver = capitalGains - 250000;
+        let taxableCapitalGains;
+
+        if (capitalGains <= 250000) {
+            taxableCapitalGains = capitalGains * 0.50;
         } else {
-            return;
+            taxableCapitalGains = 250000 * 0.50 + (capitalGains - 250000) * 0.6667;
         }
 
-        const totalIncome = employmentIncome + + (capitalGainsOver * 0,6667) + (capitalGains * 0.50) + (determinedDividend * 1.38) + (undeterminedDividend * 1.15) + propertyIncome;
+        const totalIncome = employmentIncome + 
+                            taxableCapitalGains + 
+                            (determinedDividend * 1.38) + 
+                            (undeterminedDividend * 1.15) + 
+                            propertyIncome;
+        
+        logs.push(`<strong>Revenu total imposable: $${formatNumber(totalIncome)}</strong>`);
+
         totIncome = totalIncome;
         dMmajoration = (determinedDividend * 1.38) - determinedDividend;
         ndMajoration = (undeterminedDividend * 1.15) - undeterminedDividend;
         
         if (isNaN(totalIncome) || totalIncome === 0) {
-            document.getElementById('result').textContent = 'Veuillez entrer un chiffre valide dans au moins une catégorie.';
+            document.getElementById('result').innerHTML = 'Veuillez entrer un chiffre valide dans au moins une catégorie.';
             return;
         }
-
-        // Deduction - TO DO
 
         // Tax Calculations and logs
         const [federalTax, federalLogs] = calculateFederalTax(totalIncome);
         const [quebecTax, quebecLogs] = calculateQuebecTax(totalIncome);
         const totalTax = federalTax + quebecTax;
 
-        // Tax credits - TO DO 
+        logs = logs.concat(federalLogs.map(log => log.replace(/\$(\d+(\.\d{1,2})?)/g, (match, p1) => `$${formatNumber(parseFloat(p1))}`)));
+        logs = logs.concat(quebecLogs.map(log => log.replace(/\$(\d+(\.\d{1,2})?)/g, (match, p1) => `$${formatNumber(parseFloat(p1))}`)));
+        logs.push(`<strong>Calcul total des impôts : Impôt fédéral $${formatNumber(federalTax)} + Impôt du Québec $${formatNumber(quebecTax)} = $${formatNumber(totalTax)}</strong>`);
 
-        // Logs
-
-        const totalLogs = [...federalLogs, ...quebecLogs, `Calcul total des impôts : Impôt fédéral $${federalTax.toFixed(2)} + Impôt du Québec $${quebecTax.toFixed(2)} = $${totalTax.toFixed(2)}`];
-
-        logDetailedResults(totalLogs);
-
-        document.getElementById('result').innerHTML = `<strong>Détail des Impôts:</strong><br>` +
-                                                      `Impôt fédéral estimé: $${federalTax.toFixed(2)}<br>` +
-                                                      `Impôt du Québec estimé: $${quebecTax.toFixed(2)}<br>` +
-                                                      `Impôt total estimé: $${totalTax.toFixed(2)}`;
-
+        const federalTaxBeforeAbatement = federalTax / 0.835;
+        const quebecAbatement = federalTaxBeforeAbatement * 0.165;
+        const effectiveTaxRate = (totalTax / totalIncome) * 100;
         
+        // Calculate marginal tax rate
+        const marginalFederalRate = getFederalMarginalRate(totalIncome);
+        const marginalQuebecRate = getQuebecMarginalRate(totalIncome);
+        const marginalTaxRate = marginalFederalRate + marginalQuebecRate;
+
+        let resultHTML = `
+        <h4 class="mt-4 mb-3">Résumé des revenus</h4>
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Type de revenu</th>
+                    <th>Montant</th>
+                    <th>Montant imposable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Revenu d'emploi</td>
+                    <td>$${formatNumber(employmentIncome)}</td>
+                    <td>$${formatNumber(employmentIncome)}</td>
+                </tr>
+                <tr>
+                    <td>Gains en capital</td>
+                    <td>$${formatNumber(capitalGains)}</td>
+                    <td>$${formatNumber(taxableCapitalGains)} ${capitalGains > 250000 ? '(50% sur les premiers $250 000, 2/3 sur le reste)' : '(50%)'}</td>
+                </tr>
+                <tr>
+                    <td>Dividende déterminé</td>
+                    <td>$${formatNumber(determinedDividend)}</td>
+                    <td>$${formatNumber(determinedDividend * 1.38)} (138%)</td>
+                </tr>
+                <tr>
+                    <td>Dividende non-déterminé</td>
+                    <td>$${formatNumber(undeterminedDividend)}</td>
+                    <td>$${formatNumber(undeterminedDividend * 1.15)} (115%)</td>
+                </tr>
+                <tr>
+                    <td>Revenu d'entreprise/biens</td>
+                    <td>$${formatNumber(propertyIncome)}</td>
+                    <td>$${formatNumber(propertyIncome)}</td>
+                </tr>
+                <tr class="table-info">
+                    <th>Revenu total imposable</th>
+                    <th></th>
+                    <th>$${formatNumber(totalIncome)}</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="mt-4 mb-3">Calcul des impôts fédéraux</h4>
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Tranche d'imposition</th>
+                    <th>Montant imposable</th>
+                    <th>Impôt</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${calculateFederalTaxByBracket(totalIncome)}
+                <tr>
+                    <td>Impôt fédéral avant abattement</td>
+                    <td></td>
+                    <td>$${formatNumber(federalTaxBeforeAbatement)}</td>
+                </tr>
+                <tr>
+                    <td>Abattement du Québec (16.5%)</td>
+                    <td></td>
+                    <td>($${formatNumber(quebecAbatement)})</td>
+                </tr>
+                <tr class="table-info">
+                    <th>Total impôt fédéral</th>
+                    <th></th>
+                    <th>$${formatNumber(federalTax)}</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="mt-4 mb-3">Calcul des impôts du Québec</h4>
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Tranche d'imposition</th>
+                    <th>Montant imposable</th>
+                    <th>Impôt</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${calculateQuebecTaxByBracket(totalIncome)}
+                <tr class="table-info">
+                    <th>Total impôt du Québec</th>
+                    <th></th>
+                    <th>$${formatNumber(quebecTax)}</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="mt-4 mb-3">Résumé des impôts</h4>
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Type d'impôt</th>
+                    <th>Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Impôt fédéral</td>
+                    <td>$${formatNumber(federalTax)}</td>
+                </tr>
+                <tr>
+                    <td>Impôt du Québec</td>
+                    <td>$${formatNumber(quebecTax)}</td>
+                </tr>
+                <tr class="table-info">
+                    <th>Total des impôts</th>
+                    <th>$${formatNumber(totalTax)}</th>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-style: italic; font-weight: bold">Taux d'imposition effectif : ${effectiveTaxRate.toFixed(2)}%</p>
+        <p style="font-style: italic; font-weight: bold">Taux d'imposition marginal : ${marginalTaxRate.toFixed(2)}%</p>
+        `;
+
+        document.getElementById('result').innerHTML = resultHTML;
+        document.getElementById('result').classList.add('has-result');
+    }
+
+    function calculateFederalTaxByBracket(income) {
+        const brackets = [
+            { limit: 55867, rate: 15 },
+            { limit: 111733, rate: 20.5 },
+            { limit: 173205, rate: 26 },
+            { limit: 246752, rate: 29 },
+            { limit: Infinity, rate: 33 }
+        ];
+        
+        let remainingIncome = income;
+        let totalTax = 0;
+        let result = '';
+
+        for (let i = 0; i < brackets.length; i++) {
+            const bracket = brackets[i];
+            const prevLimit = i === 0 ? 0 : brackets[i-1].limit;
+            const taxableAmount = Math.min(remainingIncome, bracket.limit - prevLimit);
+            const taxForBracket = taxableAmount * (bracket.rate / 100);
+
+            if (taxableAmount > 0) {
+                let rangeText;
+                if (i === brackets.length - 1) {
+                    rangeText = `${bracket.rate}% sur ${formatNumber(prevLimit)} $ et plus`;
+                } else {
+                    rangeText = `${bracket.rate}% sur ${formatNumber(prevLimit)} $ à ${formatNumber(bracket.limit)} $`;
+                }
+                
+                result += `
+                <tr>
+                    <td>${rangeText}</td>
+                    <td>$${formatNumber(taxableAmount)}</td>
+                    <td>$${formatNumber(taxForBracket)}</td>
+                </tr>`;
+            }
+
+            totalTax += taxForBracket;
+            remainingIncome -= taxableAmount;
+
+            if (remainingIncome <= 0) break;
+        }
+
+        return result;
+    }
+
+    function calculateQuebecTaxByBracket(income) {
+        const brackets = [
+            { limit: 51780, rate: 14 },
+            { limit: 103545, rate: 19 },
+            { limit: 126000, rate: 24 },
+            { limit: Infinity, rate: 25.75 }
+        ];
+        
+        let remainingIncome = income;
+        let totalTax = 0;
+        let result = '';
+
+        for (let i = 0; i < brackets.length; i++) {
+            const bracket = brackets[i];
+            const prevLimit = i === 0 ? 0 : brackets[i-1].limit;
+            const taxableAmount = Math.min(remainingIncome, bracket.limit - prevLimit);
+            const taxForBracket = taxableAmount * (bracket.rate / 100);
+
+            if (taxableAmount > 0) {
+                let rangeText;
+                if (i === brackets.length - 1) {
+                    rangeText = `${bracket.rate}% sur ${formatNumber(prevLimit)} $ et plus`;
+                } else {
+                    rangeText = `${bracket.rate}% sur ${formatNumber(prevLimit)} $ à ${formatNumber(bracket.limit)} $`;
+                }
+                
+                result += `
+                <tr>
+                    <td>${rangeText}</td>
+                    <td>$${formatNumber(taxableAmount)}</td>
+                    <td>$${formatNumber(taxForBracket)}</td>
+                </tr>`;
+            }
+
+            totalTax += taxForBracket;
+            remainingIncome -= taxableAmount;
+
+            if (remainingIncome <= 0) break;
+        }
+
+        return result;
     }
 
     function resetFields() {
@@ -323,17 +587,10 @@
         document.getElementById('determinedDividend').value = '';
         document.getElementById('undeterminedDividend').value = '';
         document.getElementById('propertyIncome').value = '';
-        document.getElementById('businessIncome').value = '';
         document.getElementById('result').innerHTML = '';
+        document.getElementById('result').classList.remove('has-result');
     }
 
-    function showLogs() {
-        document.getElementById('toastBody').textContent = detailedLogs;
-        var toastLiveExample = document.getElementById('liveToast');
-        var toast = new bootstrap.Toast(toastLiveExample);
-        toast.show();
-    }
-    
     // Deductions
     function calculateReerImpact() {
         const investment = parseFloat(document.getElementById('reerInput').value);
@@ -405,6 +662,31 @@
     //     const taxImpact = originalTax - newTax;
     //     alert(`En faisant un don de ${donation.toLocaleString('fr-CA')} CAD à DGC, vous allez réduire votre obligation fiscale d'environ ${taxImpact.toLocaleString('fr-CA')} CAD.`);
     // }
+
+    function getFederalMarginalRate(income) {
+        let rate;
+        if (income <= 55867) rate = 15;
+        else if (income <= 111733) rate = 20.5;
+        else if (income <= 173205) rate = 26;
+        else if (income <= 246752) rate = 29;
+        else rate = 33;
+        
+        // Apply the 16.5% reduction
+        return rate * (1 - 0.165);
+    }
+
+    function getQuebecMarginalRate(income) {
+        if (income <= 51780) return 14;
+        if (income <= 103545) return 19;
+        if (income <= 126000) return 24;
+        return 25.75;
+    }
+
+    function calculateMarginalRate(income) {
+        const federalRate = getFederalMarginalRate(income);
+        const quebecRate = getQuebecMarginalRate(income);
+        return federalRate + quebecRate;
+    }
 
     </script>
 
