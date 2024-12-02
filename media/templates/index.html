@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Media Content Generator</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="urls" class="form-label">URLs (comma-separated)</label>
+                        <textarea class="form-control" id="urls" name="urls" rows="3" required 
+                                placeholder="Enter URLs separated by commas..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prompt" class="form-label">Prompt</label>
+                        <textarea class="form-control" id="prompt" name="prompt" rows="3" required
+                                placeholder="Enter your prompt..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Generate Content</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
