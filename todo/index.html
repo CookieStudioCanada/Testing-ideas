@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo — Liste de tâches</title>
+  <meta name="description" content="Application de gestion de tâches simple et élégante.">
+  <meta property="og:title" content="Todo — Liste de tâches">
+  <meta property="og:description" content="Organisez vos tâches avec priorités, listes et dates d'échéance.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">✓</span>
+        <h1>Todo</h1>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-filter="all">
+          <span class="nav-icon">📋</span>
+          Toutes
+          <span class="nav-count" id="count-all">0</span>
+        </button>
+        <button class="nav-item" data-filter="active">
+          <span class="nav-icon">⏳</span>
+          En cours
+          <span class="nav-count" id="count-active">0</span>
+        </button>
+        <button class="nav-item" data-filter="completed">
+          <span class="nav-icon">✅</span>
+          Terminées
+          <span class="nav-count" id="count-completed">0</span>
+        </button>
+      </nav>
+
+      <div class="lists-section">
+        <div class="section-header">
+          <h2>Listes</h2>
+          <button class="icon-btn" id="add-list-btn" title="Nouvelle liste">+</button>
+        </div>
+        <ul class="lists" id="lists-nav"></ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="theme-toggle" id="theme-toggle" title="Changer le thème">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div>
+          <p class="eyebrow" id="view-label">Toutes les tâches</p>
+          <h2 id="view-title">Mes tâches</h2>
+        </div>
+        <div class="header-actions">
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="search" id="search-input" placeholder="Rechercher..." autocomplete="off">
+          </div>
+          <button class="btn btn-primary" id="open-add-modal">+ Nouvelle tâche</button>
+        </div>
+      </header>
+
+      <section class="stats-bar">
+        <div class="stat">
+          <span class="stat-value" id="stat-total">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-due-today">0</span>
+          <span class="stat-label">Aujourd'hui</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-overdue">0</span>
+          <span class="stat-label">En retard</span>
+        </div>
+      </section>
+
+      <ul class="task-list" id="task-list"></ul>
+
+      <div class="empty-state hidden" id="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>Aucune tâche</h3>
+        <p>Ajoutez votre première tâche pour commencer.</p>
+        <button class="btn btn-primary" id="empty-add-btn">Ajouter une tâche</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Task Modal -->
+  <dialog class="modal" id="task-modal">
+    <form class="modal-content" id="task-form" method="dialog">
+      <header class="modal-header">
+        <h3 id="modal-title">Nouvelle tâche</h3>
+        <button type="button" class="icon-btn close-btn" id="close-modal" aria-label="Fermer">×</button>
+      </header>
+      <div class="modal-body">
+        <label>
+          Titre
+          <input type="text" id="task-title" required placeholder="Ex: Préparer la présentation" maxlength="120">
+        </label>
+        <label>
+          Description
+          <textarea id="task-description" rows="3" placeholder="Détails optionnels..."></textarea>
+        </label>
+        <div class="form-row">
+          <label>
+            Date d'échéance
+            <input type="date" id="task-due-date">
+          </label>
+          <label>
+            Priorité
+            <select id="task-priority">
+              <option value="none">Aucune</option>
+              <option value="low">Basse</option>
+              <option value="medium">Moyenne</option>
+              <option value="high">Haute</option>
+              <option value="urgent">Urgente</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Liste
+          <input type="text" id="task-list-name" placeholder="Ex: Travail, Maison..." list="list-suggestions">
+          <datalist id="list-suggestions"></datalist>
+        </label>
+      </div>
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="cancel-modal">Annuler</button>
+        <button type="submit" class="btn btn-primary" id="save-task">Enregistrer</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Add List Modal -->
+  <dialog class="modal modal-sm" id="list-modal">
+    <form class="modal-content" id="list-form" method="dialog">
+      <header class="modal-header">
+        <h3>Nouvelle liste</h3>
+        <button type="button" class="icon-btn close-btn" id="close-list-modal" aria-label="Fermer">×</button>
+      </header>
+      <div class="modal-body">
+        <label>
+          Nom de la liste
+          <input type="text" id="new-list-name" required placeholder="Ex: Projets" maxlength="40">
+        </label>
+      </div>
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="cancel-list-modal">Annuler</button>
+        <button type="submit" class="btn btn-primary">Créer</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
